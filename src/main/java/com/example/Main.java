@@ -8,6 +8,8 @@ import javafx.scene.web.WebView;
 import javafx.scene.web.WebEngine;
 import javafx.stage.Stage;
 
+// src/main/java/com/example/Main.java
+
 public class Main extends Application {
     public static void main(String[] args) {
         new Thread(() -> Server.startServer()).start();

@@ -1,33 +1,30 @@
 package com.example.server;
 
 import io.javalin.Javalin;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import io.javalin.http.staticfiles.Location;
 
 import com.example.Config;
+
+// src/main/java/com/example/server/Server.java
 
 public class Server {
     private static Javalin app;
 
     public static void startServer() {
-        app = Javalin.create().start(7000);
+        app = Javalin.create(config -> {
+            config.staticFiles.add(Config.PhatFrontent + "static/", Location.EXTERNAL);
+        }).start(7000);
 
-        app.get("/", ctx -> {
-            try {
-                String filePath = Config.PhatFrontent + "main.html";
-                if (Files.exists(Paths.get(filePath))) {
-                    ctx.result(new String(Files.readAllBytes(Paths.get(filePath)))).contentType("text/html");
-                } else {
-                    ctx.status(404).result("File not found.");
-                }
-            } catch (Exception e) {
-                ctx.status(500).result("Server error: " + e.getMessage());
-            }
-        });
+        // Get
+        app.get("/", Rotate.handleRootPath());
+
+        // Post
+        app.post("/message", Post.Post_unix());
     }
 
     public static void stopServer() {
-        app.stop();
+        if (app != null) {
+            app.stop();
+        }
     }
 }

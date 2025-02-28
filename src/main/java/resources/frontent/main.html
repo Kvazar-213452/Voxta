@@ -3,15 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body {
-            background-color: black;
-            color: aliceblue;
-        }
-    </style>
+    <title>SPX</title>
+    <link rel="stylesheet" href="/main.css">
 </head>
 <body>
-    <h1>TEST SPX</h1>
+    <div class="uni_menu"></div>
+    <button id="sendButton">Send POST Request</button>
+
+    <script>
+        document.getElementById("sendButton").addEventListener("click", async () => {
+            const data = { msg: "jjjjj" }; // Дані, які відправляємо на сервер
+
+            try {
+                const response = await fetch("/message", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json" // Вказуємо, що дані у форматі JSON
+                    },
+                    body: JSON.stringify(data) // Перетворюємо об'єкт у JSON
+                });
+
+                if (response.ok) {
+                    console.log("Data sent successfully!");
+                } else {
+                    console.error("Failed to send data.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        });
+    </script>
 </body>
 </html>
