@@ -1,10 +1,16 @@
-import express from 'express';
+import express, { Express, Request, Response } from 'express';
+import path from 'path';
 
-const app = express();
-const PORT = 3000;
+const app: Express = express();
+const PORT: number = 3000;
 
-app.get('/', (req, res) => {
-  res.send('Voxta API is working!1');
+app.use(express.static(path.join(__dirname, 'web/public')));
+
+app.set('views', path.join(__dirname, 'web/views'));
+app.set('view engine', 'ejs');
+
+app.get('/', (req: Request, res: Response) => {
+  res.render('index', { message: 'Voxta API is working!1' });
 });
 
 app.listen(PORT, () => {

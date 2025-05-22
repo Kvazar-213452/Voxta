@@ -18,5 +18,4 @@ if let == "0":
     name = input("Name: ")
     
     subprocess.run(["git", "commit", "-m", name])
-    
     subprocess.run(["git", "push"])
