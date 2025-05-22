@@ -1,0 +1,9 @@
+/* menu.css */
+
+.menu {
+    position: relative;
+    float: left;
+    width: 300px;
+    height: 100vh;
+    background-color: black;
+}

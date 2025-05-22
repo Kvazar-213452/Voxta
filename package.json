@@ -17,7 +17,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
-    "build": "tsc && cd build && python web.py"
+    "build": "tsc && cd build && python web.py",
+    "git": "cd build && python git.py"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.5",

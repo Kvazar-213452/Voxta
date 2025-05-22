@@ -1,3 +1,5 @@
 * text=auto
 
-dist/**.js linguist-documentation
+# lib
+src/web/public/js/lib/**.js linguist-documentation
+src/web/public/css/lib/**.css linguist-documentation

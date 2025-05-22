@@ -1,6 +1,8 @@
 import express, { Express, Request, Response } from 'express';
 import path from 'path';
 
+// index.ts
+
 const app: Express = express();
 const PORT: number = 3000;
 

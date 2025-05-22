@@ -1,6 +1,8 @@
 import shutil
 import os
 
+# web.py
+
 src_dir = "../src/web"
 dest_dir = "../dist/web"
 
