@@ -1,0 +1,71 @@
+/* main.css */
+
+.top_block {
+    position: relative;
+    float: left;
+    left: 20px;
+    width: calc(100% - 560px);
+    height: 50px;
+    border-bottom: solid 2px #ffffff1a;
+}
+
+.name_chat {
+    position: relative;
+    text-align: center;
+    top: 15px;
+    font-size: 19px;
+}
+
+.div_img_top_block {
+    position: relative;
+    float: right;
+    margin-right: 20px;
+    width: 45px;
+    height: 30px;
+    background-color: #50ff73;
+    top: -10px;
+    border-radius: 60px;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.div_img_top_block:hover {
+    opacity: .5;
+}
+
+.img_top_block {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 17px;
+}
+
+/* right_block */
+
+.right_block {
+    position: relative;
+    float: right;
+    left: -20px;
+    width: 220px;
+    height: calc(100% - 40px);
+    background-color: rgba(34, 37, 49, 0.5);
+    border-radius: 5px;
+    border: solid 1px #ffffff1a;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 10px #00000030;
+}
+
+
+/* other */
+
+.input_message {
+    position: absolute;
+    bottom: 60px;
+    left: 320px;
+    background-color: #16171D;
+    height: 60px;
+    width: calc(100% - 600px);
+    opacity: .5;
+}
