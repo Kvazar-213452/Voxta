@@ -1,0 +1,6 @@
+{
+  "watch": ["src/index.ts"],
+  "ext": "ts",
+  "ignore": ["dist"],
+  "exec": "npm run build-and-run"
+}

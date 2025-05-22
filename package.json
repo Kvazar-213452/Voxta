@@ -1,0 +1,33 @@
+{
+  "name": "voxta",
+  "version": "1.0.0",
+  "description": "massanger",
+  "homepage": "https://github.com/Kvazar-213452/Voxta_massanger#readme",
+  "bugs": {
+    "url": "https://github.com/Kvazar-213452/Voxta_massanger/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kvazar-213452/Voxta_massanger.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+"scripts": {
+  "start": "node dist/index.js",
+  "build": "tsc",
+  "build-and-run": "npm run build && node dist/index.js",
+  "dev": "nodemon"
+},
+  "devDependencies": {
+    "@types/express": "^5.0.2",
+    "@types/node": "^22.15.21",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
