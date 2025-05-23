@@ -12,9 +12,15 @@
     "build": "tsc"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "@types/node": "^22.15.21",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "nodemailer": "^7.0.3",
+    "typescript": "^5.8.3"
   },
   "devDependencies": {
-    "@types/express": "^5.0.2"
+    "@types/express": "^5.0.2",
+    "@types/nodemailer": "^6.4.17",
+    "ts-node": "^10.9.2"
   }
 }
