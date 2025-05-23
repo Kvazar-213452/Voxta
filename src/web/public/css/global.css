@@ -30,7 +30,7 @@ body::after {
   right: 30px;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(0, 123, 255, 0.4) 0%, transparent 70%);
+  background: radial-gradient(circle, #007bff66 0%, transparent 70%);
   filter: blur(80px);
   pointer-events: none;
 }
@@ -45,3 +45,12 @@ a {
   color: #fff;
   text-decoration: none;
 }
+
+.pading {
+  padding: 20px;
+}
+
+/* 
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px; */
