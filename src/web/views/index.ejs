@@ -14,52 +14,31 @@
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-  <%- include('components/menu.ejs') %>
+  <main>
+    <%- include('components/menu.ejs') %>
 
-  <div class="top_block">
-      <h3 class="name_chat">Nest title</h3>
-      <div class="div_img_top_block"><img class="img_top_block" src="/img/phone-call.png" alt="phone-call.png"></div>
-  </div>
-
-  <div class="right_block">
-
-  </div>
-
-  <div class="input_message">
-    <img class="avatar" src="/img/avatar.png" alt="avatar.png">
-    <textarea placeholder="Type a messange ..." type="text"></textarea>
-    <div class="fix_textarea_div">
-      <div class="send_btn"><img src="/img/send.png" alt="send.png"></div>
-      <img class="img_btn" src="/img/happy-face.png" alt="happy-face.png">
-      <img class="img_btn" src="/img/paper-clip.png" alt="paper-clip.png">
-      <img class="img_btn" src="/img/sticky-note.png" alt="sticky-note.png">
+    <div class="top_block">
+        <h3 class="name_chat">Nest title</h3>
+        <div class="div_img_top_block"><img class="img_top_block" src="/img/phone-call.png" alt="phone-call.png"></div>
     </div>
-  </div>
 
+    <div class="right_block">
+
+    </div>
+
+    <div class="input_message">
+      <img class="avatar" src="/img/avatar.png" alt="avatar.png">
+      <textarea placeholder="Type a messange ..." type="text"></textarea>
+      <div class="fix_textarea_div">
+        <div class="send_btn"><img src="/img/send.png" alt="send.png"></div>
+        <img class="img_btn" src="/img/happy-face.png" alt="happy-face.png">
+        <img class="img_btn" src="/img/paper-clip.png" alt="paper-clip.png">
+        <img class="img_btn" src="/img/sticky-note.png" alt="sticky-note.png">
+      </div>
+    </div>
+  </main>
 </body>
 <!-- script -->
 <script src="/js/lib/jquery-3.6.4.slim.min.js"></script>
 <script src="/js/main.js"></script>
 </html>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const textarea = document.querySelector('.input_message textarea');
-
-    textarea.addEventListener('input', () => {
-        textarea.style.height = 'auto';
-
-        // Обчислюємо наступну висоту
-        const scrollHeight = textarea.scrollHeight;
-        const maxHeight = window.innerHeight - 400;
-
-        if (scrollHeight < maxHeight) {
-            textarea.style.overflowY = 'hidden';
-            textarea.style.height = scrollHeight + 'px';
-        } else {
-            textarea.style.overflowY = 'auto';
-            textarea.style.height = maxHeight + 'px';
-        }
-    });
-});
-</script>

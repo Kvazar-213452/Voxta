@@ -5,12 +5,11 @@
   src: url("../fonts/consolas.ttf") format("truetype");
 }
 
-body {
+main {
   color: #fff;
   overflow-y: hidden;
   overflow-x: hidden;
   font-size: 15px;
-
   padding: 20px;
   margin: 0;
   height: 100vh;
@@ -23,7 +22,7 @@ body {
   overflow: hidden;
 }
 
-body::after {
+main::after {
   content: "";
   position: absolute;
   bottom: 30px;

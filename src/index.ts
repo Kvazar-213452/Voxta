@@ -1,5 +1,7 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import path from 'path';
+import getRoutes from './routes/getRoutes';
+import postRoutes from './routes/postRoutes';
 
 // index.ts
 
@@ -11,9 +13,11 @@ app.use(express.static(path.join(__dirname, 'web/public')));
 app.set('views', path.join(__dirname, 'web/views'));
 app.set('view engine', 'ejs');
 
-app.get('/', (req: Request, res: Response) => {
-  res.render('index', { message: 'Voxta API is working!1' });
-});
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.use('/', getRoutes);
+app.use('/', postRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server started: http://localhost:${PORT}`);

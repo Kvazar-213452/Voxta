@@ -1,5 +1,9 @@
 /* main.css */
 
+body {
+    overflow: hidden;
+}
+
 :root {
     --bg_1: #1A1C20;
     --bg_1: #1F222C;
@@ -9,6 +13,8 @@
     --bg_1: #1A1C20;
     --bg_1: #222531;
 }
+
+/* top_block */
 
 .top_block {
     position: relative;
