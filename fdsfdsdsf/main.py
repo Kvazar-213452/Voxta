@@ -21,7 +21,7 @@ def send_email():
         msg["To"] = recipient
 
         # Retry logic
-        max_retries = 3
+        max_retries = 3 
         for attempt in range(max_retries):
             try:
                 # Connect to SMTP server
