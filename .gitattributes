@@ -5,4 +5,8 @@ src/web/public/js/lib/**.js linguist-documentation
 src/web/public/css/lib/**.css linguist-documentation
 
 app/mobile/**.cpp linguist-documentation
+app/mobile/**.c linguist-documentation
+app/mobile/**.h linguist-documentation
+app/mobile/**.hpp linguist-documentation
+
 app/mobile/**/CMakeLists.txt linguist-documentation
