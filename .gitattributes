@@ -3,3 +3,6 @@
 # lib
 src/web/public/js/lib/**.js linguist-documentation
 src/web/public/css/lib/**.css linguist-documentation
+
+app/mobile/**.cpp linguist-documentation
+app/mobile/**/CMakeLists.txt linguist-documentation
