@@ -2,8 +2,6 @@ import subprocess
 
 # git.py
 
-let = input("Type: ")
-
 # ⣾⡇⣿⣿⡇⣾⣿⣿⣿⣿⣿⣿⣿⣿⣄⢻⣦⡀⠁⢸⡌⠻⣿⣿⣿⡽⣿⣿
 # ⡇⣿⠹⣿⡇⡟⠛⣉⠁⠉⠉⠻⡿⣿⣿⣿⣿⣿⣦⣄⡉⠂⠈⠙⢿⣿⣝⣿
 # ⠤⢿⡄⠹⣧⣷⣸⡇⠄⠄⠲⢰⣌⣾⣿⣿⣿⣿⣿⣿⣶⣤⣤⡀⠄⠈⠻⢮
@@ -14,10 +12,9 @@ let = input("Type: ")
 # ⠄⠄⢸⣿⡇⠄⠈⠙⠿⣿⣿⣿⣮⣿⣿⣿⣿⣿⣿⣿⣿⡿⢠⠊⢀⡇⣿⣿
 # ⠒⠤⠄⣿⡇⢀⡲⠄⠄⠈⠙⠻⢿⣿⣿⠿⠿⠟⠛⠋⠁⣰⠇⠄⢸⣿⣿⣿
 
-if let == "0":
-    subprocess.run(["git", "add", "-A"])
-    
-    name = input("Name: ")
-    
-    subprocess.run(["git", "commit", "-m", name])
-    subprocess.run(["git", "push"])
+subprocess.run(["git", "add", "-A"])
+
+name = input("Name: ")
+
+subprocess.run(["git", "commit", "-m", name])
+subprocess.run(["git", "push"])

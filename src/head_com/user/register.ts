@@ -22,11 +22,25 @@ export async function register_start(req: Request, res: Response) {
       data: [gmail, code]
     });
 
-    console.log('Відповідь від сервера 3001:', response.data);
-
-    res.send("ok");
+    res.send(1);
   } catch (error) {
-    console.error('Помилка при відправці на сервер 3001:', error);
-    res.status(500).send("Помилка сервера");
+    console.error(error);
+    res.status(500).send(2);
+  }
+}
+
+export async function register_end(req: Request, res: Response) {
+  try {
+    const data = req.body.data;
+    let code: string = data[0];
+
+    if (req.session.code == code) {
+        res.send(1);
+    } else {
+        res.send(0);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(2);
   }
 }

@@ -22,9 +22,8 @@ if (!process.env.VERSION) {
 app.post('/register', async (req: Request, res: Response<ResponseData>) => {
     try {
         const data = req.body.data;
-        console.log(data);
 
-        await send_gmail(data[0], data[1]);
+        await send_gmail(data[1], data[0]);
 
         res.json({ status: 'success', message: 'The text message was sent successfully!' });
     } catch (error) {

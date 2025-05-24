@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- register.ejs -->
+    <!-- meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- name -->
+    <title>Voxta</title>
+
+    <!-- css link -->
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/login_register.css">
+</head>
+<body>
+    <!-- background -->
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- form -->
+    <div class="form_login">
+        <h3>Login Here</h3>
+
+        <label for="username">Username</label>
+        <input type="text" placeholder="Name" id="name_input">
+
+        <label for="password">Password</label>
+        <input type="password" placeholder="Password" id="password_input">
+
+        <label for="password">Gmail</label>
+        <input type="text" placeholder="Gmail" id="gmail_input">
+
+        <button onclick="register()">Sig In</button>
+    </div>
+</body>
+<!-- script -->
+<script src="/js/lib/jquery-3.6.0.min.js"></script>
+<script src="/js/login_register.js"></script>
+</html>

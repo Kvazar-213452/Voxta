@@ -13,7 +13,13 @@ declare module 'express-session' {
     pasw?: string;
     gmail?: string;
     code?: string;
+
+    login?: number;
   }
 }
+
+// T = 1
+// F = 0
+// ERROR = 2
 
 export default CONFIG;
