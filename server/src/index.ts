@@ -1,82 +1,68 @@
-import express, { Request, Response } from 'express';
+import express, { Express, Request, Response } from 'express';
 import nodemailer from 'nodemailer';
-import fs from 'fs';
+import dotenv from 'dotenv';
 
-interface Config {
-    sender: string;
-    password: string;
-    version: string;
+interface ResponseData {
+    status: string;
+    message?: string;
+    version?: string;
 }
 
-interface UserData {
-    name: string;
-    pasw?: string;
-    gmail?: string;
-    code?: string;
-    acsses?: string;
-    status?: string;
-    key?: any[] | [string, string][];
-}
+// Load environment variables
+dotenv.config();
 
-interface MailOptions {
-    from: string;
-    to: string;
-    subject: string;
-    text: string;
-}
-
-
-const app = express();
+const app: Express = express();
 app.use(express.json());
 
-// Load config
-const config: Config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+// Validate required environment variables
+const requiredEnvVars = ['SENDER_EMAIL', 'SENDER_PASSWORD', 'VERSION', 'RECIPIENT_EMAIL'];
+for (const envVar of requiredEnvVars) {
+    if (!process.env[envVar]) {
+        throw new Error(`Missing required environment variable: ${envVar}`);
+    }
+}
 
 // Email transporter
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: config.sender,
-        pass: config.password
+        user: process.env.SENDER_EMAIL,
+        pass: process.env.SENDER_PASSWORD
     }
 });
 
-
 // Routes
-app.post('/register', async (req: Request, res: Response) => {
+app.post('/register', async (req: Request, res: Response<ResponseData>) => {
     try {
-        const data =req.body;
+        const data = req.body.data;
+
         console.log(data)
 
         const subject = "Notification";
-        const message = `Code: 1111111111`;
+        const message = `Code: ${data[1]}`;
 
-        console.log(message)
+        console.log(message);
 
-        const mailOptions: MailOptions = {
-            from: config.sender,
-            to: "kvazar382@gmail.com",
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: data[2],
             subject,
             text: message
         };
 
         await transporter.sendMail(mailOptions);
         res.json({ status: 'success', message: 'The text message was sent successfully!' });
-    } catch (error: any) {
-        res.json({ status: 'error', message: error.message });
+    } catch (error) {
+        console.error(error);
+        res.json({ status: 'error' });
     }
 });
 
-app.post('/version', (req: Request, res: Response) => {
-    res.json({ version: config.version });
+app.post('/version', (req: Request, res: Response<ResponseData>) => {
+    res.json({ status: 'success', version: process.env.VERSION });
 });
 
-app.post('/check', (req: Request, res: Response) => {
-    res.json({ version: null });
-});
-
-
-const PORT = process.env.PORT || 3001;
+const PORT: string | number = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
