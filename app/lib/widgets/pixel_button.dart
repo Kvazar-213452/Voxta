@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../pixel_colors.dart';
+import '../config.dart';
 
 class PixelButton extends StatelessWidget {
   final String text;

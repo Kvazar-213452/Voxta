@@ -1,6 +1,5 @@
-// widgets/pixel_text_field.dart
 import 'package:flutter/material.dart';
-import '../pixel_colors.dart';
+import '../config.dart';
 
 class PixelTextField extends StatelessWidget {
   final TextEditingController controller;

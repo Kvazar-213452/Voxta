@@ -1,11 +1,11 @@
-// login_screen.dart
 import 'package:flutter/material.dart';
-import 'pixel_colors.dart';
+import '../config.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'chat.dart'; // додаємо імпорт
 
-import 'widgets/pixel_text_field.dart';
-import 'widgets/pixel_button.dart';
+import '../widgets/pixel_text_field.dart';
+import '../widgets/pixel_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final username = _usernameController.text;
     final password = _passwordController.text;
 
-    final url = Uri.parse('http://localhost:3000/check_user');
+    final url = Uri.parse(Config.url_login);
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
       'name': username,
@@ -39,7 +39,23 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       final response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 200) {
-        print('Відповідь від сервера: ${response.body}');
+        final jsonResponse = jsonDecode(response.body);
+        if (jsonResponse is List && jsonResponse.isNotEmpty) {
+          // Знайшли користувача!
+          final user = jsonResponse.first;
+          final userId = user['_id'];
+          print('Користувач знайдений: $userId');
+
+          // Переходимо на другу сторінку
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatScreen(userId: userId),
+            ),
+          );
+        } else {
+          print('Користувача не знайдено.');
+        }
       } else {
         print('Помилка: ${response.statusCode}');
       }

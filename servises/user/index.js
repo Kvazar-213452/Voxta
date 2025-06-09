@@ -1,7 +1,13 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
+const { Server } = require('socket.io');
+
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
 const PORT = 3000;
 
 app.use(express.json());
@@ -35,6 +41,18 @@ app.post('/check_user', (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
+io.on('connection', (socket) => {
+    console.log('Користувач підключився:', socket.id);
+
+    socket.on('join', (data) => {
+        console.log(`Користувач ${data.userId} приєднався до чату`);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Користувач відключився:', socket.id);
+    });
+});
+
+server.listen(PORT, () => {
     console.log(`Сервер працює на http://localhost:${PORT}`);
 });

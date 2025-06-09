@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// pixel_colors.dart
 class PixelColors {
   static const Color darkBackground = Color(0xFF0D1117);
   static const Color cardBackground = Color(0xFF161B22);
@@ -12,4 +11,9 @@ class PixelColors {
   static const Color buttonBackground = Color(0xFF238636);
   static const Color buttonHover = Color(0xFF2EA043);
   static const Color errorRed = Color(0xFFFF4444);
+}
+
+class Config {
+  static const String url_login = 'http://localhost:3000/check_user';
+  static const String socketUrl = 'http://localhost:3000';
 }

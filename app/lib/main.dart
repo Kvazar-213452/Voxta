@@ -1,7 +1,6 @@
-// main.dart
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
-import 'pixel_colors.dart';
+import 'screen/login.dart';
+import 'config.dart';
 
 void main() {
   runApp(const PixelMessengerApp());
