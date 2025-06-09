@@ -8,6 +8,7 @@ app/**/*.hpp linguist-documentation
 app/**/*.cc linguist-documentation
 app/**/*.swift linguist-documentation
 app/**/*.cmake linguist-documentation
+app/**/*.kt linguist-documentation
 app/web/**/*.html linguist-documentation
 
 app/**/CMakeLists.txt linguist-documentation
