@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import '../config.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'chat.dart'; // додаємо імпорт
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'chat.dart';
+import '../config.dart';
 
 import '../widgets/pixel_text_field.dart';
 import '../widgets/pixel_button.dart';
+
+final storage = FlutterSecureStorage();
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -41,12 +44,16 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         if (jsonResponse is List && jsonResponse.isNotEmpty) {
-          // Знайшли користувача!
-          final user = jsonResponse.first;
-          final userId = user['_id'];
+          final data = jsonResponse;
+          final jwtToken = data[0];
+          final userId = data[1]['_id'];
+
+          await storage.write(key: 'jwt_token', value: jwtToken);
+          await storage.write(key: 'user_id', value: userId);
+
+          print('JWT токен збережено!');
           print('Користувач знайдений: $userId');
 
-          // Переходимо на другу сторінку
           Navigator.push(
             context,
             MaterialPageRoute(

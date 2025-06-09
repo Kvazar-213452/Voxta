@@ -14,6 +14,6 @@ class PixelColors {
 }
 
 class Config {
-  static const String url_login = 'http://localhost:3000/check_user';
+  static const String url_login = 'http://localhost:3000/login';
   static const String socketUrl = 'http://localhost:3000';
 }
