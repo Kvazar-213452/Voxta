@@ -1,3 +1,6 @@
 dist
 node_modules
 .env
+
+servises/user/private_key.pem
+servises/user/public_key.pem

@@ -22,13 +22,11 @@ app.whenReady().then(createWindow);
 ipcMain.on('message', async (event, msg) => {
   if (msg["type"] === "login") {
     try {
-      // Відправляємо POST на бекенд
       const response = await axios.post('http://localhost:3000/login', {
         name: msg["name"],
         password: msg["pasw"]
       });
 
-      // Відправляємо відповідь назад у рендерер
       event.reply('reply', response.data);
     } catch (error) {
       console.error('Помилка при запиті на бекенд:', error);
