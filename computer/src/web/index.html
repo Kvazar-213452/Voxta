@@ -3,32 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <title>Hello World!</title>
-    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/main.css" />
   </head>
   <body>
     <input type="text" id="name" placeholder="Name">
     <input type="text" id="pasw" placeholder="Password">
     <button id="sendBtn">Send to backend</button>
 
-    <script src="js/jquery-3.6.0.min.js"></script>
-<script>
-  $(document).ready(function() {
-    $('#sendBtn').click(function() {
-      const name = $('#name').val();
-      const pasw = $('#pasw').val();
-
-      window.electronAPI.sendMessage({
-        type: "login", 
-        name: name, 
-        pasw: pasw
-      });
-    });
-
-    window.electronAPI.onMessage((msg) => {
-      console.log('Відповідь від сервера:', msg);
-      alert(JSON.stringify(msg, null, 2));
-    });
-  });
-</script>
+    <script src="js/lib/jquery-3.6.0.min.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>

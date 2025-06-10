@@ -1,9 +1,12 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow } = require('electron');
 const path = require('node:path');
-const axios = require('axios');
+const { setupIPC } = require('./ipcHandler');
+const { check_app } = require('./internal/start');
+
+let mainWindow;
 
 function createWindow() {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -15,24 +18,17 @@ function createWindow() {
 
   mainWindow.loadFile(path.join(__dirname, 'web/index.html'));
   mainWindow.webContents.openDevTools();
+
+  return mainWindow;
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  mainWindow = createWindow();
+  setupIPC();
 
-ipcMain.on('message', async (event, msg) => {
-  if (msg["type"] === "login") {
-    try {
-      const response = await axios.post('http://localhost:3000/login', {
-        name: msg["name"],
-        password: msg["pasw"]
-      });
-
-      event.reply('reply', response.data);
-    } catch (error) {
-      console.error('Помилка при запиті на бекенд:', error);
-      event.reply('reply', { error: error.response?.data || 'Помилка сервера' });
-    }
-  }
+  mainWindow.webContents.on('did-finish-load', () => {
+    check_app(mainWindow);
+  });
 });
 
 app.on('window-all-closed', () => {

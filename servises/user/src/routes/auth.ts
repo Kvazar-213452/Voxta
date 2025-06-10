@@ -3,6 +3,8 @@ import fs from 'fs/promises';
 import path from 'path';
 import jwt from 'jsonwebtoken';
 
+import { encryption_server, encryption_msg, decryption_server } from '../func/crypto_func';
+
 const router = express.Router();
 
 const SECRET_KEY = process.env.SECRET_KEY ?? '';
@@ -17,9 +19,9 @@ interface TokensDB {
     [userId: string]: string[];
 }
 
-// Login endpoint
+// ======= login ENDPOINT ===========
 router.post('/login', async (req: Request, res: Response): Promise<void> => {
-    const { name, password } = req.body;
+    const { name, password, key } = req.body;
 
     try {
         const data = await fs.readFile(path.join(__dirname, '../db.json'), 'utf8');
@@ -28,7 +30,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
         const user = users.find(u => u.name === name && u.password === password);
 
         if (!user) {
-            res.status(404).json({ error: 'Користувача не знайдено' });
+            res.status(404).json({ code: 0, error: 'user_none' });
             return;
         }
 
@@ -49,11 +51,12 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
 
         await fs.writeFile(path.join(__dirname, '../tokens.json'), JSON.stringify(tokensDB, null, 2));
 
-        res.json([token, user]);
+        let json_str = encryption_server(`[${token}, ${user}]`);
+        let json = JSON.parse(json_str);
 
+        res.json({code: 1, data: json});
     } catch (err) {
-        console.error('Помилка сервера:', err);
-        res.status(500).json({ error: 'Помилка сервера' });
+        res.status(500).json({ code: 0, error: 'error_server' });
     }
 });
 
