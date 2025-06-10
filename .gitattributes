@@ -1,14 +1,14 @@
 * text=auto
 
 # app/mobile
-app/**/*.cpp linguist-documentation
-app/**/*.c linguist-documentation
-app/**/*.h linguist-documentation
-app/**/*.hpp linguist-documentation
-app/**/*.cc linguist-documentation
-app/**/*.swift linguist-documentation
-app/**/*.cmake linguist-documentation
-app/**/*.kt linguist-documentation
-app/web/**/*.html linguist-documentation
+mobile/**/*.cpp linguist-documentation
+mobile/**/*.c linguist-documentation
+mobile/**/*.h linguist-documentation
+mobile/**/*.hpp linguist-documentation
+mobile/**/*.cc linguist-documentation
+mobile/**/*.swift linguist-documentation
+mobile/**/*.cmake linguist-documentation
+mobile/**/*.kt linguist-documentation
+mobile/web/**/*.html linguist-documentation
 
-app/**/CMakeLists.txt linguist-documentation
+mobile/**/CMakeLists.txt linguist-documentation
