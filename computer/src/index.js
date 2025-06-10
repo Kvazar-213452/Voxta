@@ -2,6 +2,7 @@ const { app, BrowserWindow } = require('electron');
 const path = require('node:path');
 const { setupIPC } = require('./ipcHandler');
 const { check_app } = require('./internal/start');
+const { setMainWindow } = require('./internal/castile/mainWindow');
 
 let mainWindow;
 
@@ -16,6 +17,8 @@ function createWindow() {
     },
   });
 
+  setMainWindow(mainWindow);
+
   mainWindow.loadFile(path.join(__dirname, 'web/index.html'));
   mainWindow.webContents.openDevTools();
 
@@ -25,9 +28,9 @@ function createWindow() {
 app.whenReady().then(() => {
   mainWindow = createWindow();
   setupIPC();
-
+  check_app();
   mainWindow.webContents.on('did-finish-load', () => {
-    check_app(mainWindow);
+    // null
   });
 });
 
