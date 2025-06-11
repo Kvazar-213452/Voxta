@@ -9,13 +9,11 @@ async function check_app() {
   if (!tokenExists) {
     await generate_key();
     if (mainWindow) {
-      mainWindow.loadFile('src/web/login.html');
+      mainWindow.loadFile('web/login.html');
     } else {
       throw new Error('Main window is not initialized');
     }
   }
-
-  console.log(tokenExists);
 }
 
 export { check_app };

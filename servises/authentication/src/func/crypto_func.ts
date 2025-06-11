@@ -1,32 +1,26 @@
 import crypto from 'crypto';
-import axios from 'axios';
-import { saveKeys, getPublicKey, getPrivateKey } from '../models/storage_app';
-import { config } from '../../config';
+import fs from 'fs';
+
+export function generate_key() {
+    const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
+    modulusLength: 4096,
+    publicKeyEncoding: {
+        type: 'pkcs1', // 'spki' — сучасний стандарт, 'pkcs1' — простіше
+        format: 'pem'
+    },
+    privateKeyEncoding: {
+        type: 'pkcs1', // 'pkcs8' — більш універсальний, але для початку ok так
+        format: 'pem'
+    }
+    });
+
+    fs.writeFileSync('private_key.pem', privateKey);
+    fs.writeFileSync('public_key.pem', publicKey);
+}
 
 export interface EncryptedData {
   key: string;
   data: string;
-}
-
-export async function generate_key(): Promise<void> {
-  const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
-    modulusLength: 4096,
-    publicKeyEncoding: {
-      type: 'pkcs1', // 'spki' — сучасний стандарт
-      format: 'pem'
-    },
-    privateKeyEncoding: {
-      type: 'pkcs1', // 'pkcs8' — більш універсальний
-      format: 'pem'
-    }
-  });
-
-  await saveKeys(publicKey, privateKey);
-}
-
-export async function getPublicKey_server(): Promise<string> {
-  const response = await axios.get<string>("http://localhost:3000/public_key");
-  return response.data;
 }
 
 // ======= encryption_msg ENDPOINT ===========
@@ -50,9 +44,9 @@ export function encryption_msg(publicRsaKey: string, message: string): { key: st
   };
 }
 
-// ======= encryption_app ENDPOINT ===========
-export async function encryption_app(message: string): Promise<EncryptedData> {
-  const publicKey = await getPublicKey();
+// ======= encryption_server ENDPOINT ===========
+export async function encryption_server(message: string): Promise<EncryptedData> {
+  const publicKey = fs.readFileSync('public_key.pem', 'utf8');
   if (!publicKey) {
     throw new Error('Public key is not available');
   }
@@ -75,10 +69,9 @@ export async function encryption_app(message: string): Promise<EncryptedData> {
   };
 }
 
-// ======= decryption_app ENDPOINT ===========
-export async function decryption_app(encryptedData: EncryptedData): Promise<string> {
-  const privateKey = await getPrivateKey();
-
+// ======= decryption_server ENDPOINT ===========
+export async function decryption_server(encryptedData: EncryptedData): Promise<string> {
+  const privateKey = fs.readFileSync('private_key.pem', 'utf8');
   if (!privateKey) {
     throw new Error('Private key is not available');
   }
@@ -94,6 +87,6 @@ export async function decryption_app(encryptedData: EncryptedData): Promise<stri
   const decipher = crypto.createDecipheriv('aes-256-cbc', aesKey, iv);
   let decrypted = decipher.update(encryptedMessage, 'base64', 'utf8');
   decrypted += decipher.final('utf8');
-  
+
   return decrypted;
 }
