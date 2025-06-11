@@ -1,20 +1,21 @@
-const keytar = require('keytar');
-const { config } = require('../../config');
+import keytar from 'keytar';
+import { config } from '../../config';
 
 // ==== CONFIG ====
-const SERVICE_NAME = config.SERVICE_NAME;
+const SERVICE_NAME: string = config.SERVICE_NAME;
 
 // ==== TOKENS ====
 const ACCOUNT_TOKEN = 'sessionToken';
-async function saveToken(token) {
+
+export async function saveToken(token: string): Promise<void> {
   await keytar.setPassword(SERVICE_NAME, ACCOUNT_TOKEN, token);
 }
 
-async function getToken() {
+export async function getToken(): Promise<string | null> {
   return await keytar.getPassword(SERVICE_NAME, ACCOUNT_TOKEN);
 }
 
-async function deleteToken() {
+export async function deleteToken(): Promise<void> {
   await keytar.deletePassword(SERVICE_NAME, ACCOUNT_TOKEN);
 }
 
@@ -22,33 +23,20 @@ async function deleteToken() {
 const ACCOUNT_PUBLIC_KEY = 'publicKey';
 const ACCOUNT_PRIVATE_KEY = 'privateKey';
 
-async function saveKeys(publicKey, privateKey) {
+export async function saveKeys(publicKey: string, privateKey: string): Promise<void> {
   await keytar.setPassword(SERVICE_NAME, ACCOUNT_PUBLIC_KEY, publicKey);
   await keytar.setPassword(SERVICE_NAME, ACCOUNT_PRIVATE_KEY, privateKey);
 }
 
-async function getPublicKey() {
+export async function getPublicKey(): Promise<string | null> {
   return await keytar.getPassword(SERVICE_NAME, ACCOUNT_PUBLIC_KEY);
 }
 
-async function getPrivateKey() {
+export async function getPrivateKey(): Promise<string | null> {
   return await keytar.getPassword(SERVICE_NAME, ACCOUNT_PRIVATE_KEY);
 }
 
-async function deleteKeys() {
+export async function deleteKeys(): Promise<void> {
   await keytar.deletePassword(SERVICE_NAME, ACCOUNT_PUBLIC_KEY);
   await keytar.deletePassword(SERVICE_NAME, ACCOUNT_PRIVATE_KEY);
 }
-
-module.exports = {
-  // Tokens
-  saveToken,
-  getToken,
-  deleteToken,
-
-  // Keys
-  saveKeys,
-  getPublicKey,
-  getPrivateKey,
-  deleteKeys
-};

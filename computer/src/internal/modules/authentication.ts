@@ -1,9 +1,10 @@
-const axios = require('axios');
-const { config } = require('../config');
-const { encryption_msg, getPublicKey_server } = require('./component/crypto_func');
-const { getPublicKey } = require('./component/storage_app');
+import axios from 'axios';
+import { config } from '../../config';
+import { encryption_msg, getPublicKey_server } from '../utils/crypto_func';
+import { getPublicKey } from '../models/storage_app';
+import { IpcMainEvent } from 'electron';
 
-async function login(event, msg) {
+export async function login(event: IpcMainEvent, msg: { [key: string]: any }): Promise<void> {
   try {
     const PublicKey_server = await getPublicKey_server();
 
@@ -12,6 +13,7 @@ async function login(event, msg) {
       name: msg["name"],
       password: msg["pasw"]
     });
+
     const encryption_json = encryption_msg(PublicKey_server, dataToEncrypt);
 
     // Надсилаємо ЗАШИФРОВАНИЙ рядок на сервер (не парсимо!)
@@ -21,9 +23,7 @@ async function login(event, msg) {
     });
 
     event.reply('reply', response.data);
-  } catch (error) {
-    event.reply('reply', { error: error.response?.data || 'errro server' });
+  } catch (error: any) {
+    event.reply('reply', { error: error.response?.data || 'error server' });
   }
 }
-
-module.exports = { login };

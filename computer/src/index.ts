@@ -1,13 +1,13 @@
-const { app, BrowserWindow } = require('electron');
-const path = require('node:path');
-const { setupIPC } = require('./ipcHandler');
-const { check_app } = require('./internal/start');
-const { setMainWindow } = require('./internal/castile/mainWindow');
-const { config } = require('./config');
+import { app, BrowserWindow } from 'electron';
+import path from 'node:path';
+import { setupIPC } from './ipcHandler';
+import { check_app } from './internal/utils/start';
+import { setMainWindow } from './internal/models/mainWindow';
+import { config } from './config';
 
-let mainWindow;
+let mainWindow: BrowserWindow | null;
 
-function createWindow() {
+function createWindow(): BrowserWindow {
   mainWindow = new BrowserWindow({
     width: config.width,
     height: config.height,
@@ -20,7 +20,7 @@ function createWindow() {
 
   setMainWindow(mainWindow);
 
-  mainWindow.loadFile(path.join(__dirname, 'web/index.html'));
+  mainWindow.loadFile(path.join(__dirname, '../web/index.html'));
   mainWindow.webContents.openDevTools();
 
   return mainWindow;
