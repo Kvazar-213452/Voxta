@@ -1,6 +1,7 @@
 dist
 node_modules
 .env
+target
 
-servises/user/private_key.pem
-servises/user/public_key.pem
+servises/authentication/private_key.pem
+servises/authentication/public_key.pem
