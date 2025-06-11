@@ -21,7 +21,19 @@ interface TokensDB {
 
 // ======= login ENDPOINT ===========
 router.post('/login', async (req: Request, res: Response): Promise<void> => {
-    const { name, password, key } = req.body;
+    const { data, key } = req.body;
+
+    const dataToEncrypt = JSON.stringify({
+        data
+    });
+
+    let code = JSON.parse(decryption_server(dataToEncrypt)) as { name: string; password: string; };
+
+    let name = code.name;
+    let password = code.password;
+
+    console.log(name);
+
 
     try {
         const data = await fs.readFile(path.join(__dirname, '../db.json'), 'utf8');

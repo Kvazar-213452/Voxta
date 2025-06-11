@@ -3,13 +3,14 @@ const path = require('node:path');
 const { setupIPC } = require('./ipcHandler');
 const { check_app } = require('./internal/start');
 const { setMainWindow } = require('./internal/castile/mainWindow');
+const { config } = require('./config');
 
 let mainWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: config.width,
+    height: config.height,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,

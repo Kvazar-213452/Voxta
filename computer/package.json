@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "src/index.js",
+  "type": "commonjs",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -19,6 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^1.9.0",
+    "crypto": "^1.0.1",
     "electron-squirrel-startup": "^1.0.1",
     "keytar": "^7.9.0",
     "node-fetch": "^3.3.2"

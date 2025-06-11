@@ -1,7 +1,10 @@
-import crypto from 'crypto';
-import fs from 'fs';
+const crypto = require('crypto');
+const fs = require('fs');
+const axios = require('axios');
+const { saveKeys, getPublicKey, getPrivateKey } = require('./storage_app');
+const { config } = require('../../config');
 
-export function generate_key() {
+async function generate_key() {
     const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
     modulusLength: 4096,
     publicKeyEncoding: {
@@ -14,28 +17,43 @@ export function generate_key() {
     }
     });
 
-    fs.writeFileSync('private_key.pem', privateKey);
-    fs.writeFileSync('public_key.pem', publicKey);
+    await saveKeys(publicKey, privateKey);
+}
+
+async function getPublicKey_server() {
+    const response = await axios.get("http://localhost:3000/public_key");
+    
+    return response.data;
 }
 
 // ======= encryption ENDPOINT ===========
-export function encryption_server(message: string): string {
-    const publicKey = fs.readFileSync('public_key.pem', 'utf8');
+async function encryption_app(message) {
+    const publicKey = await getPublicKey();
     const encrypted = crypto.publicEncrypt(publicKey, Buffer.from(message, 'utf8'));
     
     return encrypted.toString('base64');
 }
 
-export function encryption_msg(key: string, message: string): string {
+function encryption_msg(key, message) {
     const encrypted = crypto.publicEncrypt(key, Buffer.from(message, 'utf8'));
     
     return encrypted.toString('base64');
 }
 
 // ======= decryption ENDPOINT ===========
-export function decryption_server(message: string): string {
-    const privateKey = fs.readFileSync('private_key.pem', 'utf8');
+async function decryption_app(message) {
+    const privateKey = await getPrivateKey();
     const decrypted = crypto.privateDecrypt(privateKey, message);
     
     return decrypted.toString('utf8');
 }
+
+
+module.exports = {
+    decryption_app,
+    encryption_msg,
+    encryption_app,
+
+    getPublicKey_server,
+    generate_key,
+};

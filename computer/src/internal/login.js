@@ -1,17 +1,28 @@
 const axios = require('axios');
+const { config } = require('../config');
+const { encryption_msg, getPublicKey_server } = require('./component/crypto_func');
+const { getPublicKey } = require('./component/storage_app');
 
 async function login(event, msg) {
   try {
-    const response = await axios.post('http://localhost:3000/login', {
+    const PublicKey_server = await getPublicKey_server();
+
+    // Правильно сформуємо JSON перед шифруванням
+    const dataToEncrypt = JSON.stringify({
       name: msg["name"],
-      password: msg["pasw"],
-      key: "ddd"
+      password: msg["pasw"]
+    });
+    const encryption_json = encryption_msg(PublicKey_server, dataToEncrypt);
+
+    // Надсилаємо ЗАШИФРОВАНИЙ рядок на сервер (не парсимо!)
+    const response = await axios.post(config.login_url, {
+      data: encryption_json,
+      key: await getPublicKey()
     });
 
     event.reply('reply', response.data);
   } catch (error) {
-    console.log('errro to server:', error);
-    event.reply('reply', { error: error.response?.data || 'Помилка сервера' });
+    event.reply('reply', { error: error.response?.data || 'errro server' });
   }
 }
 
