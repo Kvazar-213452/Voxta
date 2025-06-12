@@ -1,6 +1,5 @@
 import { ipcMain, IpcMainEvent } from 'electron';
-import axios from 'axios';
-import { login } from './internal/modules/authentication';
+import { login } from './internal/services/authentication';
 
 export function setupIPC(): void {
   ipcMain.on('message', (event: IpcMainEvent, msg: any) => {

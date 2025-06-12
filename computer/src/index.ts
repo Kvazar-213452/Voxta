@@ -30,9 +30,6 @@ app.whenReady().then(() => {
   mainWindow = createWindow();
   setupIPC();
   check_app();
-  mainWindow.webContents.on('did-finish-load', () => {
-    // null
-  });
 });
 
 app.on('window-all-closed', () => {
