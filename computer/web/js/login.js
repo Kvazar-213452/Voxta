@@ -1,3 +1,5 @@
+// login
+
 $('#sendBtn').click(function() {
     const name = $('#name').val();
     const pasw = $('#pasw').val();
@@ -12,3 +14,5 @@ $('#sendBtn').click(function() {
 window.electronAPI.onMessage((msg) => {
     console.log('Відповідь від сервера:', msg);
 });
+
+// reg

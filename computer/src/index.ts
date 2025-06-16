@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import path from 'node:path';
 import { setupIPC } from './ipcHandler';
 import { check_app } from './internal/utils/start';
@@ -19,6 +19,8 @@ function createWindow(): BrowserWindow {
   });
 
   setMainWindow(mainWindow);
+
+  Menu.setApplicationMenu(null);
 
   mainWindow.loadFile(path.join(__dirname, '../web/index.html'));
   mainWindow.webContents.openDevTools();
