@@ -41,34 +41,35 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
 export async function login_to_jwt(): Promise<void> {
   const mainWindow = getMainWindow();
 
-    const PublicKey_server = await getPublicKey_server();
-    const jwtToken = await getToken();
-    const User = await getUser();
+  const PublicKey_server = await getPublicKey_server();
+  const jwtToken = await getToken();
+  const User = await getUser();
 
-    const user_json = JSON.parse(User!);
+  const first_parse = JSON.parse(User!);
+  const user_json = JSON.parse(first_parse);
 
-    const dataToEncrypt = JSON.stringify({
-      jwt: jwtToken,
-      id: user_json["_id"]
-    });
+  const dataToEncrypt = JSON.stringify({
+    jwt: jwtToken,
+    id: user_json["_id"]
+  });
 
-    const encryption_json = encryption_msg(PublicKey_server, dataToEncrypt);
+  const encryption_json = encryption_msg(PublicKey_server, dataToEncrypt);
 
-    const response = await axios.post(config.get_info_to_jwt, {
-      data: encryption_json,
-      key: await getPublicKey()
-    });
+  const response = await axios.post(config.get_info_to_jwt, {
+    data: encryption_json,
+    key: await getPublicKey()
+  });
 
-    if (response.data.code == 1) {
-      let data_to_web = await decryption_app(response.data.data);
-      const str_user = JSON.stringify(data_to_web);
+  if (response.data.code == 1) {
+    let data_to_web = await decryption_app(response.data.data);
+    const str_user = JSON.stringify(data_to_web);
 
-      await saveUser(str_user);
-      
-      if (mainWindow) {
-        mainWindow.webContents.once('did-finish-load', () => {
-          mainWindow.webContents.send('reply', "dddddd");
-        });
-      }
+    await saveUser(str_user);
+    
+    if (mainWindow) {
+      mainWindow.webContents.once('did-finish-load', () => {
+        mainWindow.webContents.send('reply', "dddddd");
+      });
     }
+  }
 }
