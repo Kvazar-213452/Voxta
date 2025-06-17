@@ -4,7 +4,7 @@ import { generate_key } from './crypto_func';
 import { login_to_jwt } from '../services/authentication';
 
 async function check_app() {
-  await deleteToken();
+  // await deleteToken();
   const tokenExists = await getToken();
   const userExists = await getUser();
   const mainWindow = getMainWindow();

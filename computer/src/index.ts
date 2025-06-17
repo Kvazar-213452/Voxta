@@ -20,7 +20,7 @@ function createWindow(): BrowserWindow {
 
   setMainWindow(mainWindow);
 
-  Menu.setApplicationMenu(null);
+  // Menu.setApplicationMenu(null);
 
   mainWindow.loadFile(path.join(__dirname, '../web/index.html'));
   mainWindow.webContents.openDevTools();

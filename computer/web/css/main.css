@@ -1,0 +1,48 @@
+:root {
+    --primary-color: #58ff7f;
+    --input-bg: rgba(255, 255, 255, 0.1);
+    --panel-bg: rgba(255, 255, 255, 0.08);
+    --text-light: #eee;
+    --text-muted: #aaa;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #1f1f1f, #2d2d32, #232338);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', sans-serif;
+    color: var(--text-light);
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #58ff7fc7, transparent 70%);
+    top: 20%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(100px);
+}
+
+.glass-panel_1 {
+    position: absolute;
+    width: 350px;
+    height: calc(100% - 40px);
+    left: 20px;
+    top: 20px;
+    border-radius: 20px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
