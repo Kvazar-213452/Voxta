@@ -1,48 +1,199 @@
 :root {
-    --primary-color: #58ff7f;
-    --input-bg: rgba(255, 255, 255, 0.1);
-    --panel-bg: rgba(255, 255, 255, 0.08);
-    --text-light: #eee;
-    --text-muted: #aaa;
+  --primary-color: #58ff7f;
+  --input-bg: rgba(255, 255, 255, 0.1);
+  --panel-bg: rgba(255, 255, 255, 0.08);
+  --text-light: #eee;
+  --text-muted: #aaa;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    background: linear-gradient(135deg, #1f1f1f, #2d2d32, #232338);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Segoe UI', sans-serif;
-    color: var(--text-light);
-    position: relative;
-    overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #1f1f1f, #2d2d32, #232338);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--text-light);
+  position: relative;
+  overflow: hidden;
 }
 
 body::before {
-    content: '';
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, #58ff7fc7, transparent 70%);
-    top: 20%;
-    left: 60%;
-    transform: translate(-50%, -50%);
-    z-index: 0;
-    pointer-events: none;
-    filter: blur(100px);
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #58ff7fc7, transparent 70%);
+  top: 20%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(120px);
+  border-radius: 50%;
 }
 
-.glass-panel_1 {
-    position: absolute;
-    width: 350px;
-    height: calc(100% - 40px);
-    left: 20px;
-    top: 20px;
-    border-radius: 20px;
-    background: var(--panel-bg);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+.container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 1;
+  border-radius: 0;
 }
+
+.sidebar {
+  width: 300px;
+  background: var(--panel-bg);
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  /* border-right: 1px solid rgba(255, 255, 255, 0.1); */
+  border-radius: 0;
+}
+
+.chat {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.chat:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background: #ccc;
+  margin-right: 10px;
+  border-radius: 10px;
+}
+
+.chat-info h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.chat-info p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.time {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.chat-window {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  border-radius: 0;
+}
+
+.chat-header {
+  width: 100%;
+  height: 60px;
+  position: absolute;
+}
+
+.messages {
+  flex-grow: 1;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.msg {
+  padding: 12px 18px;
+  max-width: 60%;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  overflow: hidden;
+  clip-path: inset(0 round 10px);
+}
+
+.you {
+  align-self: flex-end;
+  background: rgba(88, 255, 127, 0.2);
+}
+
+.other {
+  align-self: flex-start;
+}
+
+.youtube {
+  background: rgba(255, 0, 204, 0.15);
+  border-left: 4px solid #ff00cc;
+  align-self: flex-end;
+}
+
+.input-bar {
+  display: flex;
+  margin-top: 15px;
+  background: var(--input-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.input-bar input {
+  flex: 1;
+  border: none;
+  padding: 12px 18px;
+  background: transparent;
+  color: white;
+  font-size: 14px;
+  outline: none;
+}
+
+.input-bar input::placeholder {
+  color: #ccc;
+}
+
+.input-bar button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 22px;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.input-bar button:hover {
+  color: var(--primary-color);
+}
+
+
+/* 
+
+chat-header
+
+*/
