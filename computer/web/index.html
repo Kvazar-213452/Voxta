@@ -3,822 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design Team Chat</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #1a1a1a;
-            color: #ffffff;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .chat-container {
-            display: flex;
-            height: 100vh;
-        }
-
-        /* Left Sidebar */
-        .sidebar {
-            width: 300px;
-            background: #2a2a2a;
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid #3a3a3a;
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid #3a3a3a;
-        }
-
-        .sidebar-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .search-box {
-            background: #3a3a3a;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 15px;
-            color: #ffffff;
-            width: 100%;
-            font-size: 14px;
-        }
-
-        .search-box::placeholder {
-            color: #888;
-        }
-
-        .sidebar-section {
-            padding: 20px;
-            border-bottom: 1px solid #3a3a3a;
-        }
-
-        .section-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: #888;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        .section-title::before {
-            content: '📌';
-            margin-right: 8px;
-        }
-
-        .chat-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 0;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
-
-        .chat-item:hover {
-            background: #3a3a3a;
-        }
-
-        .chat-item.active {
-            background: #0066cc;
-        }
-
-        .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            margin-right: 12px;
-            position: relative;
-            background: #4a4a4a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .avatar.online::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 12px;
-            height: 12px;
-            background: #00ff00;
-            border-radius: 50%;
-            border: 2px solid #2a2a2a;
-        }
-
-        .chat-info {
-            flex: 1;
-        }
-
-        .chat-name {
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 2px;
-        }
-
-        .chat-preview {
-            font-size: 12px;
-            color: #888;
-        }
-
-        .chat-time {
-            font-size: 11px;
-            color: #888;
-        }
-
-        .notification-badge {
-            background: #ff4444;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        /* Main Chat Area */
-        .chat-main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: #1a1a1a;
-        }
-
-        .chat-header {
-            padding: 20px;
-            border-bottom: 1px solid #3a3a3a;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .chat-header-left {
-            display: flex;
-            align-items: center;
-        }
-
-        .chat-header-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            margin-right: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-        }
-
-        .chat-header-info h3 {
-            font-size: 16px;
-            margin-bottom: 2px;
-        }
-
-        .chat-header-info p {
-            font-size: 12px;
-            color: #888;
-        }
-
-        .chat-header-actions {
-            display: flex;
-            gap: 15px;
-        }
-
-        .header-icon {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-        }
-
-        .header-icon:hover {
-            opacity: 1;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .date-divider {
-            text-align: center;
-            color: #888;
-            font-size: 12px;
-            margin: 20px 0;
-        }
-
-        .message {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .message-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #4a4a4a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-
-        .message-content {
-            flex: 1;
-        }
-
-        .message-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 5px;
-        }
-
-        .message-author {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .message-time {
-            font-size: 11px;
-            color: #888;
-        }
-
-        .message-text {
-            font-size: 14px;
-            line-height: 1.4;
-            margin-bottom: 10px;
-        }
-
-        .message-images {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            max-width: 400px;
-            margin-bottom: 10px;
-        }
-
-        .message-image {
-            width: 100%;
-            height: 120px;
-            background: #3a3a3a;
-            border-radius: 8px;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .voice-message {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #00ff00;
-            padding: 10px 15px;
-            border-radius: 20px;
-            max-width: 200px;
-        }
-
-        .voice-waveform {
-            flex: 1;
-            height: 20px;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><rect x="0" y="8" width="2" height="4" fill="white"/><rect x="4" y="6" width="2" height="8" fill="white"/><rect x="8" y="4" width="2" height="12" fill="white"/><rect x="12" y="7" width="2" height="6" fill="white"/><rect x="16" y="5" width="2" height="10" fill="white"/><rect x="20" y="9" width="2" height="2" fill="white"/><rect x="24" y="6" width="2" height="8" fill="white"/><rect x="28" y="8" width="2" height="4" fill="white"/><rect x="32" y="4" width="2" height="12" fill="white"/><rect x="36" y="7" width="2" height="6" fill="white"/></svg>') no-repeat center;
-        }
-
-        .voice-duration {
-            font-size: 12px;
-            color: #000;
-        }
-
-        .my-message {
-            justify-content: flex-end;
-        }
-
-        .my-message .message-content {
-            background: #0066cc;
-            padding: 10px 15px;
-            border-radius: 18px;
-            max-width: 300px;
-        }
-
-        .chat-input {
-            padding: 20px;
-            border-top: 1px solid #3a3a3a;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .input-box {
-            flex: 1;
-            background: #2a2a2a;
-            border: none;
-            border-radius: 20px;
-            padding: 12px 20px;
-            color: #ffffff;
-            font-size: 14px;
-        }
-
-        .input-box::placeholder {
-            color: #888;
-        }
-
-        .input-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .input-icon {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-        }
-
-        .input-icon:hover {
-            opacity: 1;
-        }
-
-        /* Right Sidebar */
-        .right-sidebar {
-            width: 300px;
-            background: #2a2a2a;
-            border-left: 1px solid #3a3a3a;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .right-sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid #3a3a3a;
-            text-align: center;
-        }
-
-        .team-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .team-description {
-            font-size: 12px;
-            color: #888;
-            line-height: 1.4;
-        }
-
-        .members-section {
-            padding: 20px;
-            border-bottom: 1px solid #3a3a3a;
-        }
-
-        .members-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .members-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: #888;
-            text-transform: uppercase;
-        }
-
-        .show-all {
-            font-size: 12px;
-            color: #00ff00;
-            cursor: pointer;
-        }
-
-        .member-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .member-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .member-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #4a4a4a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 12px;
-        }
-
-        .member-name {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .media-section {
-            padding: 20px;
-            border-bottom: 1px solid #3a3a3a;
-        }
-
-        .media-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .media-item {
-            aspect-ratio: 1;
-            background: #3a3a3a;
-            border-radius: 8px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
-        .media-count {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .files-section {
-            padding: 20px;
-        }
-
-        .file-type {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-            cursor: pointer;
-        }
-
-        .file-type-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .file-icon {
-            width: 16px;
-            height: 16px;
-            background: #00ff00;
-            border-radius: 3px;
-        }
-
-        .file-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .file-name {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .file-count {
-            font-size: 12px;
-            color: #888;
-        }
-
-        .mac-window {
-            background: #1a1a1a;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .mac-titlebar {
-            background: #2a2a2a;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            padding: 0 15px;
-            border-bottom: 1px solid #3a3a3a;
-        }
-
-        .mac-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .mac-button {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .mac-button.close { background: #ff5f57; }
-        .mac-button.minimize { background: #ffbd2e; }
-        .mac-button.maximize { background: #28ca42; }
-
-        .url-bar {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            padding: 0 20px;
-        }
-
-        .url-input {
-            background: #3a3a3a;
-            border: none;
-            border-radius: 6px;
-            padding: 5px 15px;
-            color: #888;
-            font-size: 12px;
-            width: 200px;
-            text-align: center;
-        }
-    </style>
+    <title>Voxta</title>
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <div class="mac-window">
-        <div class="chat-container">
-            <!-- Left Sidebar -->
-            <div class="sidebar">
-                <div class="sidebar-header">
-                    <h2 class="sidebar-title">Messages</h2>
-                    <input type="text" class="search-box" placeholder="Search..">
-                </div>
-                
-                <div class="sidebar-section">
-                    <div class="section-title">Pinned</div>
-                    <div class="chat-item">
-                        <div class="avatar online">PT</div>
-                        <div class="chat-info">
-                            <div class="chat-name">Putri Tanjak</div>
-                            <div class="chat-preview">Typing...</div>
-                        </div>
-                        <div class="chat-time">4:30 PM</div>
-                        <div class="notification-badge">2</div>
-                    </div>
-                    
-                    <div class="chat-item active">
-                        <div class="avatar">DT</div>
-                        <div class="chat-info">
-                            <div class="chat-name">Design Team</div>
-                            <div class="chat-preview">Asiaap maszeeh!</div>
-                        </div>
-                        <div class="chat-time">9:36 AM</div>
-                    </div>
-                    
-                    <div class="chat-item">
-                        <div class="avatar">AM</div>
-                        <div class="chat-info">
-                            <div class="chat-name">Ahmed Medi</div>
-                            <div class="chat-preview">Wow really cool 😎</div>
-                        </div>
-                        <div class="chat-time">1:15 AM</div>
-                    </div>
-                </div>
-                
-                <div class="sidebar-section">
-                    <div class="section-title">All Messages</div>
-                    <div class="chat-item">
-                        <div class="avatar">CM</div>
-                        <div class="chat-info">
-                            <div class="chat-name">Claudia Maudi</div>
-                            <div class="chat-preview">Typing...</div>
-                        </div>
-                        <div class="chat-time">4:30 PM</div>
-                    </div>
-                    
-                    <div class="chat-item">
-                        <div class="avatar online">N</div>
-                        <div class="chat-info">
-                            <div class="chat-name">Novita</div>
-                            <div class="chat-preview">yoh, jo lali design e lek</div>
-                        </div>
-                        <div class="chat-time">10:05 AM</div>
-                        <div class="notification-badge">4</div>
-                    </div>
-                    
-                    <div class="chat-item">
-                        <div class="avatar">MN</div>
-                        <div class="chat-info">
-                            <div class="chat-name">Milie Nose</div>
-                            <div class="chat-preview">Awesome 🚀</div>
-                        </div>
-                        <div class="chat-time">8:24 AM</div>
-                    </div>
-                    
-                    <div class="chat-item">
-                        <div class="avatar">IS</div>
-                        <div class="chat-info">
-                            <div class="chat-name">Ikhsan SD</div>
-                            <div class="chat-preview">🎵 Voice message</div>
-                        </div>
-                        <div class="chat-time">yesterday</div>
-                    </div>
-                    
-                    <div class="chat-item">
-                        <div class="avatar online">A</div>
-                        <div class="chat-info">
-                            <div class="chat-name">Aditya</div>
-                            <div class="chat-preview">publish now!!</div>
-                        </div>
-                        <div class="chat-time">yesterday</div>
-                    </div>
-                </div>
+    <div class="messenger-container">
+        <!-- Chat List Panel -->
+        <div class="glass-panel chat-list-panel">
+            <h2>Чати</h2>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Пошук чатів...">
             </div>
             
-            <!-- Main Chat Area -->
-            <div class="chat-main">
-                <div class="chat-header">
-                    <div class="chat-header-left">
-                        <div class="chat-header-avatar">F</div>
-                        <div class="chat-header-info">
-                            <h3>Design Team</h3>
-                            <p>12 member, 5 online</p>
-                        </div>
+            <div class="chats-list" id="chatsList">
+                <div class="chat-item active" data-chat="1">
+                    <div class="avatar">АМ</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Анна Мельник</div>
+                        <div class="last-message">Привіт! Як справи?</div>
                     </div>
-                    <div class="chat-header-actions">
-                        <div class="header-icon">📞</div>
-                        <div class="header-icon">🎥</div>
-                        <div class="header-icon">ℹ️</div>
-                    </div>
+                    <div class="chat-time">14:32</div>
                 </div>
                 
-                <div class="chat-messages">
-                    <div class="date-divider">TODAY</div>
-                    
-                    <div class="message">
-                        <div class="message-avatar">PT</div>
-                        <div class="message-content">
-                            <div class="message-header">
-                                <div class="message-author">Putri Tanjak</div>
-                                <div class="message-time">9:12 AM</div>
-                            </div>
-                            <div class="message-text">Have a great working week!</div>
-                        </div>
+                <div class="chat-item" data-chat="2">
+                    <div class="avatar">ПК</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Петро Коваленко</div>
+                        <div class="last-message">Зустрічаємось завтра о 15:00</div>
                     </div>
-                    
-                    <div class="message">
-                        <div class="message-avatar">AM</div>
-                        <div class="message-content">
-                            <div class="message-header">
-                                <div class="message-author">Ahmed Medi</div>
-                                <div class="message-time">9:24 AM</div>
-                            </div>
-                            <div class="message-text">This new landing page, What do you think?</div>
-                            <div class="message-images">
-                                <div class="message-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-                                <div class="message-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
-                                <div class="message-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
-                                <div class="message-image" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="message">
-                        <div class="message-avatar">MN</div>
-                        <div class="message-content">
-                            <div class="message-header">
-                                <div class="message-author">Milie Nose</div>
-                                <div class="message-time">9:30 AM</div>
-                            </div>
-                            <div class="voice-message">
-                                <div class="voice-waveform"></div>
-                                <div class="voice-duration">2:30</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="message my-message">
-                        <div class="message-content">
-                            <div class="message-header">
-                                <div class="message-time">9:36 AM</div>
-                                <div class="message-author">You</div>
-                            </div>
-                            <div class="message-text">Ok maszeeh!!</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="chat-input">
-                    <input type="text" class="input-box" placeholder="Your messages...">
-                    <div class="input-actions">
-                        <div class="input-icon">📎</div>
-                        <div class="input-icon">🎤</div>
-                        <div class="input-icon">➤</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Right Sidebar -->
-            <div class="right-sidebar">
-                <div class="right-sidebar-header">
-                    <h3 class="team-title">Design Team</h3>
-                    <p class="team-description">We're passionate about creating digital product design.</p>
-                </div>
-                
-                <div class="members-section">
-                    <div class="members-header">
-                        <div class="members-title">Member (12)</div>
-                        <div class="show-all">Show All</div>
-                    </div>
-                    <div class="member-list">
-                        <div class="member-item">
-                            <div class="member-avatar">PT</div>
-                            <div class="member-name">Putri Tanjak</div>
-                        </div>
-                        <div class="member-item">
-                            <div class="member-avatar">AM</div>
-                            <div class="member-name">Ahmed Medi</div>
-                        </div>
-                        <div class="member-item">
-                            <div class="member-avatar">MN</div>
-                            <div class="member-name">Milie Nose</div>
-                        </div>
-                        <div class="member-item">
-                            <div class="member-avatar">V</div>
-                            <div class="member-name">Vanessa</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="media-section">
-                    <div class="members-header">
-                        <div class="members-title">Media (29)</div>
-                        <div class="show-all">Show All</div>
-                    </div>
-                    <div class="media-grid">
-                        <div class="media-item" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-                        <div class="media-item" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
-                        <div class="media-item" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
-                        <div class="media-item" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);"></div>
-                        <div class="media-item" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"></div>
-                        <div class="media-item" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
-                            <div class="media-count">24+</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="files-section">
-                    <div class="members-header">
-                        <div class="members-title">File Type (29)</div>
-                    </div>
-                    <div class="file-type">
-                        <div class="file-type-left">
-                            <div class="file-icon"></div>
-                            <div class="file-info">
-                                <div class="file-name">Documents</div>
-                                <div class="file-count">126 file</div>
-                            </div>
-                        </div>
-                        <div>›</div>
-                    </div>
-                    <div class="file-type">
-                        <div class="file-type-left">
-                            <div class="file-icon"></div>
-                            <div class="file-info">
-                                <div class="file-name">Videos</div>
-                                <div class="file-count">12 file</div>
-                            </div>
-                        </div>
-                        <div>›</div>
-                    </div>
+                    <div class="chat-time">13:45</div>
                 </div>
             </div>
         </div>
+
+        <!-- Chat Room Panel -->
+        <div class="glass-panel chat-room-panel">
+            <div class="chat-header">
+                <div class="avatar">АМ</div>
+                <div class="chat-header-info">
+                    <h3 id="currentChatName">Анна Мельник</h3>
+                    <div class="online-status" id="onlineStatus">онлайн</div>
+                </div>
+            </div>
+            
+            <div class="messages-container" id="messagesContainer"></div>
+            
+            <div class="message-input-container">
+                <input type="text" class="message-input" id="messageInput" placeholder="Напишіть повідомлення...">
+                <button class="send-btn" id="sendBtn">▶</button>
+            </div>
+        </div>
+
+        <!-- User Info Panel -->
+        <div class="glass-panel user-info-panel">
+            <div class="user-profile">
+                <div class="user-avatar">ВІ</div>
+                <div class="user-name">Віктор Іваненко</div>
+                <div class="user-status">🟢 Онлайн</div>
+                <div class="user-email">viktor.ivanenko@email.com</div>
+            </div>
+
+            <div class="user-info-section">
+                <div class="section-title">Статистика</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">24</div>
+                        <div class="stat-label">Чатів</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">1.2k</div>
+                        <div class="stat-label">Повідомлень</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">Контактів</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Груп</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-info-section">
+                <div class="section-title">Інформація</div>
+                <div class="info-item">
+                    <span class="info-label">Телефон</span>
+                    <span class="info-value">+380 95 123 4567</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Місто</span>
+                    <span class="info-value">Київ</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Дата реєстрації</span>
+                    <span class="info-value">15.03.2023</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Останній вхід</span>
+                    <span class="info-value">Сьогодні, 14:35</span>
+                </div>
+            </div>
+
+            <div class="user-info-section">
+                <button class="settings-btn" onclick="showSettings()">
+                    ⚙️ Налаштування
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    🚪 Вихід
+                </button>
+            </div>
+        </div>
     </div>
+
+    <script src="js/lib/jquery-3.6.0.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
