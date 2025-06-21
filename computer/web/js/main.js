@@ -1,25 +1,4 @@
-const chats = {
-  1: {
-    name: "Анна Мельник",
-    avatar: "АМ",
-    status: "онлайн",
-    messages: [
-      { sender: "other", content: "Привіт! Як справи? Давно не бачились!", time: "14:30" },
-      { sender: "own", content: "Привіт! Все добре, дякую. А у тебе як?", time: "14:31" },
-      { sender: "other", content: "Теж все чудово! Хочеш зустрітись на каві цими вихідними?", time: "14:32" }
-    ]
-  },
-  2: {
-    name: "Петро Коваленко",
-    avatar: "ПК",
-    status: "онлайн",
-    messages: [
-      { sender: "other", content: "Привіт! Не забудь про нашу зустріч", time: "13:40" },
-      { sender: "own", content: "Звичайно! О котрій?", time: "13:42" },
-      { sender: "other", content: "Зустрічаємось завтра о 15:00", time: "13:45" }
-    ]
-  }
-};
+let chats = {};
 
 let currentChatId = 1;
 let settings = {
@@ -70,6 +49,13 @@ function selectChat(chatId) {
   $('.chat-item').removeClass('active');
   $(`[data-chat="${chatId}"]`).addClass('active');
   currentChatId = chatId;
+  
+  // Log the chat ID to console when clicked
+  const chat = chats[chatId];
+  if (chat) {
+    console.log('Selected chat ID:', chat.id);
+  }
+  
   loadChat(chatId);
 }
 
@@ -78,17 +64,23 @@ function loadChat(chatId) {
   if (!chat) return;
 
   $('#currentChatName').text(chat.name);
-  $('#onlineStatus').text(chat.status);
-  $('.chat-header .avatar').text(chat.avatar);
+  
+  // Since we don't have status in the new structure, we can use a default or empty
+  $('#onlineStatus').text(''); // or use a default status
+  $('.chat-header .avatar').attr('src', chat.avatar);
 
   const $container = $('#messagesContainer');
   $container.empty();
-  chat.messages.forEach(msg => addMessageToChat(msg, false));
+  
+  // Since messages are loaded separately now, we'll just clear the container
+  // Messages will be loaded via separate mechanism
   scrollToBottom();
 }
 
 function addMessageToChat(message, isNew = true) {
   const chat = chats[currentChatId];
+  if (!chat) return;
+  
   const $msgDiv = $('<div>', { class: `message ${message.sender === 'own' ? 'own' : ''}` });
 
   if (message.sender === 'own') {
@@ -121,7 +113,9 @@ function sendMessage() {
   const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
 
   const message = { sender: 'own', content: content, time: time };
-  chats[currentChatId].messages.push(message);
+  
+  // Since we don't store messages in the chat object anymore, 
+  // we'll just add it to the UI
   addMessageToChat(message, true);
 
   const $chatItem = $(`[data-chat="${currentChatId}"]`);
@@ -129,29 +123,6 @@ function sendMessage() {
   $chatItem.find('.chat-time').text(time);
 
   $input.val('');
-
-  if (settings.autoReplies) {
-    setTimeout(simulateResponse, settings.autoReplySpeed * 1000);
-  }
-}
-
-function simulateResponse() {
-  const responses = [
-    "Цікаво!", "Зрозуміло 👍", "Дякую за інформацію", "Добре, домовились",
-    "Гарна ідея!", "Можна детальніше?", "Звучить чудово!"
-  ];
-
-  const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-  const now = new Date();
-  const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-
-  const message = { sender: 'other', content: randomResponse, time: time };
-  chats[currentChatId].messages.push(message);
-  addMessageToChat(message, true);
-
-  const $chatItem = $(`[data-chat="${currentChatId}"]`);
-  $chatItem.find('.last-message').text(randomResponse);
-  $chatItem.find('.chat-time').text(time);
 }
 
 function scrollToBottom() {
@@ -254,13 +225,9 @@ function saveSettings() {
   closeSettings();
 }
 
-
 window.electronAPI.onMessage((data) => {
   if (data.type === "load_chats") {
     load_chats(data.chats);
+    selectChatByIndex(1);
   }
 });
-
-function load_chats(chats) {
-  console.log(chats)
-}
