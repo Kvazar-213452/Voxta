@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { config } from '../../config';
 import { encryption_msg, getPublicKey_server, decryption_app } from '../utils/crypto_func';
-import { getPublicKey, saveToken, saveUser, getUser, getToken } from '../models/storage_app';
+import { getPublicKey, saveToken, saveUser, getUser, getToken, deleteUser, deleteToken } from '../models/storage_app';
 import { IpcMainEvent } from 'electron';
 import { getMainWindow } from '../models/mainWindow';
+import { safeParseJSON } from '../utils/utils';
+import { check_app } from '../utils/start';
 
 export async function login(event: IpcMainEvent, msg: { [key: string]: any }): Promise<void> {
   try {
@@ -31,6 +33,7 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
       await saveUser(user_str);
 
       event.reply('reply', parsed);
+      await check_app();
     }
   } catch (error: any) {
     console.log(error);
@@ -39,14 +42,12 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
 }
 
 export async function login_to_jwt(): Promise<void> {
-  const mainWindow = getMainWindow();
-
   const PublicKey_server = await getPublicKey_server();
   const jwtToken = await getToken();
   const User = await getUser();
 
-  const first_parse = JSON.parse(User!);
-  const user_json = JSON.parse(first_parse);
+  const first_parse = safeParseJSON(User);
+  const user_json = safeParseJSON(first_parse);
 
   const dataToEncrypt = JSON.stringify({
     jwt: jwtToken,
@@ -66,10 +67,13 @@ export async function login_to_jwt(): Promise<void> {
 
     await saveUser(str_user);
     
-    if (mainWindow) {
-      mainWindow.webContents.once('did-finish-load', () => {
-        mainWindow.webContents.send('reply', "dddddd");
-      });
-    }
+    getMainWindow().webContents.once('did-finish-load', () => {
+      getMainWindow().webContents.send('reply', "dddddd");
+    });
+  } else {
+    await deleteUser();
+    await deleteToken();
+
+    getMainWindow().loadFile('web/login.html');
   }
 }

@@ -1,27 +1,36 @@
 import { getMainWindow } from '../models/mainWindow';
 import { getToken, deleteToken, getUser } from '../models/storage_app';
 import { generate_key } from './crypto_func';
+import { safeParseJSON } from './utils';
 import { login_to_jwt } from '../services/authentication';
+import { startSocketClient } from '../controller/messagesController';
+
+// let sss = 0;
 
 async function check_app() {
-  // await deleteToken();
+  // if (sss == 0) {
+  //   await deleteToken();
+  //   sss = 1
+  // }
+  
   const tokenExists = await getToken();
   const userExists = await getUser();
-  const mainWindow = getMainWindow();
 
-  const first_parse = JSON.parse(userExists!);
-  const user_json = JSON.parse(first_parse);
+  const first_parse = safeParseJSON(userExists);
+  const user_json = safeParseJSON(first_parse);
 
   if (!tokenExists || !user_json["_id"]) {
     await generate_key();
 
-    if (mainWindow) {
-      mainWindow.loadFile('web/login.html');
-    } else {
-      throw new Error('Main window is not initialized');
-    }
+    getMainWindow().loadFile('web/login.html');
   } else {
     login_to_jwt();
+
+    getMainWindow().loadFile('web/index.html');
+
+    getMainWindow().webContents.once('did-finish-load', () => {
+      startSocketClient().catch(console.error);
+    });
   }
 }
 

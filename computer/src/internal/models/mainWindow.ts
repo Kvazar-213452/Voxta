@@ -1,11 +1,14 @@
 import { BrowserWindow } from 'electron';
 
-let mainWindow: BrowserWindow | null = null;
+let _mainWindow: BrowserWindow | undefined;
 
 export function setMainWindow(window: BrowserWindow): void {
-  mainWindow = window;
+  _mainWindow = window;
 }
 
-export function getMainWindow(): BrowserWindow | null {
-  return mainWindow;
+export function getMainWindow(): BrowserWindow {
+  if (!_mainWindow) {
+    throw new Error('MainWindow error');
+  }
+  return _mainWindow;
 }

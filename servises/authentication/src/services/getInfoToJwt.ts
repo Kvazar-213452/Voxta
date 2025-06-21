@@ -19,7 +19,7 @@ interface TokensDB {
     [userId: string]: string[];
 }
 
-export const getInfoToJwtHandler = async (req: Request, res: Response): Promise<void> => {
+export async function getInfoToJwtHandler(req: Request, res: Response): Promise<void> {
     const { data, key } = req.body;
 
     const decrypted = await decryption_server(data);
@@ -28,7 +28,7 @@ export const getInfoToJwtHandler = async (req: Request, res: Response): Promise<
     const id = parsed.id;
 
     if (!jwt_token || !id) {
-        res.status(400).json({ error: 'Відсутній токен або id' });
+        res.json({code: 0, data: "no data"});
         return;
     }
 
@@ -36,7 +36,7 @@ export const getInfoToJwtHandler = async (req: Request, res: Response): Promise<
         const decoded = jwt.verify(jwt_token, SECRET_KEY) as { id_user: string };
 
         if (decoded.id_user !== id) {
-            res.status(401).json({ error: 'Токен не відповідає користувачу' });
+            res.json({code: 0, data: "error jwt no user"});
             return;
         }
 
@@ -45,7 +45,7 @@ export const getInfoToJwtHandler = async (req: Request, res: Response): Promise<
 
         const userTokens = tokensDB[id];
         if (!userTokens || !userTokens.includes(jwt_token)) {
-            res.status(401).json({ error: 'Токен не знайдено для користувача' });
+            res.json({code: 0, data: "error jwt no found"});
             return;
         }
 
@@ -54,7 +54,7 @@ export const getInfoToJwtHandler = async (req: Request, res: Response): Promise<
 
         const user = users.find(u => u._id === id);
         if (!user) {
-            res.status(404).json({ error: 'Користувача не знайдено' });
+            res.json({code: 0, data: "error user"});
             return;
         }
 
@@ -63,7 +63,6 @@ export const getInfoToJwtHandler = async (req: Request, res: Response): Promise<
 
         res.json({code: 1, data: json});
     } catch (e) {
-        console.error('Помилка сервера:', e);
-        res.status(401).json({ error: 'Невірний токен' });
+        res.json({code: 0, data: "error jwt"});
     }
 };
