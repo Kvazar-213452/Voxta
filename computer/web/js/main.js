@@ -255,6 +255,12 @@ function saveSettings() {
 }
 
 
-window.electronAPI.onMessage((msg) => {
-    console.log('Відповідь від сервера:', msg);
+window.electronAPI.onMessage((data) => {
+  if (data.type === "load_chats") {
+    load_chats(data.chats);
+  }
 });
+
+function load_chats(chats) {
+  console.log(chats)
+}

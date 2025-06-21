@@ -66,10 +66,6 @@ export async function login_to_jwt(): Promise<void> {
     const str_user = JSON.stringify(data_to_web);
 
     await saveUser(str_user);
-    
-    getMainWindow().webContents.once('did-finish-load', () => {
-      getMainWindow().webContents.send('reply', "dddddd");
-    });
   } else {
     await deleteUser();
     await deleteToken();

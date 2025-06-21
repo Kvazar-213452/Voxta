@@ -1,6 +1,9 @@
 import { Server, Socket } from 'socket.io';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { onGetInfoChats } from './socket_events/onGetInfoChats';
+import { onAuthenticate } from './socket_events/onAuthenticate';
+import { onDisconnect } from './socket_events/onDisconnect';
+import { onError } from './socket_events/onError';
 
 dotenv.config();
 
@@ -15,35 +18,16 @@ const io = new Server({
 });
 
 io.on('connection', (socket: Socket) => {
-  console.log('Користувач підключився:', socket.id);
+  console.log('connection user', socket.id);
 
-  socket.on('authenticate', (data: { token: string }) => {
-    console.log('Отримано authenticate:', data);
-
-    try {
-      const decoded = jwt.verify(data.token, SECRET_KEY) as { id_user: string };
-      console.log(`Користувач ${decoded.id_user} аутентифікований.`);
-      socket.data.userId = decoded.id_user;
-      socket.emit('authenticated', { status: 'ok', userId: decoded.id_user });
-    } catch (error) {
-      console.log('Невірний токен:', error);
-      socket.emit('authenticated', { status: 'error', message: 'Невірний токен' });
-      socket.disconnect();
-    }
-  });
-
-  socket.on('disconnect', () => {
-    console.log('Користувач відключився:', socket.id, 
-                socket.data.userId ? `(ID: ${socket.data.userId})` : '');
-  });
-
-  socket.on('error', (error) => {
-    console.error('Помилка сокета:', error);
-  });
+  onAuthenticate(socket, SECRET_KEY);
+  onGetInfoChats(socket, SECRET_KEY);
+  onDisconnect(socket);
+  onError(socket);
 });
 
 io.listen(PORT);
-console.log(`server msg start on ${PORT}`);
+console.log(`server start on ${PORT}`);
 
 io.engine.on('connection_error', (error) => {
   console.error('error Socket.IO:', error);

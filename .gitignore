@@ -5,3 +5,6 @@ target
 
 servises/authentication/private_key.pem
 servises/authentication/public_key.pem
+
+servises/message/private_key.pem
+servises/message/public_key.pem
