@@ -49,10 +49,15 @@ function selectChat(chatId) {
   $('.chat-item').removeClass('active');
   $(`[data-chat="${chatId}"]`).addClass('active');
   currentChatId = chatId;
-  
-  // Log the chat ID to console when clicked
+
   const chat = chats[chatId];
   if (chat) {
+    window.electronAPI.sendMessage({
+      type: "load_chat", 
+      id: chat.id, 
+      type_chat: chat.type
+    });
+    
     console.log('Selected chat ID:', chat.id);
   }
   
@@ -231,3 +236,6 @@ window.electronAPI.onMessage((data) => {
     selectChatByIndex(1);
   }
 });
+
+
+// selectChat

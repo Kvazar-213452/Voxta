@@ -2,10 +2,26 @@ import { io } from "socket.io-client";
 import { getToken, saveUser } from '../models/storage_app';
 import { getMainWindow } from '../models/mainWindow';
 
+let socketGlobal: any = null;
+
+function loadChatContent(chat_id: string, type_chat: string): void {
+  if (type_chat === "online") {
+    socketGlobal.emit("load_chat_content", { id: chat_id });
+  } else {
+    loadChatContentLocal(chat_id)
+  }
+}
+
+function loadChatContentLocal(chat_id: string): void {
+
+}
+
 async function startSocketClient(): Promise<void> {
-  console.log("start")
+  console.log("start");
 
   const socket = io("http://localhost:3001");
+  socketGlobal = socket;
+
   const token = await getToken();
   let user;
 
@@ -19,12 +35,12 @@ async function startSocketClient(): Promise<void> {
     user = data.user;
 
     await saveUser(JSON.stringify(data.user));
-    socket.emit("getInfoChats", {chats: user.chats});
+    socket.emit("getInfoChats", { chats: user.chats });
   });
 
   socket.on("chatsInfo", (data) => {
     if (data.code === 1) {
-      getMainWindow().webContents.send('reply', {type: "load_chats", chats: data.chats});
+      getMainWindow().webContents.send('reply', { type: "load_chats", chats: data.chats });
     }
   });
 
@@ -33,4 +49,4 @@ async function startSocketClient(): Promise<void> {
   });
 }
 
-export { startSocketClient };
+export { startSocketClient, loadChatContent };
