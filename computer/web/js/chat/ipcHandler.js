@@ -14,5 +14,9 @@ window.electronAPI.onMessage((data) => {
       let index = findChatIndex(chats, data.chat_id);
       highlightChatById(index);
     }
+  } else if (data.type === "theme_load") {
+    if (data.theme === "white") {
+        toggleTheme()
+    }
   }
 });

@@ -7,10 +7,6 @@ function toggleDarkMode() {
   toggleSetting('darkMode', event.target);
 }
 
-function toggleSoundNotifications() {
-  toggleSetting('soundNotifications', event.target);
-}
-
 function toggleBrowserNotifications() {
   toggleSetting('browserNotifications', event.target);
   if (settings.browserNotifications && 'Notification' in window) {
@@ -45,9 +41,20 @@ function resetSettings() {
   }
 }
 
+function openSuccessModal() {
+  $('#successModal').addClass('active');
+}
+
+function closeSuccessModal() {
+  $('#successModal').removeClass('active');
+}
+
 function saveSettings() {
-  alert('Налаштування збережено успішно!');
   closeSettings();
+
+  setTimeout(() => {
+      openSuccessModal();
+  }, 200);
 }
 
 function showSettings() {
@@ -64,10 +71,14 @@ function logout() {
   }
 }
 
-// new Notification("Привіт!", {
-//   body: "Це тестове сповіщення",
-//   icon: "icon.png"
-// });
+function toggleTheme() {
+  const root = document.documentElement;
 
+  if (root.getAttribute('data-theme') === 'light') {
+    root.removeAttribute('data-theme');
+  } else {
+    root.setAttribute('data-theme', 'light');
+  }
+}
 
 // changeFontSize

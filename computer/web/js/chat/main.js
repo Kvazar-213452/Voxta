@@ -1,6 +1,4 @@
 $(document).ready(function () {
-  loadChat(currentChatId);
-
   $('#chatsList').on('click', '.chat-item', function () {
     const chatId = parseInt($(this).data('chat'));
     selectChat(chatId);

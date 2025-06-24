@@ -29,6 +29,7 @@ async function check_app() {
     getMainWindow().loadFile('web/index.html');
 
     getMainWindow().webContents.once('did-finish-load', () => {
+      getMainWindow().webContents.send('reply', { type: "theme_load", theme: "dark" });
       startSocketClient().catch(console.error);
     });
   }

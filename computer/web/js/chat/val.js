@@ -8,8 +8,6 @@ let currentChatId = 1;
 
 let settings = {
   darkMode: true,
-  fontSize: 'medium',
-  soundNotifications: true,
   browserNotifications: true,
   doNotDisturb: false,
   language: 'uk',
