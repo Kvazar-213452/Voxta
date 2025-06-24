@@ -8,7 +8,7 @@ function loadChatContent(chat_id: string, type_chat: string): void {
   if (type_chat === "online") {
     socketGlobal.emit("load_chat_content", { chat_id: chat_id });
   } else {
-    loadChatContentLocal(chat_id)
+    loadChatContentLocal(chat_id);
   }
 }
 
@@ -55,7 +55,7 @@ async function startSocketClient(): Promise<void> {
   });
 
   socket.on("send_message_return", (data) => {
-    console.log(data);
+    getMainWindow().webContents.send('reply', { type: "came_chat_msg", message: data.message, chat_id: data.chat_id });
   });
 
   socket.on("load_chat_content_return", (data) => {
