@@ -64,7 +64,7 @@ body::before {
     flex-direction: column;
 }
 
-.user-info-panel {
+.chat-info-panel {
     flex: 0 0 300px;
     display: flex;
     flex-direction: column;
@@ -142,15 +142,12 @@ h2 {
     height: 45px;
     border-radius: 50%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
     margin-right: 15px;
 }
 
 .chat-info {
     flex: 1;
-    min-width: 0; /* Allow text truncation */
+    min-width: 0;
 }
 
 .chat-name {
@@ -364,19 +361,16 @@ h2 {
     background: rgba(88, 255, 127, 0.5);
 }
 
-.user-profile {
+.chat-profile {
     text-align: center;
     margin-bottom: 30px;
 }
 
-.user-avatar {
+.chat-avatar {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background: linear-gradient(45deg, var(--primary-color), #45d168);
     display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: 36px;
     font-weight: bold;
     color: #000;
@@ -384,26 +378,23 @@ h2 {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.user-name {
+.chat-name-info {
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 8px;
     color: var(--text-light);
 }
 
-.user-status {
+.chat-type-online {
     font-size: 14px;
     color: var(--primary-color);
     margin-bottom: 5px;
 }
 
-.user-email {
-    font-size: 12px;
+.user-email-offline {
+    font-size: 14px;
+    margin-bottom: 5px;
     color: var(--text-muted);
-}
-
-.user-info-section {
-    margin-bottom: 25px;
 }
 
 .section-title {
@@ -434,40 +425,6 @@ h2 {
 .info-value {
     font-size: 13px;
     font-weight: 500;
-}
-
-.settings-btn, .logout-btn {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 10px;
-    background: var(--input-bg);
-    border: 1px solid transparent;
-    border-radius: 12px;
-    color: var(--text-light);
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.settings-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: var(--primary-color);
-    transform: translateY(-1px);
-}
-
-.logout-btn {
-    background: rgba(255, 107, 107, 0.1);
-    border-color: rgba(255, 107, 107, 0.2);
-}
-
-.logout-btn:hover {
-    background: rgba(255, 107, 107, 0.2);
-    border-color: rgba(255, 107, 107, 0.4);
-    transform: translateY(-1px);
 }
 
 .stats-grid {
@@ -700,15 +657,6 @@ h2 {
     color: var(--text-light);
 }
 
-.color-picker {
-    width: 40px;
-    height: 30px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background: var(--primary-color);
-}
-
 .modal-footer {
     display: flex;
     gap: 15px;
@@ -754,7 +702,7 @@ h2 {
 }
 
 @media (max-width: 1200px) {
-    .user-info-panel {
+    .chat-info-panel {
         flex: 0 0 250px;
     }
     
@@ -776,7 +724,7 @@ h2 {
         flex: 0 0 180px;
     }
 
-    .user-info-panel {
+    .chat-info-panel {
         flex: 0 0 120px;
     }
     
@@ -784,10 +732,9 @@ h2 {
         padding: 15px;
     }
 
-    .user-avatar {
+    .chat-avatar {
         width: 60px;
         height: 60px;
-        font-size: 24px;
     }
 
     .section-title {
@@ -834,4 +781,68 @@ h2 {
         padding: 5px;
         gap: 5px;
     }
+}
+
+
+.title_name {
+    position: absolute;
+}
+
+.settings_btn {
+  position: absolute;
+  right: 30px;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #00000000;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.settings_btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--primary-color);;
+  transform: scale(1.05);
+}
+
+.settings_btn:hover::before  {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2358ff7f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='3'%3E%3C/circle%3E%3Cpath d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.07a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.settings_btn::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='3'%3E%3C/circle%3E%3Cpath d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.07a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z'%3E%3C/path%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transform: rotate(0deg);
+  transition: transform 0.3s ease;
+}
+
+.settings_btn:hover::before {
+  transform: rotate(30deg);
+  transition: transform 0.3s ease;
+}
+
+/* 
+color-picker
+*/
+
+.modal-btn-logout:hover {
+    background: #ff6b6b58;
+    border-color: #ff6b6b7c;
+}
+
+.modal-btn-logout {
+    color: #eee;
+    background: #ff6b6b31;
+    border: 1px solid #ff6b6b37;
 }

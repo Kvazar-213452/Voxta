@@ -8,15 +8,11 @@ let currentChatId = 1;
 
 let settings = {
   darkMode: true,
-  primaryColor: '#58ff7f',
   fontSize: 'medium',
   soundNotifications: true,
-  browserNotifications: false,
+  browserNotifications: true,
   doNotDisturb: false,
-  autoReplies: true,
-  autoReplySpeed: 2,
   language: 'uk',
   readReceipts: true,
   onlineStatus: true,
-  chatHistory: true
 };

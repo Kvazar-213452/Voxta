@@ -1,5 +1,3 @@
-
-
 $(document).ready(function () {
   loadChat(currentChatId);
 
@@ -29,6 +27,12 @@ $(document).ready(function () {
   });
 });
 
+
+
+
+
+
+
 function selectChat(chatId) {
   $('.chat-item').removeClass('active');
   $(`[data-chat="${chatId}"]`).addClass('active');
@@ -42,8 +46,6 @@ function selectChat(chatId) {
       id: chat.id, 
       type_chat: chat.type
     });
-    
-    console.log('Selected chat ID:', chat.id);
   }
 }
 
@@ -70,7 +72,7 @@ function loadChat(content, chat_id) {
   
   $('#currentChatName').text(chat.name);
   $('#onlineStatus').text('');
-  $('.chat-header .avatar').text(chat.avatar);
+  $('.chat-header .avatar').attr('src', chat.avatar);
   
   const $container = $('#messagesContainer');
   $container.empty();
@@ -108,7 +110,8 @@ function loadChat(content, chat_id) {
 
   $('.chat-item').removeClass('active');
   $(`[data-chat="${chatIndex}"]`).addClass('active');
-  
+
+  loadInfoPanel(chat);
   scrollToBottom();
 }
 
@@ -157,8 +160,6 @@ function sendMessage() {
     message: message
   });
 
-  console.log(chat_select);
-
   const $chatItem = $(`[data-chat="${currentChatId}"]`);
   $chatItem.find('.last-message').text(content);
   $chatItem.find('.chat-time').text(time);
@@ -171,14 +172,79 @@ function scrollToBottom() {
   $container.scrollTop($container.prop('scrollHeight'));
 }
 
+function updateChatsList() {
+  const $chatsList = $('#chatsList');
+  $chatsList.empty();
+  
+  $.each(chats, function(index, chat) {
+    const $chatItem = $(`
+      <div class="chat-item" data-chat="${index}">
+        <img class="avatar" src="${chat.avatar}">
+        <div class="chat-info">
+          <div class="chat-name">${chat.name}</div>
+          <div class="last-message">Click to load messages...</div>
+        </div>
+        <div class="chat-time"></div>
+      </div>
+    `);
+    $chatsList.append($chatItem);
+  });
+}
 
+function load_chats(chatsData) {
+  const chatList = {};
+  let index = 1;
 
-function aenrd() {
-    window.electronAPI.sendMessage({
-    type: "send_msg",
-    chat_type: "online",
-    chat_id: "test_f923rfff111",
-    message: "повна всинорва"
+  $.each(chatsData, function(chatId, chatData) {
+    chatList[index] = {
+      name: chatData.name,
+      avatar: chatData.avatar,
+      id: chatId,
+      type: chatData.type,
+      participants: chatData.participants
+    };
+    index++;
   });
 
+  chats = chatList;
+
+  updateChatsList();
 }
+
+
+// unix function
+function findChatIndex(chats, chat_id) {
+    for (const index in chats) {
+        if (chat_id.includes(chats[index].id)) {
+            return index;
+        }
+    }
+    return null;
+}
+
+function highlightChatById(val) {
+  const $container = $('.chats-list');
+  const $el = $container.find(`[data-chat="${val}"]`);
+
+  $container.find('[data-chat]').css("border", "none");
+
+  if ($el.length > 0) {
+    $el.css("border", "2px solid red");
+  } else {
+    console.warn("Елемент з таким data-chat не знайдено:", val);
+  }
+}
+
+
+
+if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+  reconnectSocketClient()
+}
+
+function reconnectSocketClient() {
+  window.electronAPI.sendMessage({
+    type: "reconnect_socket_client"
+  });
+}
+
+// user-info-panel

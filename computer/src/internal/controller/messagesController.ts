@@ -1,23 +1,32 @@
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import { getToken, saveUser } from '../models/storage_app';
 import { getMainWindow } from '../models/mainWindow';
 
-let socketGlobal: any = null;
+let socketGlobal: Socket | null = null;
 
 function loadChatContent(chat_id: string, type_chat: string): void {
-  if (type_chat === "online") {
-    socketGlobal.emit("load_chat_content", { chat_id: chat_id });
+  if (type_chat === "online" && socketGlobal?.connected) {
+    socketGlobal.emit("load_chat_content", { chat_id });
   } else {
     loadChatContentLocal(chat_id);
   }
 }
 
 function sendMessage(message: any, chat_id: string, chat_type: string): void {
-  socketGlobal.emit("send_message", { message: message, chat_id: chat_id });
+  socketGlobal?.emit("send_message", { message, chat_id });
 }
 
 function loadChatContentLocal(chat_id: string): void {
 
+}
+
+async function reconnectSocketClient(): Promise<void> {
+  if (socketGlobal) {
+    socketGlobal.removeAllListeners();
+    socketGlobal.disconnect();
+    socketGlobal = null;
+  }
+  await startSocketClient();
 }
 
 async function startSocketClient(): Promise<void> {
@@ -55,12 +64,25 @@ async function startSocketClient(): Promise<void> {
   });
 
   socket.on("send_message_return", (data) => {
-    getMainWindow().webContents.send('reply', { type: "came_chat_msg", message: data.message, chat_id: data.chat_id });
+    getMainWindow().webContents.send('reply', {
+      type: "came_chat_msg",
+      message: data.message,
+      chat_id: data.chat_id
+    });
   });
 
   socket.on("load_chat_content_return", (data) => {
-    getMainWindow().webContents.send('reply', { type: "load_chat_content", content: data.messages, chat_id: data.chat_id });
+    getMainWindow().webContents.send('reply', {
+      type: "load_chat_content",
+      content: data.messages,
+      chat_id: data.chat_id
+    });
   });
 }
 
-export { startSocketClient, loadChatContent, sendMessage };
+export {
+  startSocketClient,
+  reconnectSocketClient,
+  loadChatContent,
+  sendMessage
+};
