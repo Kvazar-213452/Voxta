@@ -1,6 +1,10 @@
 let chats = {};
+let user = {};
 
+let chat_select = null;
+let user_id = null;
 let currentChatId = 1;
+
 let settings = {
   darkMode: true,
   primaryColor: '#58ff7f',
@@ -51,6 +55,7 @@ function selectChat(chatId) {
   currentChatId = chatId;
 
   const chat = chats[chatId];
+
   if (chat) {
     window.electronAPI.sendMessage({
       type: "load_chat", 
@@ -60,25 +65,69 @@ function selectChat(chatId) {
     
     console.log('Selected chat ID:', chat.id);
   }
-  
-  loadChat(chatId);
 }
 
-function loadChat(chatId) {
-  const chat = chats[chatId];
-  if (!chat) return;
-
-  $('#currentChatName').text(chat.name);
+function loadChat(content, chat_id) {
+  let chat = null;
+  let chatIndex = null;
   
-  // Since we don't have status in the new structure, we can use a default or empty
-  $('#onlineStatus').text(''); // or use a default status
-  $('.chat-header .avatar').attr('src', chat.avatar);
-
+  for (let index in chats) {
+    if (chats[index].id === chat_id) {
+      chat = chats[index];
+      chatIndex = index;
+      break;
+    }
+  }
+  
+  if (!chat) {
+    console.log('Chat not found with ID:', chat_id);
+    return;
+  }
+  
+  chat_select = chat;
+  console.log('Found chat:', chat);
+  
+  $('#currentChatName').text(chat.name);
+  $('#onlineStatus').text('');
+  $('.chat-header .avatar').text(chat.avatar);
+  
   const $container = $('#messagesContainer');
   $container.empty();
   
-  // Since messages are loaded separately now, we'll just clear the container
-  // Messages will be loaded via separate mechanism
+  if (content && Array.isArray(content)) {
+    content.forEach(message => {
+      const isOwnMessage = message.sender === user_id;
+      const $msgDiv = $('<div>', { 
+        class: `message ${isOwnMessage ? 'own' : ''}` 
+      });
+      
+      if (isOwnMessage) {
+        $msgDiv.html(`
+          <div>
+            <div class="message-content">${message.content}</div>
+            <div class="message-time">${message.time}</div>
+          </div>
+        `);
+      } else {
+        $msgDiv.html(`
+          <div class="avatar">${chat.avatar}</div>
+          <div>
+            <div class="message-content">${message.content}</div>
+            <div class="message-time">${message.time}</div>
+            <div class="message-sender">Sender: ${message.sender}</div>
+          </div>
+        `);
+      }
+      
+      $container.append($msgDiv);
+    });
+  }
+  
+  currentChatId = parseInt(chatIndex);
+
+  $('.chat-item').removeClass('active');
+  $(`[data-chat="${chatIndex}"]`).addClass('active');
+  
   scrollToBottom();
 }
 
@@ -117,10 +166,17 @@ function sendMessage() {
   const now = new Date();
   const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
 
-  const message = { sender: 'own', content: content, time: time };
+  const message = { sender: user_id, content: content, time: time };
+
+  window.electronAPI.sendMessage({
+    type: "send_msg",
+    chat_type: chat_select.type,
+    chat_id: chat_select.id,
+    message: message
+  });
+
+  console.log(chat_select)
   
-  // Since we don't store messages in the chat object anymore, 
-  // we'll just add it to the UI
   addMessageToChat(message, true);
 
   const $chatItem = $(`[data-chat="${currentChatId}"]`);
@@ -230,12 +286,23 @@ function saveSettings() {
   closeSettings();
 }
 
+
+
+
+
+
 window.electronAPI.onMessage((data) => {
   if (data.type === "load_chats") {
     load_chats(data.chats);
     selectChatByIndex(1);
+  } else if (data.type === "load_chat_content") {
+    console.log("ddddd")
+    loadChat(data.content, data.chat_id);
+  } else if (data.type === "get_user") {
+    user = data.user;
+    user_id = data.user._id;
+    console.log(user_id)
   }
 });
 
-
-// selectChat
+// Found chat

@@ -1,6 +1,8 @@
 import { Server, Socket } from 'socket.io';
 import dotenv from 'dotenv';
 import { onGetInfoChats } from './socket_events/onGetInfoChats';
+import { onLoadChatContent } from './socket_events/onLoadChatContent';
+import { onsendMessage } from './socket_events/onsendMessage';
 import { onAuthenticate } from './socket_events/onAuthenticate';
 import { onDisconnect } from './socket_events/onDisconnect';
 import { onError } from './socket_events/onError';
@@ -22,6 +24,8 @@ io.on('connection', (socket: Socket) => {
 
   onAuthenticate(socket, SECRET_KEY);
   onGetInfoChats(socket, SECRET_KEY);
+  onLoadChatContent(socket, SECRET_KEY);
+  onsendMessage(socket, SECRET_KEY);
   onDisconnect(socket);
   onError(socket);
 });

@@ -150,6 +150,7 @@ h2 {
 
 .chat-info {
     flex: 1;
+    min-width: 0; /* Allow text truncation */
 }
 
 .chat-name {
@@ -196,12 +197,17 @@ h2 {
     overflow-y: auto;
     margin-bottom: 20px;
     padding-right: 10px;
+    /* Ensure proper scrolling behavior */
+    scroll-behavior: smooth;
 }
 
 .message {
     display: flex;
     margin-bottom: 15px;
     animation: fadeIn 0.3s ease;
+    /* Allow messages to wrap properly */
+    flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 .message.own {
@@ -209,33 +215,76 @@ h2 {
 }
 
 .message-content {
-    max-width: 70%;
+    /* Changed from max-width to flexible width management */
+    min-width: 100px;
+    max-width: min(70%, 400px); /* Responsive max-width */
     padding: 12px 18px;
     border-radius: 18px;
     font-size: 14px;
     line-height: 1.4;
+    /* Enable text wrapping */
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    /* Allow content to expand vertically */
+    white-space: pre-wrap;
+    /* Smooth text rendering */
+    text-rendering: optimizeLegibility;
+    /* Preserve formatting for code/preformatted text */
+    font-family: inherit;
 }
 
 .message:not(.own) .message-content {
     background: rgba(255, 255, 255, 0.1);
     margin-left: 10px;
+    /* Ensure proper alignment */
+    align-self: flex-start;
 }
 
 .message.own .message-content {
     background: rgba(88, 255, 127, 0.2);
     margin-right: 10px;
+    /* Ensure proper alignment */
+    align-self: flex-end;
+}
+
+/* Handle very long words or URLs */
+.message-content a,
+.message-content code {
+    word-break: break-all;
+    overflow-wrap: anywhere;
+}
+
+/* Style for code blocks within messages */
+.message-content pre {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin: 5px 0;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    white-space: pre;
 }
 
 .message-time {
     font-size: 11px;
     color: var(--text-muted);
     margin-top: 5px;
+    /* Ensure time displays properly with wrapped messages */
+    width: 100%;
+    text-align: right;
+}
+
+.message:not(.own) .message-time {
+    text-align: left;
 }
 
 .message-input-container {
     display: flex;
     gap: 10px;
-    align-items: center;
+    align-items: flex-end; /* Changed from center to flex-end for better textarea alignment */
+    min-height: 45px; /* Ensure consistent height */
 }
 
 .message-input {
@@ -248,6 +297,15 @@ h2 {
     font-size: 14px;
     outline: none;
     transition: all 0.3s ease;
+    /* Allow input to resize */
+    resize: none;
+    min-height: 45px;
+    max-height: 120px;
+    line-height: 1.4;
+    /* Enable text wrapping in input */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-family: inherit;
 }
 
 .message-input::placeholder {
@@ -257,6 +315,12 @@ h2 {
 .message-input:focus {
     background: rgba(255, 255, 255, 0.15);
     border-color: var(--primary-color);
+}
+
+/* Auto-resize textarea behavior */
+.message-input {
+    overflow-y: hidden;
+    box-sizing: border-box;
 }
 
 .send-btn {
@@ -272,6 +336,9 @@ h2 {
     justify-content: center;
     transition: all 0.3s ease;
     font-weight: bold;
+    /* Ensure button stays at bottom when input grows */
+    flex-shrink: 0;
+    align-self: flex-end;
 }
 
 .send-btn:hover {
@@ -690,6 +757,11 @@ h2 {
     .user-info-panel {
         flex: 0 0 250px;
     }
+    
+    /* Adjust message content for smaller screens */
+    .message-content {
+        max-width: min(75%, 350px);
+    }
 }
 
 @media (max-width: 768px) {
@@ -734,8 +806,32 @@ h2 {
     .modal-btn {
         width: 100%;
     }
+    
+    .message-content {
+        max-width: min(85%, 280px);
+        font-size: 13px;
+        padding: 10px 15px;
+    }
+    
+    .message-input {
+        font-size: 13px;
+        padding: 10px 15px;
+    }
 }
 
-/* 
-chat-item
-*/
+@media (max-width: 480px) {
+    .message-content {
+        max-width: 90%;
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+    
+    .glass-panel {
+        padding: 10px;
+    }
+    
+    .messenger-container {
+        padding: 5px;
+        gap: 5px;
+    }
+}

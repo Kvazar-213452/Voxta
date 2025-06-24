@@ -6,10 +6,14 @@ let socketGlobal: any = null;
 
 function loadChatContent(chat_id: string, type_chat: string): void {
   if (type_chat === "online") {
-    socketGlobal.emit("load_chat_content", { id: chat_id });
+    socketGlobal.emit("load_chat_content", { chat_id: chat_id });
   } else {
     loadChatContentLocal(chat_id)
   }
+}
+
+function sendMessage(message: any, chat_id: string, chat_type: string): void {
+  socketGlobal.emit("send_message", { message: message, chat_id: chat_id });
 }
 
 function loadChatContentLocal(chat_id: string): void {
@@ -34,6 +38,8 @@ async function startSocketClient(): Promise<void> {
     console.log("auf good:");
     user = data.user;
 
+    getMainWindow().webContents.send('reply', { type: "get_user", user: data.user });
+
     await saveUser(JSON.stringify(data.user));
     socket.emit("getInfoChats", { chats: user.chats });
   });
@@ -47,6 +53,14 @@ async function startSocketClient(): Promise<void> {
   socket.on("disconnect", () => {
     console.log("disconnect");
   });
+
+  socket.on("send_message_return", (data) => {
+    console.log(data);
+  });
+
+  socket.on("load_chat_content_return", (data) => {
+    getMainWindow().webContents.send('reply', { type: "load_chat_content", content: data.messages, chat_id: data.chat_id });
+  });
 }
 
-export { startSocketClient, loadChatContent };
+export { startSocketClient, loadChatContent, sendMessage };
