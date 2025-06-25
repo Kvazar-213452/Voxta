@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { config } from '../../config';
-import { encryption_msg, getPublicKey_server, decryption_app } from '../utils/crypto_func';
-import { getPublicKey, saveToken, saveUser, getUser, getToken, deleteUser, deleteToken } from '../models/storage_app';
+import { encryptionMsg, getPublicKeyServer, decryptionApp } from '../utils/cryptoFunc';
+import { getPublicKey, saveToken, getToken, deleteToken } from '../models/storageApp';
+import { saveUser, getUser, deleteUser } from '../models/sqliteStorage';
 import { IpcMainEvent } from 'electron';
 import { getMainWindow } from '../models/mainWindow';
 import { safeParseJSON } from '../utils/utils';
@@ -9,14 +10,14 @@ import { check_app } from '../utils/start';
 
 export async function login(event: IpcMainEvent, msg: { [key: string]: any }): Promise<void> {
   try {
-    const PublicKey_server = await getPublicKey_server();
+    const PublicKey_server = await getPublicKeyServer();
 
     const dataToEncrypt = JSON.stringify({
       name: msg["name"],
       password: msg["pasw"]
     });
 
-    const encryption_json = encryption_msg(PublicKey_server, dataToEncrypt);
+    const encryption_json = encryptionMsg(PublicKey_server, dataToEncrypt);
 
     const response = await axios.post(config.login_url, {
       data: encryption_json,
@@ -24,13 +25,11 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
     });
 
     if (response.data.code == 1) {
-      let data_to_web = await decryption_app(response.data.data);
+      let data_to_web = await decryptionApp(response.data.data);
       let parsed = JSON.parse(data_to_web);
       
-      const user_str = JSON.stringify(parsed["user"]);
-      
       await saveToken(parsed["token"]);
-      await saveUser(user_str);
+      saveUser(JSON.parse(parsed["user"]));
 
       event.reply('reply', parsed);
       await check_app();
@@ -41,10 +40,10 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
   }
 }
 
-export async function login_to_jwt(): Promise<void> {
-  const PublicKey_server = await getPublicKey_server();
+export async function loginToJwt(): Promise<void> {
+  const PublicKey_server = await getPublicKeyServer();
   const jwtToken = await getToken();
-  const User = await getUser();
+  const User = getUser();
 
   const first_parse = safeParseJSON(User);
   const user_json = safeParseJSON(first_parse);
@@ -54,7 +53,7 @@ export async function login_to_jwt(): Promise<void> {
     id: user_json["_id"]
   });
 
-  const encryption_json = encryption_msg(PublicKey_server, dataToEncrypt);
+  const encryption_json = encryptionMsg(PublicKey_server, dataToEncrypt);
 
   const response = await axios.post(config.get_info_to_jwt, {
     data: encryption_json,
@@ -62,13 +61,12 @@ export async function login_to_jwt(): Promise<void> {
   });
 
   if (response.data.code == 1) {
-    let data_to_web = await decryption_app(response.data.data);
-    const str_user = JSON.stringify(data_to_web);
+    let data = await decryptionApp(response.data.data);
 
-    await saveUser(str_user);
+    saveUser(JSON.parse(data));
   } else {
-    await deleteUser();
-    await deleteToken();
+    deleteUser();
+    deleteToken();
 
     getMainWindow().loadFile('web/login.html');
   }

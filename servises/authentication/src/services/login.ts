@@ -1,73 +1,68 @@
-import fs from 'fs/promises';
-import path from 'path';
-import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
-import { encryption_msg, decryption_server } from '../utils/crypto_func';
+import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { encryptionMsg, decryptionServer } from '../utils/cryptoFunc';
+import { getMongoClient } from '../models/getMongoClient';
 
 dotenv.config();
 
 const SECRET_KEY = process.env.SECRET_KEY ?? '';
 
-interface User {
-    _id: string;
-    name: string;
-    password: string;
-}
-
-interface TokensDB {
-    [userId: string]: string[];
-}
-
 export async function loginHandler(req: Request, res: Response): Promise<void> {
-    const { data, key } = req.body;
+  const { data, key } = req.body;
 
-    try {
-        const decrypted = await decryption_server(data);
-        const parsed = JSON.parse(decrypted);
-        const name = parsed.name;
-        const password = parsed.password;
+  try {
+    const decrypted = await decryptionServer(data);
+    const parsed = JSON.parse(decrypted);
+    const name = parsed.name;
+    const password = parsed.password;
 
-        const dbPath = path.join(__dirname, '../../db.json');
-        const tokensPath = path.join(__dirname, '../../tokens.json');
+    const client = await getMongoClient();
+    const db = client.db('users');
 
-        const dbData = await fs.readFile(dbPath, 'utf8');
-        const users: User[] = JSON.parse(dbData);
+    const collections = await db.listCollections().toArray();
+    let foundUser: any = null;
+    let userCollectionName: string | null = null;
 
-        const user = users.find(u => u.name === name && u.password === password);
+    for (const col of collections) {
+    const collection = db.collection<{ _id: string; [key: string]: any }>(col.name);
+    const config = await collection.findOne({ _id: 'config' });
 
-        if (!user) {
-            res.status(404).json({ code: 0, error: 'user_none' });
-            return;
-        }
-
-        const token = jwt.sign({ id_user: user._id }, SECRET_KEY, { expiresIn: '1d' });
-
-        let tokensDB: TokensDB = {};
-        try {
-            const tokensData = await fs.readFile(tokensPath, 'utf8');
-            tokensDB = JSON.parse(tokensData);
-        } catch {
-            tokensDB = {};
-        }
-
-        if (!tokensDB[user._id]) {
-            tokensDB[user._id] = [];
-        }
-        tokensDB[user._id].push(token);
-
-        await fs.writeFile(tokensPath, JSON.stringify(tokensDB, null, 2));
-
-        const dataToEncrypt = JSON.stringify({
-            token: token,
-            user: user
-        });
-
-        const json = encryption_msg(key, dataToEncrypt);
-
-        res.json({ code: 1, data: json });
-    } catch (err) {
-        console.error('Login Error:', err);
-        res.status(500).json({ code: 0, error: 'error_server' });
+    if (config && config.name === name && config.password === password) {
+        foundUser = { ...config };
+        userCollectionName = col.name;
+        break;
     }
+    }
+
+    if (!foundUser || !userCollectionName) {
+    res.status(404).json({ code: 0, error: 'user_none' });
+    return;
+    }
+
+    foundUser._id = foundUser.id;
+    delete foundUser.id;
+
+    const token = jwt.sign({ id_user: foundUser._id }, SECRET_KEY, { expiresIn: '1d' });
+
+    const jwtCollection = db.collection<{ _id: string; token: string[] }>(userCollectionName);
+    const jwtDoc = await jwtCollection.findOne({ _id: 'jwt' });
+
+    if (jwtDoc) {
+    await jwtCollection.updateOne({ _id: 'jwt' }, { $push: { token } });
+    } else {
+    await jwtCollection.insertOne({ _id: 'jwt', token: [token] });
+    }
+
+    const responsePayload = JSON.stringify({
+    token: token,
+    user: JSON.stringify(foundUser, null, 2)
+    });
+
+    const encrypted = encryptionMsg(key, responsePayload);
+    res.json({ code: 1, data: encrypted });
+  } catch (err) {
+    console.error('Login Error:', err);
+    res.status(500).json({ code: 0, error: 'error_server' });
+  }
 }

@@ -1,9 +1,10 @@
 import { getMainWindow } from '../models/mainWindow';
-import { getToken, deleteToken, getUser } from '../models/storage_app';
-import { generate_key } from './crypto_func';
+import { getToken, deleteToken } from '../models/storageApp';
+import { getUser } from '../models/sqliteStorage';
+import { generateKey } from './cryptoFunc';
 import { safeParseJSON } from './utils';
-import { login_to_jwt } from '../services/authentication';
-import { startSocketClient } from '../controller/messagesController';
+import { loginToJwt } from '../services/authentication';
+import { startSocketClient } from '../services/messagesController';
 
 // let sss = 0;
 
@@ -14,17 +15,15 @@ async function check_app() {
   // }
   
   const tokenExists = await getToken();
-  const userExists = await getUser();
+  const userExists = getUser();
+  const user = safeParseJSON(userExists);
 
-  const first_parse = safeParseJSON(userExists);
-  const user_json = safeParseJSON(first_parse);
-
-  if (!tokenExists || !user_json["_id"]) {
-    await generate_key();
+  if (!tokenExists || !user["_id"]) {
+    await generateKey();
 
     getMainWindow().loadFile('web/login.html');
   } else {
-    login_to_jwt();
+    loginToJwt();
 
     getMainWindow().loadFile('web/index.html');
 

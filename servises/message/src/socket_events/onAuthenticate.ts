@@ -14,11 +14,11 @@ export function onAuthenticate(socket: Socket, SECRET_KEY: string) {
 
       const client = await getMongoClient();
       const db: Db = client.db("users");
-      const collection = db.collection(decoded.id_user);
+      const collection = db.collection<any>(decoded.id_user);
 
-      const user = await collection.findOne({});
+      const userConfig = await collection.findOne({ _id: 'config' });
 
-      if (!user) {
+      if (!userConfig) {
         socket.emit("authenticated", { code: 0 });
         socket.disconnect();
         return;
@@ -26,7 +26,7 @@ export function onAuthenticate(socket: Socket, SECRET_KEY: string) {
 
       socket.emit("authenticated", {
         code: 1,
-        user: user
+        user: transformUserData(userConfig)
       });
 
     } catch (error) {
@@ -34,4 +34,15 @@ export function onAuthenticate(socket: Socket, SECRET_KEY: string) {
       socket.disconnect();
     }
   });
+}
+
+function transformUserData(user: Record<string, any>): Record<string, any> {
+  const newUser = { ...user };
+  
+  if ('id' in newUser) {
+    newUser._id = newUser.id;
+    delete newUser.id;
+  }
+  
+  return newUser;
 }

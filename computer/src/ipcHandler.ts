@@ -1,6 +1,6 @@
 import { ipcMain, IpcMainEvent } from 'electron';
 import { login } from './internal/services/authentication';
-import { loadChatContent, sendMessage, reconnectSocketClient } from './internal/controller/messagesController';
+import { loadChatContent, sendMessage, reconnectSocketClient } from './internal/services/messagesController';
 
 export function setupIPC(): void {
   ipcMain.on('message', async (event: IpcMainEvent, msg: any) => {

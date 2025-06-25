@@ -1,8 +1,11 @@
 import { io, Socket } from "socket.io-client";
-import { getToken, saveUser } from '../models/storage_app';
+import { getToken } from '../models/storageApp';
+import { saveUser } from '../models/sqliteStorage';
 import { getMainWindow } from '../models/mainWindow';
+import { loadChatContentLocal } from './events_msg/loadChatContentLocal';
 
 let socketGlobal: Socket | null = null;
+let user;
 
 function loadChatContent(chat_id: string, type_chat: string): void {
   if (type_chat === "online" && socketGlobal?.connected) {
@@ -14,10 +17,6 @@ function loadChatContent(chat_id: string, type_chat: string): void {
 
 function sendMessage(message: any, chat_id: string, chat_type: string): void {
   socketGlobal?.emit("send_message", { message, chat_id });
-}
-
-function loadChatContentLocal(chat_id: string): void {
-
 }
 
 async function reconnectSocketClient(): Promise<void> {
@@ -36,7 +35,6 @@ async function startSocketClient(): Promise<void> {
   socketGlobal = socket;
 
   const token = await getToken();
-  let user;
 
   socket.on("connect", () => {
     console.log("conect good:", socket.id);
@@ -48,8 +46,8 @@ async function startSocketClient(): Promise<void> {
     user = data.user;
 
     getMainWindow().webContents.send('reply', { type: "get_user", user: data.user });
+    saveUser(data.user);
 
-    await saveUser(JSON.stringify(data.user));
     socket.emit("getInfoChats", { chats: user.chats });
   });
 

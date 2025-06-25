@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import fs from 'fs';
 
-export function generate_key() {
+export function generateKey() {
     const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
     modulusLength: 4096,
     publicKeyEncoding: {
@@ -24,7 +24,7 @@ export interface EncryptedData {
 }
 
 // ======= encryption_msg ENDPOINT ===========
-export function encryption_msg(publicRsaKey: string, message: string): { key: string; data: string } {
+export function encryptionMsg(publicRsaKey: string, message: string): { key: string; data: string } {
   const aesKey = crypto.randomBytes(32);
 
   const iv = crypto.randomBytes(16);
@@ -45,7 +45,7 @@ export function encryption_msg(publicRsaKey: string, message: string): { key: st
 }
 
 // ======= encryption_server ENDPOINT ===========
-export async function encryption_server(message: string): Promise<EncryptedData> {
+export async function encryptionServer(message: string): Promise<EncryptedData> {
   const publicKey = fs.readFileSync('public_key.pem', 'utf8');
   if (!publicKey) {
     throw new Error('Public key is not available');
@@ -70,7 +70,7 @@ export async function encryption_server(message: string): Promise<EncryptedData>
 }
 
 // ======= decryption_server ENDPOINT ===========
-export async function decryption_server(encryptedData: EncryptedData): Promise<string> {
+export async function decryptionServer(encryptedData: EncryptedData): Promise<string> {
   const privateKey = fs.readFileSync('private_key.pem', 'utf8');
   if (!privateKey) {
     throw new Error('Private key is not available');

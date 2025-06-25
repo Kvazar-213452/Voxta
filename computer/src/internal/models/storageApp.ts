@@ -48,19 +48,3 @@ export async function deleteKeys(): Promise<void> {
   await keytar.deletePassword(SERVICE_NAME, `${ACCOUNT_PRIVATE_KEY}_1`);
   await keytar.deletePassword(SERVICE_NAME, `${ACCOUNT_PRIVATE_KEY}_2`);
 }
-
-// ==== User ====
-
-const TOKEN_USER = 'user_data';
-
-export async function saveUser(token: string): Promise<void> {
-  await keytar.setPassword(SERVICE_NAME, TOKEN_USER, token);
-}
-
-export async function getUser(): Promise<string | null> {
-  return await keytar.getPassword(SERVICE_NAME, TOKEN_USER);
-}
-
-export async function deleteUser(): Promise<void> {
-  await keytar.deletePassword(SERVICE_NAME, TOKEN_USER);
-}

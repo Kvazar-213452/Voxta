@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import axios from 'axios';
-import { saveKeys, getPublicKey, getPrivateKey } from '../models/storage_app';
+import { saveKeys, getPublicKey, getPrivateKey } from '../models/storageApp';
 import { config } from '../../config';
 
 export interface EncryptedData {
@@ -8,7 +8,7 @@ export interface EncryptedData {
   data: string;
 }
 
-export async function generate_key(): Promise<void> {
+export async function generateKey(): Promise<void> {
   const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
     modulusLength: 4096,
     publicKeyEncoding: {
@@ -24,13 +24,13 @@ export async function generate_key(): Promise<void> {
   await saveKeys(publicKey, privateKey);
 }
 
-export async function getPublicKey_server(): Promise<string> {
+export async function getPublicKeyServer(): Promise<string> {
   const response = await axios.get<string>("http://localhost:3000/public_key");
   return response.data;
 }
 
 // ======= encryption_msg ENDPOINT ===========
-export function encryption_msg(publicRsaKey: string, message: string): { key: string; data: string } {
+export function encryptionMsg(publicRsaKey: string, message: string): { key: string; data: string } {
   const aesKey = crypto.randomBytes(32);
 
   const iv = crypto.randomBytes(16);
@@ -51,7 +51,7 @@ export function encryption_msg(publicRsaKey: string, message: string): { key: st
 }
 
 // ======= encryption_app ENDPOINT ===========
-export async function encryption_app(message: string): Promise<EncryptedData> {
+export async function encryptionApp(message: string): Promise<EncryptedData> {
   const publicKey = await getPublicKey();
   if (!publicKey) {
     throw new Error('Public key is not available');
@@ -76,7 +76,7 @@ export async function encryption_app(message: string): Promise<EncryptedData> {
 }
 
 // ======= decryption_app ENDPOINT ===========
-export async function decryption_app(encryptedData: EncryptedData): Promise<string> {
+export async function decryptionApp(encryptedData: EncryptedData): Promise<string> {
   const privateKey = await getPrivateKey();
 
   if (!privateKey) {

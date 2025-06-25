@@ -4,6 +4,7 @@ import { setupIPC } from './ipcHandler';
 import { check_app } from './internal/utils/start';
 import { setMainWindow } from './internal/models/mainWindow';
 import { config } from './config';
+import { initDatabase } from './internal/models/sqlite';
 
 let mainWindow: BrowserWindow | null;
 
@@ -19,9 +20,6 @@ function createWindow(): BrowserWindow {
   });
 
   setMainWindow(mainWindow);
-
-  // Menu.setApplicationMenu(null);
-
   mainWindow.loadFile(path.join(__dirname, '../web/index.html'));
   mainWindow.webContents.openDevTools();
 
@@ -29,6 +27,7 @@ function createWindow(): BrowserWindow {
 }
 
 app.whenReady().then(() => {
+  initDatabase();
   mainWindow = createWindow();
   setupIPC();
   check_app();
