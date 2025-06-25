@@ -8,14 +8,14 @@ import { startSocketClient } from '../services/messagesController';
 
 // let sss = 0;
 
-async function check_app() {
+async function checkApp() {
   // if (sss == 0) {
   //   await deleteToken();
   //   sss = 1
   // }
   
   const tokenExists = await getToken();
-  const userExists = getUser();
+  const userExists = await getUser();
   const user = safeParseJSON(userExists);
 
   if (!tokenExists || !user["_id"]) {
@@ -34,4 +34,4 @@ async function check_app() {
   }
 }
 
-export { check_app };
+export { checkApp };

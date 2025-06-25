@@ -1,10 +1,11 @@
 import { app, BrowserWindow, Menu } from 'electron';
 import path from 'node:path';
 import { setupIPC } from './ipcHandler';
-import { check_app } from './internal/utils/start';
+import { checkApp } from './internal/utils/start';
 import { setMainWindow } from './internal/models/mainWindow';
 import { config } from './config';
 import { initDatabase } from './internal/models/sqlite';
+import { initKeyText } from './internal/models/storageApp';
 
 let mainWindow: BrowserWindow | null;
 
@@ -26,11 +27,12 @@ function createWindow(): BrowserWindow {
   return mainWindow;
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  await initKeyText();
   initDatabase();
   mainWindow = createWindow();
   setupIPC();
-  check_app();
+  checkApp();
 });
 
 app.on('window-all-closed', () => {

@@ -1,7 +1,4 @@
 export const config = {
-  // db
-  SERVICE_NAME: "voxta",
-
   login_url: "http://localhost:3000/login",
   get_info_to_jwt: "http://localhost:3000/get_info_to_jwt",
 
@@ -9,3 +6,14 @@ export const config = {
   width: 800,
   height: 600,
 };
+
+export const configCrypto = {
+  // text
+  ALGORITHM: 'aes-256-gcm' as const,
+  TAG_LENGTH: 16
+}
+
+export const configDB = {
+  // app db
+  SERVICE_NAME: "voxta",
+}

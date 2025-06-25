@@ -46,7 +46,7 @@ async function startSocketClient(): Promise<void> {
     user = data.user;
 
     getMainWindow().webContents.send('reply', { type: "get_user", user: data.user });
-    saveUser(data.user);
+    await saveUser(data.user);
 
     socket.emit("getInfoChats", { chats: user.chats });
   });

@@ -6,7 +6,7 @@ import { saveUser, getUser, deleteUser } from '../models/sqliteStorage';
 import { IpcMainEvent } from 'electron';
 import { getMainWindow } from '../models/mainWindow';
 import { safeParseJSON } from '../utils/utils';
-import { check_app } from '../utils/start';
+import { checkApp } from '../utils/start';
 
 export async function login(event: IpcMainEvent, msg: { [key: string]: any }): Promise<void> {
   try {
@@ -29,10 +29,10 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
       let parsed = JSON.parse(data_to_web);
       
       await saveToken(parsed["token"]);
-      saveUser(JSON.parse(parsed["user"]));
+      await saveUser(JSON.parse(parsed["user"]));
 
       event.reply('reply', parsed);
-      await check_app();
+      await checkApp();
     }
   } catch (error: any) {
     console.log(error);
@@ -43,7 +43,7 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
 export async function loginToJwt(): Promise<void> {
   const PublicKey_server = await getPublicKeyServer();
   const jwtToken = await getToken();
-  const User = getUser();
+  const User = await getUser();
 
   const first_parse = safeParseJSON(User);
   const user_json = safeParseJSON(first_parse);
@@ -63,10 +63,10 @@ export async function loginToJwt(): Promise<void> {
   if (response.data.code == 1) {
     let data = await decryptionApp(response.data.data);
 
-    saveUser(JSON.parse(data));
+    await saveUser(JSON.parse(data));
   } else {
     deleteUser();
-    deleteToken();
+    await deleteToken();
 
     getMainWindow().loadFile('web/login.html');
   }
