@@ -18,5 +18,9 @@ window.electronAPI.onMessage((data) => {
     if (data.theme === "white") {
         toggleTheme()
     }
+  } else if (data.type === "get_settings") {
+    settings = data.settings;
+updateSettingsUI()
+    console.log(settings)
   }
 });

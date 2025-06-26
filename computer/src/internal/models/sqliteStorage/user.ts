@@ -1,7 +1,5 @@
-import { getDatabase } from './sqlite';
-import { encryptText, decryptText } from '../utils/cryptoFunc';
-
-// ======= user =======
+import { getDatabase } from '../sqlite';
+import { encryptText, decryptText } from '../../utils/cryptoFunc';
 
 export async function saveUser(user: {
   _id: string;

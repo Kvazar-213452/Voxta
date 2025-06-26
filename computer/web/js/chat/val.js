@@ -6,7 +6,9 @@ let chat_select = null;
 let user_id = null;
 let currentChatId = 1;
 
-let settings = {
+let settings = {};
+
+const defaultSettings = {
   darkMode: true,
   browserNotifications: true,
   doNotDisturb: false,

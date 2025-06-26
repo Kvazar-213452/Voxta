@@ -31,14 +31,9 @@ function toggleOnlineStatus() {
 }
 
 function resetSettings() {
-  if (confirm('Ви впевнені, що хочете скинути всі налаштування?')) {
-    const defaults = [true, true, false, false, true, false, true, true, true];
-    $('.toggle-switch').each(function (i) {
-      $(this).toggleClass('active', defaults[i]);
-    });
-    $('select[onchange="changeLanguage(this.value)"]').val('uk');
-    alert('Налаштування скинуто до значень за замовчуванням');
-  }
+  settings = {...defaultSettings};
+
+  updateSettingsUI();
 }
 
 function openSuccessModal() {
@@ -51,6 +46,7 @@ function closeSuccessModal() {
 
 function saveSettings() {
   closeSettings();
+  saveSettingsApp();
 
   setTimeout(() => {
       openSuccessModal();
@@ -81,4 +77,27 @@ function toggleTheme() {
   }
 }
 
-// changeFontSize
+function getSettings() {
+  window.electronAPI.sendMessage({
+    type: "get_settings"
+  });
+}
+
+function saveSettingsApp() {
+  window.electronAPI.sendMessage({
+    type: "save_settings",
+    settings: settings
+  });
+}
+
+function updateSettingsUI() {
+  $('.toggle-switch[data-setting]').each(function () {
+    const key = $(this).attr('data-setting');
+    const isActive = !!settings[key];
+    $(this).toggleClass('active', isActive);
+  });
+
+  $('select[onchange="changeLanguage(this.value)"]').val(settings.language);
+}
+
+// 

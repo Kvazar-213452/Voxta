@@ -1,5 +1,6 @@
 import { ipcMain, IpcMainEvent } from 'electron';
 import { login } from './internal/services/authentication';
+import { returnSettings, saveSettingsFix } from './internal/services/settings';
 import { loadChatContent, sendMessage, reconnectSocketClient } from './internal/services/messagesController';
 
 export function setupIPC(): void {
@@ -12,6 +13,10 @@ export function setupIPC(): void {
       sendMessage(msg.message, msg.chat_id, msg.chat_type);
     } else if (msg.type === 'reconnect_socket_client') {
       await reconnectSocketClient();
-    }
+    } else if (msg.type === 'get_settings') {
+      returnSettings();
+    } else if (msg.type === 'save_settings') {
+      saveSettingsFix(msg.settings);
+    } 
   });
 }

@@ -19,6 +19,48 @@ export function initDatabase() {
       chats TEXT
     )
   `).run();
+
+  db.prepare(`
+    CREATE TABLE IF NOT EXISTS settings (
+      darkMode INTEGER DEFAULT 1,
+      browserNotifications INTEGER DEFAULT 1,
+      doNotDisturb INTEGER DEFAULT 0,
+      language TEXT DEFAULT 'uk',
+      readReceipts INTEGER DEFAULT 1,
+      onlineStatus INTEGER DEFAULT 1
+    )
+  `).run();
+
+  const rowCount = db.prepare(`SELECT COUNT(*) AS count FROM settings`).get().count;
+
+  if (rowCount === 0) {
+    const defaultSettings = {
+      darkMode: 1,
+      browserNotifications: 1,
+      doNotDisturb: 0,
+      language: 'uk',
+      readReceipts: 1,
+      onlineStatus: 1
+    };
+
+    db.prepare(`
+      INSERT INTO settings (
+        darkMode,
+        browserNotifications,
+        doNotDisturb,
+        language,
+        readReceipts,
+        onlineStatus
+      ) VALUES (
+        @darkMode,
+        @browserNotifications,
+        @doNotDisturb,
+        @language,
+        @readReceipts,
+        @onlineStatus
+      )
+    `).run(defaultSettings);
+  }
 }
 
 export function getDatabase(): Database.Database {
