@@ -6,7 +6,7 @@ import { saveUser, getUser, deleteUser } from '../models/sqliteStorage';
 import { IpcMainEvent } from 'electron';
 import { getMainWindow } from '../models/mainWindow';
 import { safeParseJSON } from '../utils/utils';
-import { checkApp } from '../utils/start';
+import { MainApp } from '../utils/start';
 
 export async function login(event: IpcMainEvent, msg: { [key: string]: any }): Promise<void> {
   try {
@@ -32,7 +32,7 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
       await saveUser(JSON.parse(parsed["user"]));
 
       event.reply('reply', parsed);
-      await checkApp();
+      await MainApp();
     }
   } catch (error: any) {
     console.log(error);

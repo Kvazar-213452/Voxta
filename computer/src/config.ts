@@ -9,8 +9,8 @@ export const config = {
 
 export const configCrypto = {
   // text
-  ALGORITHM: 'aes-256-gcm' as const,
-  TAG_LENGTH: 16
+  ALGORITHM: 'aes-256-cbc' as const,
+  IV_LENGTH: 16
 }
 
 export const configDB = {

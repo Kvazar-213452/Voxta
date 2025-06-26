@@ -48,8 +48,6 @@ export async function deleteKeys(): Promise<void> {
 }
 
 // ==== KEYS db ====
-const ACCOUNT_PASSWORD = 'encryption_password';
-const ACCOUNT_SALT = 'encryption_salt';
 const ACCOUNT_KEY_TEXT = 'encryption_key';
 
 export function generateEncryptionKey(): { password: string; salt: string } {
@@ -59,14 +57,11 @@ export function generateEncryptionKey(): { password: string; salt: string } {
 }
 
 export async function generateKeyTextAndSave(): Promise<void> {
-  console.log('Generating new encryption key and saving to keytar');
   const { password, salt } = generateEncryptionKey();
   const secretKeyBuffer = crypto.scryptSync(password, salt, 32);
   const secretKeyHex = secretKeyBuffer.toString('hex');
 
   await keytar.setPassword(configDB.SERVICE_NAME, ACCOUNT_KEY_TEXT, secretKeyHex);
-  await keytar.setPassword(configDB.SERVICE_NAME, ACCOUNT_PASSWORD, password);
-  await keytar.setPassword(configDB.SERVICE_NAME, ACCOUNT_SALT, salt);
 }
 
 export async function getKeyText(): Promise<Buffer> {
@@ -78,7 +73,7 @@ export async function getKeyText(): Promise<Buffer> {
 
 export async function initKeyText() {
   try {
-    let ffff = await getKeyText();
+    await getKeyText();
   } catch (err) {
     if (err instanceof Error && err.message.includes('not found')) {
       await generateKeyTextAndSave();

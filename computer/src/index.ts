@@ -1,7 +1,7 @@
 import { app, BrowserWindow, Menu } from 'electron';
 import path from 'node:path';
 import { setupIPC } from './ipcHandler';
-import { checkApp } from './internal/utils/start';
+import { MainApp } from './internal/utils/start';
 import { setMainWindow } from './internal/models/mainWindow';
 import { config } from './config';
 import { initDatabase } from './internal/models/sqlite';
@@ -21,6 +21,9 @@ function createWindow(): BrowserWindow {
   });
 
   setMainWindow(mainWindow);
+  
+  // Menu.setApplicationMenu(null);
+
   mainWindow.loadFile(path.join(__dirname, '../web/index.html'));
   mainWindow.webContents.openDevTools();
 
@@ -32,7 +35,7 @@ app.whenReady().then(async () => {
   initDatabase();
   mainWindow = createWindow();
   setupIPC();
-  checkApp();
+  MainApp();
 });
 
 app.on('window-all-closed', () => {

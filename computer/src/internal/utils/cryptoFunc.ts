@@ -100,14 +100,11 @@ export async function decryptionApp(encryptedData: EncryptedData): Promise<strin
 
 // ======= msg_bd_sql ENDPOINT ===========
 
-const ALGORITHM = 'aes-256-cbc';
-const IV_LENGTH = 16;
-
 export async function encryptText(text: string): Promise<string> {
   const SECRET_KEY = await getKeyText();
 
-  const iv = crypto.randomBytes(IV_LENGTH);
-  const cipher = crypto.createCipheriv(ALGORITHM, SECRET_KEY, iv);
+  const iv = crypto.randomBytes(configCrypto.IV_LENGTH);
+  const cipher = crypto.createCipheriv(configCrypto.ALGORITHM, SECRET_KEY, iv);
   const encrypted = Buffer.concat([cipher.update(text, 'utf8'), cipher.final()]);
   return iv.toString('hex') + ':' + encrypted.toString('hex');
 }
@@ -118,7 +115,7 @@ export async function decryptText(data: string): Promise<string> {
   const [ivHex, encryptedHex] = data.split(':');
   const iv = Buffer.from(ivHex, 'hex');
   const encryptedText = Buffer.from(encryptedHex, 'hex');
-  const decipher = crypto.createDecipheriv(ALGORITHM, SECRET_KEY, iv);
+  const decipher = crypto.createDecipheriv(configCrypto.ALGORITHM, SECRET_KEY, iv);
   const decrypted = Buffer.concat([decipher.update(encryptedText), decipher.final()]);
   return decrypted.toString('utf8');
 }

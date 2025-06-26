@@ -8,7 +8,7 @@ import { startSocketClient } from '../services/messagesController';
 
 // let sss = 0;
 
-async function checkApp() {
+async function MainApp() {
   // if (sss == 0) {
   //   await deleteToken();
   //   sss = 1
@@ -34,4 +34,4 @@ async function checkApp() {
   }
 }
 
-export { checkApp };
+export { MainApp };
