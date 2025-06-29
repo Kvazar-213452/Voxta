@@ -7,7 +7,7 @@
   "type": "commonjs",
   "scripts": {
     "build": "tsc",
-    "start": "tsc && electron-forge start",
+    "start": "python build_script/dist_del.py && tsc && electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
