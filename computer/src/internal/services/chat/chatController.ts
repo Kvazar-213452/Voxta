@@ -3,6 +3,7 @@ import { getToken } from '../../models/storageApp';
 import { saveUser } from '../../models/sqliteStorage/user';
 import { getMainWindow } from '../../models/mainWindow';
 import { loadChatContentLocal } from './events_msg/loadChatContentLocal';
+import { configServises } from '../../../config';
 
 let socketGlobal: Socket | null = null;
 let user;
@@ -31,7 +32,7 @@ async function reconnectSocketClient(): Promise<void> {
 async function startClientChat(): Promise<void> {
   console.log("start");
 
-  const socket = io("http://localhost:3001");
+  const socket = io(configServises.CHAT);
   socketGlobal = socket;
 
   const token = await getToken();

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { config } from '../../config';
+import { configServises } from '../../config';
 import { encryptionMsg, getPublicKeyServer, decryptionApp } from '../utils/cryptoFunc';
 import { getPublicKey, saveToken, getToken, deleteToken } from '../models/storageApp';
 import { saveUser, getUser, deleteUser } from '../models/sqliteStorage/user';
@@ -19,7 +19,7 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
 
     const encryption_json = encryptionMsg(PublicKey_server, dataToEncrypt);
 
-    const response = await axios.post(config.login_url, {
+    const response = await axios.post(`${configServises.AUTHENTICATION}/login`, {
       data: encryption_json,
       key: await getPublicKey()
     });
@@ -55,7 +55,7 @@ export async function loginToJwt(): Promise<void> {
 
   const encryption_json = encryptionMsg(PublicKey_server, dataToEncrypt);
 
-  const response = await axios.post(config.get_info_to_jwt, {
+  const response = await axios.post(`${configServises.AUTHENTICATION}/get_info_to_jwt`, {
     data: encryption_json,
     key: await getPublicKey()
   });

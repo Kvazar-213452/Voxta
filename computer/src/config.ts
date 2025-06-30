@@ -1,8 +1,4 @@
-export const config = {
-  login_url: "http://localhost:3000/login",
-  get_info_to_jwt: "http://localhost:3000/get_info_to_jwt",
-
-  // app
+export const configApp = {
   width: 800,
   height: 600,
 };
@@ -16,4 +12,10 @@ export const configCrypto = {
 export const configDB = {
   // app db
   SERVICE_NAME: "voxta",
+}
+
+export const configServises = {
+  AUTHENTICATION: "http://localhost:3000",
+  STATUS: "http://localhost:3002",
+  CHAT: "http://localhost:3001"
 }

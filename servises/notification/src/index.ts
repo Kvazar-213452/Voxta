@@ -4,7 +4,6 @@ import { send_gmail } from './head_com/gmail';
 
 type ResponseData = string | number | object;
 
-
 dotenv.config();
 
 const app: Express = express();

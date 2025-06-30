@@ -1,6 +1,7 @@
 import { io, Socket } from "socket.io-client";
 import { getToken } from '../../models/storageApp';
 import { getMainWindow } from '../../models/mainWindow';
+import { configServises } from '../../../config';
 
 let socketGlobal: Socket | null = null;
 
@@ -25,7 +26,7 @@ async function reconnectSocketClient(): Promise<void> {
 async function startClientStatus(): Promise<void> {
   console.log("start status");
 
-  const socket = io("http://localhost:3002");
+  const socket = io(configServises.STATUS);
   socketGlobal = socket;
 
   const token = await getToken();
