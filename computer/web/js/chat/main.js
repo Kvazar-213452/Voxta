@@ -247,4 +247,10 @@ function reconnectSocketClient() {
   });
 }
 
+
+    window.electronAPI.sendMessage({
+      type: "get_status_user", 
+      user_id: "1243243423",
+    });
+
 // user-info-panel

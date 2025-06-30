@@ -4,7 +4,8 @@ import { getUser } from '../models/sqliteStorage/user';
 import { generateKey } from './cryptoFunc';
 import { safeParseJSON } from './utils';
 import { loginToJwt } from '../services/authentication';
-import { startSocketClient } from '../services/messagesController';
+import { startClientChat } from '../services/chat/chatController';
+import { startClientStatus } from '../services/status/statusController';
 
 // let sss = 0;
 
@@ -29,7 +30,9 @@ async function MainApp() {
 
     getMainWindow().webContents.once('did-finish-load', () => {
       getMainWindow().webContents.send('reply', { type: "theme_load", theme: "dark" });
-      startSocketClient().catch(console.error);
+
+            startClientStatus().catch(console.error);
+      startClientChat().catch(console.error);
     });
   }
 }

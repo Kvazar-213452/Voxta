@@ -20,7 +20,9 @@ window.electronAPI.onMessage((data) => {
     }
   } else if (data.type === "get_settings") {
     settings = data.settings;
-updateSettingsUI()
+    updateSettingsUI()
     console.log(settings)
+  } else if (data.type === "get_status_user") {
+    console.log(data.status)
   }
 });

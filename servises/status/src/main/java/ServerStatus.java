@@ -3,125 +3,142 @@ package voxta.status;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.corundumstudio.socketio.*;
+import com.corundumstudio.socketio.listener.*;
 import io.github.cdimascio.dotenv.Dotenv;
-import org.java_websocket.WebSocket;
-import org.java_websocket.handshake.ClientHandshake;
-import org.java_websocket.server.WebSocketServer;
 
-import java.lang.reflect.Type;
-import java.net.InetSocketAddress;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
-public class ServerStatus extends WebSocketServer {
+public class ServerStatus {
 
-    private static final Map<String, WebSocket> onlineUsers = new ConcurrentHashMap<>();
-    private static final Map<WebSocket, String> socketToUser = new ConcurrentHashMap<>();
-
-    private static Algorithm jwtAlgorithm;
-    private static final Gson gson = new Gson();
-
-    public ServerStatus(int port, String secretKey) {
-        super(new InetSocketAddress(port));
-        jwtAlgorithm = Algorithm.HMAC256(secretKey);
-    }
-
-    @Override
-    public void onOpen(WebSocket conn, ClientHandshake handshake) {
-        System.out.println("Client connected: " + conn.getRemoteSocketAddress());
-    }
-
-    @Override
-    public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        String userId = socketToUser.get(conn);
-        if (userId != null) {
-            onlineUsers.remove(userId);
-            socketToUser.remove(conn);
-            System.out.println("User disconnected: " + userId);
-        }
-    }
-
-    @Override
-    public void onMessage(WebSocket conn, String message) {
-        try {
-            Type type = new TypeToken<Map<String, Object>>() {}.getType();
-            Map<String, Object> json = gson.fromJson(message, type);
-            String action = (String) json.get("type");
-
-            switch (action) {
-                case "authenticate" -> {
-                    String token = (String) json.get("token");
-                    try {
-                        DecodedJWT decoded = JWT.require(jwtAlgorithm).build().verify(token);
-                        String userId = decoded.getClaim("id_user").asString();
-
-                        onlineUsers.put(userId, conn);
-                        socketToUser.put(conn, userId);
-
-                        conn.send(jsonResponse("authenticated", Map.of(
-                            "code", 1,
-                            "status", "online"
-                        )));
-
-                        System.out.println("User authenticated: " + userId);
-                    } catch (Exception e) {
-                        conn.send(jsonResponse("authenticated", Map.of("code", 0)));
-                        conn.close();
-                    }
-                }
-
-                case "getStatus" -> {
-                    String token = (String) json.get("token");
-                    String checkId = (String) json.get("id_user");
-
-                    try {
-                        JWT.require(jwtAlgorithm).build().verify(token);
-
-                        String status = onlineUsers.containsKey(checkId) ? "online" : "offline";
-                        conn.send(jsonResponse("getStatus", Map.of(
-                            "code", 1,
-                            "status", status
-                        )));
-                    } catch (Exception e) {
-                        conn.send(jsonResponse("getStatus", Map.of(
-                            "code", 0,
-                            "error", "unauthorized"
-                        )));
-                    }
-                }
-
-                default -> conn.send(jsonResponse("error", Map.of("message", "Unknown message type")));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            conn.send(jsonResponse("error", Map.of("message", "Server error")));
-        }
-    }
-
-    @Override
-    public void onError(WebSocket conn, Exception ex) {
-        System.err.println("WebSocket error: " + ex.getMessage());
-    }
-
-    @Override
-    public void onStart() {
-        System.out.println("WebSocket server started");
-    }
-
-    private String jsonResponse(String type, Map<String, Object> data) {
-        data.put("type", type);
-        return gson.toJson(data);
-    }
+    private static final Map<String, SocketIOClient> onlineUsers = new ConcurrentHashMap<>();
+    private static final Map<SocketIOClient, String> clientTokens = new ConcurrentHashMap<>();
 
     public static void main(String[] args) {
-        Dotenv dotenv = Dotenv.load();
+        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
         String secret = dotenv.get("SECRET_KEY", "default-secret-key");
-        int port = Integer.parseInt(dotenv.get("PORT", "3000"));
+        int port = Integer.parseInt(dotenv.get("PORT", "3002"));
+        Algorithm jwtAlgorithm = Algorithm.HMAC256(secret);
 
-        ServerStatus server = new ServerStatus(port, secret);
+        Configuration config = new Configuration();
+        config.setHostname("0.0.0.0");
+        config.setPort(port);
+        config.setOrigin("*");
+        
+        config.setAllowCustomRequests(true);
+        config.setUpgradeTimeout(10000);
+        config.setPingTimeout(5000);
+        config.setPingInterval(25000);
+
+        SocketIOServer server = new SocketIOServer(config);
+
+        server.addConnectListener(client -> {
+            System.out.println("Client connected: " + client.getSessionId());
+        });
+
+        server.addEventListener("authenticate", Map.class, (client, data, ackSender) -> {
+            try {
+                String token = (String) data.get("token");
+                if (token == null || token.trim().isEmpty()) {
+                    throw new RuntimeException("Token is required");
+                }
+
+                DecodedJWT decoded = JWT.require(jwtAlgorithm).build().verify(token);
+                String userId = decoded.getClaim("id_user").asString();
+                
+                if (userId == null || userId.trim().isEmpty()) {
+                    throw new RuntimeException("Invalid user ID in token");
+                }
+
+                onlineUsers.entrySet().removeIf(entry -> entry.getValue().equals(client));
+                
+                onlineUsers.put(userId, client);
+                clientTokens.put(client, token);
+                client.set("userId", userId);
+                client.set("authenticated", true);
+
+                client.sendEvent("authenticated", Map.of(
+                    "code", 1,
+                    "status", "online"
+                ));
+                System.out.println("User authenticated: " + userId);
+                
+            } catch (Exception e) {
+                System.err.println("Authentication failed: " + e.getMessage());
+                client.sendEvent("authenticated", Map.of(
+                    "code", 0,
+                    "error", "authentication_failed"
+                ));
+                client.disconnect();
+            }
+        });
+
+        server.addEventListener("get_status", Map.class, (client, data, ackSender) -> {
+            try {
+                Boolean isAuth = client.get("authenticated");
+                if (isAuth == null || !isAuth) {
+                    client.sendEvent("get_status_return", Map.of(
+                        "code", 0,
+                        "error", "not_authenticated"
+                    ));
+                    return;
+                }
+
+                String checkId = (String) data.get("id_user");
+                if (checkId == null || checkId.trim().isEmpty()) {
+                    client.sendEvent("get_status_return", Map.of(
+                        "code", 0,
+                        "error", "invalid_user_id"
+                    ));
+                    return;
+                }
+
+                String token = clientTokens.get(client);
+                if (token != null) {
+                    try {
+                        JWT.require(jwtAlgorithm).build().verify(token);
+                    } catch (Exception e) {
+                        client.sendEvent("get_status_return", Map.of(
+                            "code", 0,
+                            "error", "token_expired"
+                        ));
+                        return;
+                    }
+                }
+
+                boolean isOnline = onlineUsers.containsKey(checkId);
+                client.sendEvent("get_status_return", Map.of(
+                    "code", 1,
+                    "status", isOnline ? "online" : "offline"
+                ));
+                
+                System.out.println("Status check for user " + checkId + ": " + (isOnline ? "online" : "offline"));
+                
+            } catch (Exception e) {
+                System.err.println("Error in get_status: " + e.getMessage());
+                client.sendEvent("get_status_return", Map.of(
+                    "code", 0,
+                    "error", "server_error"
+                ));
+            }
+        });
+
+        server.addDisconnectListener(client -> {
+            String userId = client.get("userId");
+            if (userId != null) {
+                onlineUsers.remove(userId);
+                clientTokens.remove(client);
+                System.out.println("User disconnected: " + userId);
+            }
+        });
+
         server.start();
+        System.out.println("Socket.IO server started on port " + port);
+        
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("Shutting down server...");
+            server.stop();
+        }));
     }
 }

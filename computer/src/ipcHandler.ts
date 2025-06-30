@@ -1,7 +1,8 @@
 import { ipcMain, IpcMainEvent } from 'electron';
 import { login } from './internal/services/authentication';
 import { returnSettings, saveSettingsFix } from './internal/services/settings';
-import { loadChatContent, sendMessage, reconnectSocketClient } from './internal/services/messagesController';
+import { loadChatContent, sendMessage, reconnectSocketClient } from './internal/services/chat/chatController';
+import { getStatus } from './internal/services/status/statusController';
 
 export function setupIPC(): void {
   ipcMain.on('message', async (event: IpcMainEvent, msg: any) => {
@@ -17,6 +18,8 @@ export function setupIPC(): void {
       returnSettings();
     } else if (msg.type === 'save_settings') {
       saveSettingsFix(msg.settings);
+    } else if (msg.type === 'get_status_user') {
+      getStatus(msg.user_id);
     } 
   });
 }

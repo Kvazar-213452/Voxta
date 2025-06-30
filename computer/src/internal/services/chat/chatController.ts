@@ -1,7 +1,7 @@
 import { io, Socket } from "socket.io-client";
-import { getToken } from '../models/storageApp';
-import { saveUser } from '../models/sqliteStorage/user';
-import { getMainWindow } from '../models/mainWindow';
+import { getToken } from '../../models/storageApp';
+import { saveUser } from '../../models/sqliteStorage/user';
+import { getMainWindow } from '../../models/mainWindow';
 import { loadChatContentLocal } from './events_msg/loadChatContentLocal';
 
 let socketGlobal: Socket | null = null;
@@ -25,10 +25,10 @@ async function reconnectSocketClient(): Promise<void> {
     socketGlobal.disconnect();
     socketGlobal = null;
   }
-  await startSocketClient();
+  await startClientChat();
 }
 
-async function startSocketClient(): Promise<void> {
+async function startClientChat(): Promise<void> {
   console.log("start");
 
   const socket = io("http://localhost:3001");
@@ -79,7 +79,7 @@ async function startSocketClient(): Promise<void> {
 }
 
 export {
-  startSocketClient,
+  startClientChat,
   reconnectSocketClient,
   loadChatContent,
   sendMessage
