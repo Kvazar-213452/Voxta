@@ -6,7 +6,7 @@ import { loadChatContentLocal } from './events_msg/loadChatContentLocal';
 import { configServises } from '../../../config';
 
 let socketGlobal: Socket | null = null;
-let user;
+let user: any;
 
 function loadChatContent(chat_id: string, type_chat: string): void {
   if (type_chat === "online" && socketGlobal?.connected) {
@@ -74,7 +74,8 @@ async function startClientChat(): Promise<void> {
     getMainWindow().webContents.send('reply', {
       type: "load_chat_content",
       content: data.messages,
-      chat_id: data.chat_id
+      chat_id: data.chat_id,
+      participants: data.participants
     });
   });
 }

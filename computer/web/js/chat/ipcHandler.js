@@ -23,7 +23,7 @@ window.electronAPI.onMessage((data) => {
     load_chats(data.chats);
     selectChat(1);
   } else if (data.type === "load_chat_content") {
-    loadChat(data.content, data.chat_id);
+    loadChat(data.content, data.chat_id, data.participants);
   } else if (data.type === "get_user") {
     user = data.user;
     user_id = data.user._id;

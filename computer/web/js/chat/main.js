@@ -49,7 +49,7 @@ function selectChat(chatId) {
   }
 }
 
-function loadChat(content, chat_id) {
+function loadChat(content, chat_id, participants) {
   let chat = null;
   let chatIndex = null;
   
@@ -93,11 +93,11 @@ function loadChat(content, chat_id) {
         `);
       } else {
         $msgDiv.html(`
-          <div class="avatar">${chat.avatar}</div>
+          <img class="avatar info_profile_bnt" src="${participants[message.sender]["avatar"]}">
           <div>
-            <div class="message-content">${message.content}</div>
-            <div class="message-time">${message.time}</div>
-            <div class="message-sender">Sender: ${message.sender}</div>
+            <div class="message-sender info_profile_bnt">${participants[message.sender]["name"]}</div>
+            <div class="message-content un_unser">${message.content}</div>
+            <div class="message-time un_unser_time">${message.time}</div>
           </div>
         `);
       }

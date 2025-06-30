@@ -196,13 +196,8 @@ h2 {
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  display: flex;
   margin-right: 15px;
   background: var(--primary-color);
-  color: #000;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
 }
 
 .chat-info {
@@ -325,11 +320,32 @@ h2 {
   }
 }
 
+.message-sender {
+  position: relative;
+}
+
 .message-time {
   font-size: 11px;
   color: var(--text-muted);
-  margin-top: 5px;
+  margin-top: 4px;
   width: 100%;
+  text-align: left;
+}
+
+.un_unser {
+  position: relative;
+  top: 5px;
+  left: -10px;
+}
+
+.un_unser_time {
+  position: relative;
+  left: -5px;
+  top: 5px;
+}
+
+.info_profile_bnt {
+  cursor: pointer;
 }
 
 // Message Input
@@ -421,15 +437,9 @@ h2 {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  display: flex;
-  font-size: 36px;
-  font-weight: bold;
-  color: #000;
   margin: 0 auto 15px;
   box-shadow: 0 4px 15px var(--shadow-color);
   background: var(--primary-color);
-  align-items: center;
-  justify-content: center;
 }
 
 .chat-name-info {
@@ -880,4 +890,7 @@ h2 {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
- 
+
+
+
+// avatar
