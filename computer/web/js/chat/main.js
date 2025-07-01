@@ -201,7 +201,8 @@ function load_chats(chatsData) {
       avatar: chatData.avatar,
       id: chatId,
       type: chatData.type,
-      participants: chatData.participants
+      participants: chatData.participants,
+      createdAt: chatData.createdAt
     };
     index++;
   });
@@ -215,14 +216,13 @@ function load_chats(chatsData) {
 
 
 function addChats(chatsData) {
-  console.log(chatsData);
-
   chats[index] = {
     name: chatsData.name,
     avatar: chatsData.avatar,
     id: chatsData.id,
     type: chatsData.type,
-    participants: chatsData.participants
+    participants: chatsData.participants,
+    createdAt: chatData.createdAt
   };
 
   updateChatsList();

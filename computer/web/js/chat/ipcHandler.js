@@ -45,5 +45,7 @@ window.electronAPI.onMessage((data) => {
     console.log(data.status);
   } else if (data.type === "create_new_chat_render") {
     addChats(JSON.parse(data.chat));
+  } else if (data.type === 'info_users') {
+    renderUserOnInfoPanel(data.users);
   }
 });

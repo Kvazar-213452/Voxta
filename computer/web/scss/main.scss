@@ -446,33 +446,6 @@ h2 {
   font-weight: 500;
 }
 
-// Stats Grid
-.stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.stat-item {
-  text-align: center;
-  padding: 15px;
-  background: var(--input-bg);
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-}
-
-.stat-number {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: var(--primary-color);
-}
-
-.stat-label {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
 // Modal Styles
 .modal-overlay {
   position: fixed;
@@ -553,6 +526,38 @@ h2 {
     background: var(--hover-bg);
     color: var(--text-light);
   }
-}        
+}
 
-// chat-type-name notification
+
+
+
+.user_info_div {
+  position: relative;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: var(--input-bg);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+
+  .logo {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .name {
+    font-size: 16px;
+    color: white;
+    word-break: break-word;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+
+// chat-item
