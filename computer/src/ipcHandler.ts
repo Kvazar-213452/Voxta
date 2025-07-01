@@ -1,5 +1,6 @@
 import { ipcMain, IpcMainEvent } from 'electron';
 import { login } from './internal/services/authentication';
+import { register } from './internal/services/registration';
 import { returnSettings, saveSettingsFix } from './internal/services/settings';
 import { loadChatContent, sendMessage, reconnectSocketClient } from './internal/services/chat/chatController';
 import { getStatus } from './internal/services/status/statusController';
@@ -31,6 +32,8 @@ export function setupIPC(): void {
       getInfoUsers(msg.users);
     } else if (msg.type === 'get_info_user') {
       getInfoUser(msg.id);
+    } else if (msg.type === 'register') {
+      register(msg);
     }
   });
 }

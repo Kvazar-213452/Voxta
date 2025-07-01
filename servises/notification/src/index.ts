@@ -26,6 +26,6 @@ app.post('/send_gmail', async (req: Request, res: Response<ResponseData>) => {
     }
 });
 
-app.listen(process.env.NOTIFICATION_SERVICE, () => {
-    console.log(`Server running on port ${process.env.NOTIFICATION_SERVICE}`);
+app.listen(process.env.PORT, () => {
+    console.log(`Server running on port ${process.env.PORT}`);
 });
