@@ -57,26 +57,34 @@ export function onCreateChat(socket: Socket, SECRET_KEY: string) {
 
       const chatCollection: Collection = db.collection(chatId);
 
-      await chatCollection.insertOne({
+      const dataConfig = {
         _id: "config" as any,
         type: data.chat.privacy,
         avatar: data.chat.avatar,
         participants: [socket.data.userId],
         name: data.chat.name,
         createdAt: new Date().toISOString()
-      });
+      }
 
-      socket.emit("chat_created", { code: 1, chatId });
+      await chatCollection.insertOne(dataConfig);
 
-      sendCreateChat(socket.data.userId, chatId);
+      const usersDb: Db = client.db("users");
+      const userCollection: Collection = usersDb.collection(socket.data.userId);
+
+      await userCollection.updateOne(
+        { _id: "config" as any },
+        { $addToSet: { chats: chatId } }
+      );
+
+      sendCreateChat(socket.data.userId, JSON.stringify(dataConfig));
 
     } catch (error: unknown) {
+      console.log("CONFIG DOC:", error);
       let errorMessage = "Unknown error";
       if (error instanceof Error) {
         errorMessage = error.message;
       }
       socket.emit("chat_created", { code: 0, error: errorMessage });
-      socket.disconnect();
     }
   });
 }

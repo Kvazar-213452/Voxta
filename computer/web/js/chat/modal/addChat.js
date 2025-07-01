@@ -17,7 +17,7 @@ function createChat(chat) {
 // moadl window
 $(document).ready(function() {
     let selectedPrivacy = 'offline';
-    let avatarBase64 = null; // збережемо base64 сюди
+    let avatarBase64 = null;
 
     $('.privacy-option').on('click', function() {
         $('.privacy-option').removeClass('selected');
@@ -40,7 +40,7 @@ $(document).ready(function() {
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                avatarBase64 = e.target.result; // Збережемо base64 сюди
+                avatarBase64 = e.target.result;
                 preview.attr('src', avatarBase64).addClass('show');
                 label.addClass('has-file').html(`
                     <span>✅</span>
@@ -77,13 +77,12 @@ $(document).ready(function() {
             name: chatName,
             description: chatDescription,
             privacy: selectedPrivacy,
-            avatar: avatarBase64,  // тут base64 аватара
+            avatar: avatarBase64,
             createdAt: new Date().toISOString()
         };
 
         createChat(newChat);
 
-        // Скидаємо форму
         $('#createChatForm')[0].reset();
         $('.privacy-option').removeClass('selected');
         $('[data-privacy="offline"]').addClass('selected');

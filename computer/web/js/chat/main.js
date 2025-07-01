@@ -1,10 +1,10 @@
 $(document).ready(function () {
   getSettings();
   
-  // $('#chatsList').on('click', '.chat-item', function () {
-  //   const chatId = parseInt($(this).data('chat'));
-  //   selectChat(chatId);
-  // });
+  $('#chatsList').on('click', '.chat-item', function () {
+    const chatId = parseInt($(this).data('chat'));
+    selectChat(chatId);
+  });
 
   $('#sendBtn').click(sendMessage);
   $('#messageInput').keypress(function (e) {
@@ -29,7 +29,7 @@ $(document).ready(function () {
 
 
 
-
+let index = 1;
 
 
 
@@ -192,8 +192,8 @@ function updateChatsList() {
 }
 
 function load_chats(chatsData) {
+  console.log(chatsData)
   const chatList = {};
-  let index = 1;
 
   $.each(chatsData, function(chatId, chatData) {
     chatList[index] = {
@@ -210,6 +210,24 @@ function load_chats(chatsData) {
 
   updateChatsList();
 }
+
+
+
+
+function addChats(chatsData) {
+  console.log(chatsData);
+
+  chats[index] = {
+    name: chatsData.name,
+    avatar: chatsData.avatar,
+    id: chatsData.id,
+    type: chatsData.type,
+    participants: chatsData.participants
+  };
+
+  updateChatsList();
+}
+
 
 
 // unix function

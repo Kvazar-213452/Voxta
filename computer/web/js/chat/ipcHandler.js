@@ -36,13 +36,14 @@ window.electronAPI.onMessage((data) => {
     }
   } else if (data.type === "theme_load") {
     if (data.theme === "white") {
-        toggleTheme()
+        toggleTheme();
     }
   } else if (data.type === "get_settings") {
     settings = data.settings;
-    updateSettingsUI()
-    console.log(settings)
+    updateSettingsUI();
   } else if (data.type === "get_status_user") {
-    console.log(data.status)
+    console.log(data.status);
+  } else if (data.type === "create_new_chat_render") {
+    addChats(JSON.parse(data.chat));
   }
 });

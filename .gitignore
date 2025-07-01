@@ -8,3 +8,5 @@ servises/authentication/public_key.pem
 
 servises/chat/private_key.pem
 servises/chat/public_key.pem
+
+servises/data/data

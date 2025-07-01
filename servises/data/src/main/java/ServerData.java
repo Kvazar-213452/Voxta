@@ -6,8 +6,9 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.Base64;
 import java.util.Map;
 import java.util.UUID;
 
@@ -39,8 +40,7 @@ import java.util.UUID;
 public class ServerData {
     public static void main(String[] args) {
         Dotenv dotenv = Dotenv.load();
-
-        int port = Integer.parseInt(dotenv.get("DATA_SERVICE"));
+        int port = Integer.parseInt(dotenv.get("PORT"));
 
         Javalin app = Javalin.create(config -> {
             config.staticFiles.add(staticFiles -> {
@@ -81,14 +81,19 @@ public class ServerData {
             String uniqueFileName = UUID.randomUUID().toString() + extension;
             Path filePath = Path.of("data/avatars", uniqueFileName);
 
-            try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
-                fos.write(uploadedFile.content().readAllBytes());
+            try (InputStream inputStream = uploadedFile.content();
+                 FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
+
+                fos.write(inputStream.readAllBytes());
+
+                String avatarUrl = ctx.scheme() + "://" + ctx.host() + "/avatars/" + uniqueFileName;
+
+                ctx.contentType("application/json");
+                ctx.json(Map.of("url", avatarUrl));
+
+            } catch (IOException e) {
+                ctx.status(500).result("Failed to save avatar: " + e.getMessage());
             }
-
-            String avatarUrl = ctx.scheme() + "://" + ctx.host() + "/avatars/" + uniqueFileName;
-
-            ctx.json(Map.of("url", avatarUrl));
         });
-
     }
 }

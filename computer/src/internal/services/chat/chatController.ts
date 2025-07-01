@@ -62,15 +62,18 @@ async function startClientChat(): Promise<void> {
     }
   });
 
-  socket.on("disconnect", () => {
-    console.log("disconnect");
-  });
-
   socket.on("send_message_return", (data) => {
     getMainWindow().webContents.send('reply', {
       type: "came_chat_msg",
       message: data.message,
       chat_id: data.chat_id
+    });
+  });
+
+  socket.on("create_new_chat", (data) => {
+    getMainWindow().webContents.send('reply', {
+      type: "create_new_chat_render",
+      chat: data.chat
     });
   });
 
@@ -81,6 +84,10 @@ async function startClientChat(): Promise<void> {
       chat_id: data.chat_id,
       participants: data.participants
     });
+  });
+
+  socket.on("disconnect", () => {
+    console.log("disconnect");
   });
 }
 
