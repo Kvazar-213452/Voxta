@@ -1,10 +1,10 @@
 $(document).ready(function () {
   getSettings();
   
-  $('#chatsList').on('click', '.chat-item', function () {
-    const chatId = parseInt($(this).data('chat'));
-    selectChat(chatId);
-  });
+  // $('#chatsList').on('click', '.chat-item', function () {
+  //   const chatId = parseInt($(this).data('chat'));
+  //   selectChat(chatId);
+  // });
 
   $('#sendBtn').click(sendMessage);
   $('#messageInput').keypress(function (e) {
@@ -248,9 +248,9 @@ function reconnectSocketClient() {
 }
 
 
-    window.electronAPI.sendMessage({
-      type: "get_status_user", 
-      user_id: "1243243423",
-    });
+    // window.electronAPI.sendMessage({
+    //   type: "get_status_user", 
+    //   user_id: "1243243423",
+    // });
 
 // user-info-panel

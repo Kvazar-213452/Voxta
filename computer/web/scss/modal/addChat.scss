@@ -1,0 +1,174 @@
+.chat-form-group {
+  margin-bottom: 25px;
+}
+
+.chat-form-label {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--text-light);
+}
+
+.chat-form-input {
+  width: 100%;
+  padding: 15px;
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--text-light);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.chat-form-input:focus {
+  background: var(--hover-bg);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(88, 255, 127, 0.1);
+}
+
+.chat-form-textarea {
+  min-height: 80px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.file-input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.file-input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.file-input-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px;
+  background: var(--input-bg);
+  border: 2px dashed var(--border-color);
+  border-radius: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 60px;
+}
+
+.file-input-label:hover {
+  background: var(--hover-bg);
+  border-color: var(--primary-color);
+}
+
+.file-input-label.has-file {
+  background: var(--active-bg);
+  border-color: var(--primary-color);
+  color: var(--text-light);
+}
+
+.privacy-options {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.privacy-option {
+  flex: 1;
+  padding: 12px;
+  background: var(--input-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.privacy-option:hover {
+  background: var(--hover-bg);
+}
+
+.privacy-option.selected {
+  background: var(--active-bg);
+  border-color: var(--primary-color);
+}
+
+.privacy-icon {
+  font-size: 18px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.privacy-name {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.form-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 5px;
+}
+
+.modal-footer {
+  padding: 16px 24px 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.modal-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.modal-btn-secondary {
+  background: var(--input-bg);
+  color: var(--text-light);
+}
+
+.modal-btn-secondary:hover {
+  background: var(--hover-bg);
+}
+
+.modal-btn-primary {
+  background: var(--primary-color);
+  color: #000;
+  opacity: 0.6;
+}
+
+.modal-btn-primary:not(:disabled):hover {
+  background: #45cc6a;
+  transform: translateY(-1px);
+}
+
+.modal-btn-primary:not(:disabled) {
+  opacity: 1;
+}
+
+.avatar-preview {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 10px auto;
+  background: var(--input-bg);
+  border: 2px solid var(--border-color);
+  display: none;
+  object-fit: cover;
+}
+
+.avatar-preview.show {
+  display: block;
+}

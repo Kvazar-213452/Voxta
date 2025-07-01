@@ -24,7 +24,7 @@ function createWindow(): BrowserWindow {
   
   // Menu.setApplicationMenu(null);
 
-  mainWindow.loadFile(path.join(__dirname, '../web/index.html'));
+  mainWindow.loadFile(path.join(__dirname, '../web/load.html'));
   mainWindow.webContents.openDevTools();
 
   return mainWindow;

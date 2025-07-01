@@ -100,4 +100,4 @@ function updateSettingsUI() {
   $('select[onchange="changeLanguage(this.value)"]').val(settings.language);
 }
 
-// 
+// showSettings

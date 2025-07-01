@@ -6,6 +6,8 @@
     <title>Voxta</title>
     <link rel="stylesheet" href="dist/css/global.css">
     <link rel="stylesheet" href="dist/css/main.css">
+    <link rel="stylesheet" href="dist/css/modal/settings.css">
+    <link rel="stylesheet" href="dist/css/modal/addChat.css">
 </head>
 <body>
     <div class="messenger-container">
@@ -13,6 +15,7 @@
         <div class="glass-panel chat-list-panel">
             <h2 class="title_name">Voxta</h2>
             <div onclick="showSettings()" class="settings_btn"></div>
+            <div onclick="showAddChat()" class="plus_btn"></div>
             <br><br><br>
             <div class="search-box"><input type="text" id="searchInput" placeholder="Пошук чатів..."></div>
             <div class="chats-list" id="chatsList"></div>
@@ -89,116 +92,17 @@
         </div>
     </div>
 
-    <!-- Settings Modal -->
-    <div class="modal-overlay" id="settingsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">⚙️ Налаштування</h2>
-                <button class="modal-close" onclick="closeSettings()">&times;</button>
-            </div>
-
-            <div class="settings-group">
-            <div class="settings-group-title">🎨 Зовнішній вигляд</div>
-            <div class="settings-item">
-                <div class="settings-label">
-                <div class="settings-label-text">Темна тема</div>
-                <div class="settings-label-desc">Використовувати темну тему оформлення</div>
-                </div>
-                <div class="settings-control">
-                <div class="toggle-switch" onclick="toggleDarkMode()" data-setting="darkMode"></div>
-                </div>
-            </div>
-            </div>
-
-            <div class="settings-group">
-            <div class="settings-group-title">🔔 Сповіщення</div>
-
-            <div class="settings-item">
-                <div class="settings-label">
-                <div class="settings-label-text">Браузерні сповіщення</div>
-                <div class="settings-label-desc">Показувати сповіщення в браузері</div>
-                </div>
-                <div class="settings-control">
-                <div class="toggle-switch" onclick="toggleBrowserNotifications()" data-setting="browserNotifications"></div>
-                </div>
-            </div>
-
-            <div class="settings-item">
-                <div class="settings-label">
-                <div class="settings-label-text">Режим "Не турбувати"</div>
-                <div class="settings-label-desc">Вимкнути всі сповіщення</div>
-                </div>
-                <div class="settings-control">
-                <div class="toggle-switch" onclick="toggleDoNotDisturb()" data-setting="doNotDisturb"></div>
-                </div>
-            </div>
-            </div>
-
-            <div class="settings-group">
-            <div class="settings-group-title">💬 Чат</div>
-
-            <div class="settings-item">
-                <div class="settings-label">
-                <div class="settings-label-text">Мова інтерфейсу</div>
-                <div class="settings-label-desc">Вибрати мову додатка</div>
-                </div>
-                <div class="settings-control">
-                <select class="settings-select" onchange="changeLanguage(this.value)">
-                    <option value="uk" selected>Українська</option>
-                    <option value="en">English</option>
-                </select>
-                </div>
-            </div>
-            </div>
-
-            <div class="settings-group">
-            <div class="settings-group-title">🔒 Приватність</div>
-
-            <div class="settings-item">
-                <div class="settings-label">
-                <div class="settings-label-text">Читання повідомлень</div>
-                <div class="settings-label-desc">Показувати коли повідомлення прочитане</div>
-                </div>
-                <div class="settings-control">
-                <div class="toggle-switch" onclick="toggleReadReceipts()" data-setting="readReceipts"></div>
-                </div>
-            </div>
-
-            <div class="settings-item">
-                <div class="settings-label">
-                <div class="settings-label-text">Статус онлайн</div>
-                <div class="settings-label-desc">Показувати коли ви онлайн</div>
-                </div>
-                <div class="settings-control">
-                <div class="toggle-switch" onclick="toggleOnlineStatus()" data-setting="onlineStatus"></div>
-                </div>
-            </div>
-            </div>
-
-            <div class="modal-footer">
-            <button class="modal-btn modal-btn-logout" onclick="logout()">Вихід</button>
-            <button class="modal-btn modal-btn-secondary" onclick="resetSettings()">Скинути</button>
-            <button class="modal-btn modal-btn-primary" onclick="saveSettings()">Зберегти</button>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="modal-overlay success-modal" id="successModal">
-        <div class="modal-content">
-            <div class="success-icon"></div>
-            <h2 class="success-title">Hello!</h2>
-            <p class="success-message">Налаштування збережено успішно!<br>Всі зміни застосовано.</p>
-            <button class="success-btn" onclick="closeSuccessModal()">Готово</button>
-        </div>
-    </div>
+    <div id="settings_div_m"></div>
+    <div id="addChat_div_m"></div>
 
     <script src="js/lib/jquery-3.6.0.min.js"></script>
+    <script src="js/chat/template.js"></script>
     <script src="js/chat/val.js"></script>
     <script src="js/chat/outside.js"></script>
     <script src="js/chat/infoPanel.js"></script>
     <script src="js/chat/ipcHandler.js"></script>
-    <script src="js/chat/settings.js"></script>
+    <script src="js/chat/modal/settings.js"></script>
+    <script src="js/chat/modal/addChat.js"></script>
     <script src="js/chat/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,40 @@
+// button
+@mixin round-icon-button($hover-icon, $default-icon, $hover-rotate: 0deg) {
+  position: absolute;
+  right: 30px;
+  width: 40px;
+  height: 40px;
+  background: var(--input-bg);
+  border: 1px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  &::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-image: url($default-icon);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    background: var(--hover-bg);
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+
+    &::before {
+      background-image: url($hover-icon);
+      transform: rotate($hover-rotate);
+    }
+  }
+}

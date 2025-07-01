@@ -48,7 +48,7 @@ async function MainApp() {
     getMainWindow().webContents.once('did-finish-load', () => {
       getMainWindow().webContents.send('reply', { type: "theme_load", theme: "dark" });
 
-            startClientStatus().catch(console.error);
+      startClientStatus().catch(console.error);
       startClientChat().catch(console.error);
     });
   }

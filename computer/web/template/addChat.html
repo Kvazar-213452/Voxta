@@ -1,0 +1,67 @@
+<div class="modal-overlay" id="addChatModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">💬 Створити чат</h2>
+            <button class="modal-close" onclick="closeAddChat()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <form id="createChatForm">
+                <div class="chat-form-group">
+                    <label class="chat-form-label" for="chatAvatar">Аватар чату</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="chatAvatar" class="file-input" accept="image/*">
+                        <label for="chatAvatar" class="file-input-label" id="avatarLabel">
+                            <span>📷</span>
+                            <span>Оберіть зображення для аватару</span>
+                        </label>
+                    </div>
+                    <img id="avatarPreview" class="avatar-preview" alt="Avatar preview">
+                    <div class="form-hint">Підтримуються формати: JPG, PNG, GIF (макс. 5MB)</div>
+                </div>
+
+                <div class="chat-form-group">
+                    <label class="chat-form-label" for="chatName">Назва чату *</label>
+                    <input 
+                        type="text" 
+                        id="chatName" 
+                        class="chat-form-input" 
+                        placeholder="Введіть назву чату..."
+                        required
+                    >
+                    <div class="form-hint">Оберіть зрозумілу назву для вашого чату</div>
+                </div>
+
+                <div class="chat-form-group">
+                    <label class="chat-form-label" for="chatDescription">Опис чату</label>
+                    <textarea 
+                        id="chatDescription" 
+                        class="chat-form-input chat-form-textarea" 
+                        placeholder="Опишіть тему або мету чату..."
+                    ></textarea>
+                    <div class="form-hint">Короткий опис допоможе іншим зрозуміти тему чату</div>
+                </div>
+
+                <div class="chat-form-group">
+                    <label class="chat-form-label">Приватність</label>
+                    <div class="privacy-options">
+                        <div class="privacy-option selected" data-privacy="private">
+                            <span class="privacy-icon">🔒</span>
+                            <span class="privacy-name">Приватний</span>
+                        </div>
+                        <div class="privacy-option" data-privacy="public">
+                            <span class="privacy-icon">🌐</span>
+                            <span class="privacy-name">Публічний</span>
+                        </div>
+                    </div>
+                    <div class="form-hint">Приватні чати видимі тільки вам</div>
+                </div>
+            </form>
+        </div>
+
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-secondary" onclick="closeAddChat()">Скасувати</button>
+            <button class="modal-btn modal-btn-primary" id="createBtn" disabled>Створити чат</button>
+        </div>
+    </div>
+</div>
