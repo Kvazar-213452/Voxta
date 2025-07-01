@@ -559,5 +559,12 @@ h2 {
   }
 }
 
+.div_info_panel {
+  overflow-y: auto;
+  position: absolute;
+  top: 230px;
+  height: calc(100% - 250px);
+  width: calc(100% - 60px);
+}
 
 // chat-item

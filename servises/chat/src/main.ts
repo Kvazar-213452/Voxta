@@ -7,6 +7,7 @@ import { onAuthenticate } from './socket_events/onAuthenticate';
 import { onDisconnect } from './socket_events/onDisconnect';
 import { onError } from './socket_events/onError';
 import { onCreateChat } from './socket_events/onCreateChat';
+import { onGetInfoUsers } from './socket_events/onGetInfoUsers';
 import { onGetInfoUser } from './socket_events/onGetInfoUser';
 
 dotenv.config();
@@ -33,7 +34,8 @@ io.on('connection', (socket: Socket) => {
   onLoadChatContent(socket, SECRET_KEY);
   onsendMessage(socket, SECRET_KEY);
   onCreateChat(socket, SECRET_KEY);
-  onGetInfoUser(socket, SECRET_KEY)
+  onGetInfoUsers(socket, SECRET_KEY);
+  onGetInfoUser(socket, SECRET_KEY);
   onDisconnect(socket);
   onError(socket);
 });

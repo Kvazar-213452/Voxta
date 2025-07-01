@@ -18,6 +18,17 @@ function loadInfoPanel(chatData) {
   $('.chat-info-panel #users_on_chat_caunt_chat_info').text(chatData.participants.length);
   $('.chat-info-panel #time_chat_info').text(chatData.createdAt);
   $('.chat-info-panel #type_chat_info').text(chatData.type);
+  $('.chat-info-panel #desc_chat_info').text(chatData.desc);
+
+  if (user["_id"] == chatData.owner) {
+    $('.chat-info-panel #owner_chat_info').text(user.name);
+  } else {
+    $('.chat-info-panel #owner_chat_info').html(null);
+    window.electronAPI.sendMessage({
+      type: "get_info_user", 
+      id: chatData.owner,
+    });
+  }
 }
 
 function renderUserOnInfoPanel(users) {
@@ -32,4 +43,8 @@ function renderUserOnInfoPanel(users) {
     
     $(".user_info_caunt_div").append(content);
   }
+}
+
+function renderNameInInfoPanel(chatData) {
+  $('.chat-info-panel #owner_chat_info').text(chatData.name);
 }

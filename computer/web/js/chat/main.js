@@ -1,3 +1,7 @@
+if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+  reconnectSocketClient()
+}
+
 $(document).ready(function () {
   getSettings();
   
@@ -27,12 +31,7 @@ $(document).ready(function () {
   });
 });
 
-
-
-let index = 1;
-
-
-
+// ==== func ====
 function selectChat(chatId) {
   $('.chat-item').removeClass('active');
   $(`[data-chat="${chatId}"]`).addClass('active');
@@ -68,7 +67,6 @@ function loadChat(content, chat_id, participants) {
   
   chat_select = chat;
   chat_id_select = chat.id;
-  console.log('Found chat:', chat);
   
   $('#currentChatName').text(chat.name);
   $('#onlineStatus').text('');
@@ -192,7 +190,6 @@ function updateChatsList() {
 }
 
 function load_chats(chatsData) {
-  console.log(chatsData)
   const chatList = {};
 
   $.each(chatsData, function(chatId, chatData) {
@@ -202,7 +199,9 @@ function load_chats(chatsData) {
       id: chatId,
       type: chatData.type,
       participants: chatData.participants,
-      createdAt: chatData.createdAt
+      createdAt: chatData.createdAt,
+      desc: chatData.desc || "",
+      owner: chatData.owner || ""
     };
     index++;
   });
@@ -212,9 +211,6 @@ function load_chats(chatsData) {
   updateChatsList();
 }
 
-
-
-
 function addChats(chatsData) {
   chats[index] = {
     name: chatsData.name,
@@ -222,13 +218,13 @@ function addChats(chatsData) {
     id: chatsData.id,
     type: chatsData.type,
     participants: chatsData.participants,
-    createdAt: chatData.createdAt
+    createdAt: chatData.createdAt,
+    desc: chatData.desc || "",
+    owner: chatData.owner || ""
   };
 
   updateChatsList();
 }
-
-
 
 // unix function
 function findChatIndex(chats, chat_id) {
@@ -254,21 +250,9 @@ function highlightChatById(val) {
 }
 
 
+// window.electronAPI.sendMessage({
+//   type: "get_status_user", 
+//   user_id: "1243243423",
+// });
 
-if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-  reconnectSocketClient()
-}
-
-function reconnectSocketClient() {
-  window.electronAPI.sendMessage({
-    type: "reconnect_socket_client"
-  });
-}
-
-
-    // window.electronAPI.sendMessage({
-    //   type: "get_status_user", 
-    //   user_id: "1243243423",
-    // });
-
-// user-info-panel
+// Found chat

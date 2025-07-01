@@ -93,6 +93,13 @@ async function startClientChat(): Promise<void> {
     });
   });
 
+  socket.on("get_info_user_return", (data) => {
+    getMainWindow().webContents.send('reply', {
+      type: "info_user",
+      user: data.user,
+    });
+  });
+
   socket.on("disconnect", () => {
     console.log("disconnect");
   });

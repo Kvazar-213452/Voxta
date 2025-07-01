@@ -4,7 +4,7 @@ import { returnSettings, saveSettingsFix } from './internal/services/settings';
 import { loadChatContent, sendMessage, reconnectSocketClient } from './internal/services/chat/chatController';
 import { getStatus } from './internal/services/status/statusController';
 import { createChat } from './internal/services/chat/events_msg/createChat';
-import { getInfoUsers } from './internal/services/chat/events_msg/getInfoUsers';
+import { getInfoUsers, getInfoUser } from './internal/services/chat/events_msg/getInfoUsers';
 import { loadIndexTemplate } from './internal/utils/utils';
 
 export function setupIPC(): void {
@@ -29,6 +29,8 @@ export function setupIPC(): void {
       createChat(msg.chat);
     } else if (msg.type === 'get_info_users') {
       getInfoUsers(msg.users);
-    } 
+    } else if (msg.type === 'get_info_user') {
+      getInfoUser(msg.id);
+    }
   });
 }

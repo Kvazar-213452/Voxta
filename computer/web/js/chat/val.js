@@ -5,6 +5,7 @@ let chat_id_select = null;
 let chat_select = null;
 let user_id = null;
 let currentChatId = 1;
+let index = 1;
 
 let settings = {};
 
