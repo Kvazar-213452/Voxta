@@ -16,6 +16,10 @@ function loadChatContent(chat_id: string, type_chat: string): void {
   }
 }
 
+function getSocketGlobal(): Socket | null {
+  return socketGlobal;
+}
+
 function sendMessage(message: any, chat_id: string, chat_type: string): void {
   socketGlobal?.emit("send_message", { message, chat_id });
 }
@@ -84,5 +88,6 @@ export {
   startClientChat,
   reconnectSocketClient,
   loadChatContent,
-  sendMessage
+  sendMessage,
+  getSocketGlobal
 };

@@ -26,6 +26,8 @@
 export const configApp = {
   width: 800,
   height: 600,
+
+  timeStop: 4000
 };
 
 export const configCrypto = {

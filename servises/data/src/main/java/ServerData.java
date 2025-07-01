@@ -1,7 +1,15 @@
 package voxta.data;
 
 import io.javalin.Javalin;
+import io.javalin.http.staticfiles.Location;
 import io.github.cdimascio.dotenv.Dotenv;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Path;
+import java.util.Base64;
+import java.util.Map;
+import java.util.UUID;
 
 // ⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣤⠴⠶⠶⠶⠶⠶⠶⠶⠶⢤⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 // ⠀⠀⠀⠀⢀⣤⠶⠛⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠛⠶⣤⡀⠀⠀⠀⠀⠀
@@ -27,6 +35,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 // ⠀⠀⠀⠀⠀⠀⠀⠀⠙⢷⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡴⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀
 // ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠳⠶⠦⣤⣤⣤⡤⠶⠞⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
+
 public class ServerData {
     public static void main(String[] args) {
         Dotenv dotenv = Dotenv.load();
@@ -37,10 +46,49 @@ public class ServerData {
             config.staticFiles.add(staticFiles -> {
                 staticFiles.directory = "data";
                 staticFiles.hostedPath = "/";
-                staticFiles.location = io.javalin.http.staticfiles.Location.EXTERNAL;
+                staticFiles.location = Location.EXTERNAL;
             });
         }).start(port);
 
         app.get("/", ctx -> ctx.result("Hello, Microservice on Javalin!"));
+
+        app.post("/upload_avatar", ctx -> {
+            var uploadedFile = ctx.uploadedFile("avatar");
+            if (uploadedFile == null) {
+                ctx.status(400).result("No avatar file uploaded");
+                return;
+            }
+
+            String mimeType = uploadedFile.contentType();
+            String extension;
+
+            if (mimeType == null) {
+                ctx.status(400).result("Cannot determine file type");
+                return;
+            }
+
+            if (mimeType.contains("jpeg")) extension = ".jpg";
+            else if (mimeType.contains("png")) extension = ".png";
+            else if (mimeType.contains("gif")) extension = ".gif";
+            else {
+                ctx.status(400).result("Unsupported image type: " + mimeType);
+                return;
+            }
+
+            File avatarsDir = new File("data/avatars");
+            if (!avatarsDir.exists()) avatarsDir.mkdirs();
+
+            String uniqueFileName = UUID.randomUUID().toString() + extension;
+            Path filePath = Path.of("data/avatars", uniqueFileName);
+
+            try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
+                fos.write(uploadedFile.content().readAllBytes());
+            }
+
+            String avatarUrl = ctx.scheme() + "://" + ctx.host() + "/avatars/" + uniqueFileName;
+
+            ctx.json(Map.of("url", avatarUrl));
+        });
+
     }
 }

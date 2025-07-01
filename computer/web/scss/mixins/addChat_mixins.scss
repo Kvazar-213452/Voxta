@@ -1,0 +1,44 @@
+@mixin form-control(
+  $bg,
+  $border-color,
+  $color,
+  $focus-bg,
+  $focus-border-color,
+  $focus-shadow-color
+) {
+  width: 100%;
+  padding: 15px;
+  background: $bg;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  color: $color;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+
+  &:focus {
+    background: $focus-bg;
+    border-color: $focus-border-color;
+    box-shadow: 0 0 0 3px rgba($focus-shadow-color, 0.1);
+  }
+}
+
+
+@mixin button-base($bg, $color, $hover-bg, $opacity: 1) {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  background: $bg;
+  color: $color;
+  opacity: $opacity;
+
+  &:hover:not(:disabled) {
+    background: $hover-bg;
+    transform: translateY(-1px);
+  }
+}
+

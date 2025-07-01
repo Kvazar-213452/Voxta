@@ -6,9 +6,18 @@ function closeAddChat() {
   $('#addChatModal').removeClass('active');
 }
 
-// moadl
+
+function createChat(chat) {
+  window.electronAPI.sendMessage({
+    type: "create_chat", 
+    chat: chat,
+  });
+}
+
+// moadl window
 $(document).ready(function() {
-    let selectedPrivacy = 'private';
+    let selectedPrivacy = 'offline';
+    let avatarBase64 = null; // збережемо base64 сюди
 
     $('.privacy-option').on('click', function() {
         $('.privacy-option').removeClass('selected');
@@ -16,7 +25,7 @@ $(document).ready(function() {
         selectedPrivacy = $(this).data('privacy');
 
         const hint = $('.privacy-options').next('.form-hint');
-        if (selectedPrivacy === 'private') {
+        if (selectedPrivacy === 'offline') {
             hint.text('Приватні чати видимі тільки вам');
         } else {
             hint.text('Публічні чати можуть бачити інші користувачі');
@@ -31,7 +40,8 @@ $(document).ready(function() {
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                preview.attr('src', e.target.result).addClass('show');
+                avatarBase64 = e.target.result; // Збережемо base64 сюди
+                preview.attr('src', avatarBase64).addClass('show');
                 label.addClass('has-file').html(`
                     <span>✅</span>
                     <span>${file.name}</span>
@@ -39,6 +49,7 @@ $(document).ready(function() {
             };
             reader.readAsDataURL(file);
         } else {
+            avatarBase64 = null;
             preview.removeClass('show');
             label.removeClass('has-file').html(`
                 <span>📷</span>
@@ -61,27 +72,28 @@ $(document).ready(function() {
     $('#createBtn').on('click', function() {
         const chatName = $('#chatName').val().trim();
         const chatDescription = $('#chatDescription').val().trim();
-        const avatarFile = $('#chatAvatar')[0].files[0];
 
         const newChat = {
             name: chatName,
             description: chatDescription,
             privacy: selectedPrivacy,
-            avatar: avatarFile ? avatarFile.name : null,
+            avatar: avatarBase64,  // тут base64 аватара
             createdAt: new Date().toISOString()
         };
 
-        console.log('Створюється новий чат:', newChat);
+        createChat(newChat);
 
+        // Скидаємо форму
         $('#createChatForm')[0].reset();
         $('.privacy-option').removeClass('selected');
-        $('[data-privacy="private"]').addClass('selected');
+        $('[data-privacy="offline"]').addClass('selected');
         $('#avatarPreview').removeClass('show');
         $('#avatarLabel').removeClass('has-file').html(`
             <span>📷</span>
             <span>Оберіть зображення для аватару</span>
         `);
-        selectedPrivacy = 'private';
+        avatarBase64 = null;
+        selectedPrivacy = 'offline';
         $('#createBtn').prop('disabled', true);
 
         closeAddChat();

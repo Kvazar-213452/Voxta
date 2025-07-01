@@ -5,11 +5,12 @@ import { MainApp } from './internal/utils/start';
 import { setMainWindow } from './internal/models/mainWindow';
 import { configApp } from './config';
 import { initDatabase } from './internal/models/sqlite';
+import { delay } from './internal/utils/utils';
 import { initKeyText } from './internal/models/storageApp';
 
 let mainWindow: BrowserWindow | null;
 
-function createWindow(): BrowserWindow {
+async function createWindow(): Promise<BrowserWindow> {
   mainWindow = new BrowserWindow({
     width: configApp.width,
     height: configApp.height,
@@ -21,11 +22,12 @@ function createWindow(): BrowserWindow {
   });
 
   setMainWindow(mainWindow);
-  
-  // Menu.setApplicationMenu(null);
+
+  mainWindow.webContents.openDevTools();
 
   mainWindow.loadFile(path.join(__dirname, '../web/load.html'));
-  mainWindow.webContents.openDevTools();
+
+  await delay(configApp.timeStop);
 
   return mainWindow;
 }
@@ -33,7 +35,7 @@ function createWindow(): BrowserWindow {
 app.whenReady().then(async () => {
   await initKeyText();
   initDatabase();
-  mainWindow = createWindow();
+  mainWindow = await createWindow();
   setupIPC();
   MainApp();
 });

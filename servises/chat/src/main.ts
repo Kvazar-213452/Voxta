@@ -6,6 +6,7 @@ import { onsendMessage } from './socket_events/onsendMessage';
 import { onAuthenticate } from './socket_events/onAuthenticate';
 import { onDisconnect } from './socket_events/onDisconnect';
 import { onError } from './socket_events/onError';
+import { onCreateChat } from './socket_events/onCreateChat';
 
 dotenv.config();
 
@@ -19,6 +20,10 @@ const io = new Server({
   }
 });
 
+export function getIO(): Server {
+  return io;
+}
+
 io.on('connection', (socket: Socket) => {
   console.log('connection user', socket.id);
 
@@ -26,6 +31,7 @@ io.on('connection', (socket: Socket) => {
   onGetInfoChats(socket, SECRET_KEY);
   onLoadChatContent(socket, SECRET_KEY);
   onsendMessage(socket, SECRET_KEY);
+  onCreateChat(socket, SECRET_KEY)
   onDisconnect(socket);
   onError(socket);
 });

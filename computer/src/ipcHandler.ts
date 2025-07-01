@@ -3,7 +3,9 @@ import { login } from './internal/services/authentication';
 import { returnSettings, saveSettingsFix } from './internal/services/settings';
 import { loadChatContent, sendMessage, reconnectSocketClient } from './internal/services/chat/chatController';
 import { getStatus } from './internal/services/status/statusController';
+import { createChat } from './internal/services/chat/events_msg/createChat';
 import { loadIndexTemplate } from './internal/utils/utils';
+
 
 export function setupIPC(): void {
   ipcMain.on('message', async (event: IpcMainEvent, msg: any) => {
@@ -23,6 +25,8 @@ export function setupIPC(): void {
       getStatus(msg.user_id);
     } else if (msg.type === 'load_template') {
       loadIndexTemplate();
+    } else if (msg.type === 'create_chat') {
+      createChat(msg.chat);
     } 
   });
 }

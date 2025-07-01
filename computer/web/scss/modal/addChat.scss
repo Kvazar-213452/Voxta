@@ -1,3 +1,5 @@
+@use '../mixins/addChat_mixins';
+
 .chat-form-group {
   margin-bottom: 25px;
 }
@@ -11,24 +13,25 @@
 }
 
 .chat-form-input {
-  width: 100%;
-  padding: 15px;
-  background: var(--input-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  color: var(--text-light);
-  font-size: 14px;
-  outline: none;
-  transition: all 0.3s ease;
-}
-
-.chat-form-input:focus {
-  background: var(--hover-bg);
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(88, 255, 127, 0.1);
+  @include addChat_mixins.form-control(
+    var(--input-bg),
+    var(--border-color),
+    var(--text-light),
+    var(--hover-bg),
+    var(--primary-color),
+    rgb(88, 255, 127)
+  );
 }
 
 .chat-form-textarea {
+  @include addChat_mixins.form-control(
+    var(--input-bg),
+    var(--border-color),
+    var(--text-light),
+    var(--hover-bg),
+    var(--primary-color),
+    rgb(88, 255, 127)
+  );
   min-height: 80px;
   resize: vertical;
   font-family: inherit;
@@ -61,17 +64,17 @@
   cursor: pointer;
   transition: all 0.3s ease;
   min-height: 60px;
-}
 
-.file-input-label:hover {
-  background: var(--hover-bg);
-  border-color: var(--primary-color);
-}
+  &:hover {
+    background: var(--hover-bg);
+    border-color: var(--primary-color);
+  }
 
-.file-input-label.has-file {
-  background: var(--active-bg);
-  border-color: var(--primary-color);
-  color: var(--text-light);
+  &.has-file {
+    background: var(--active-bg);
+    border-color: var(--primary-color);
+    color: var(--text-light);
+  }
 }
 
 .privacy-options {
@@ -89,15 +92,15 @@
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
-}
 
-.privacy-option:hover {
-  background: var(--hover-bg);
-}
+  &:hover {
+    background: var(--hover-bg);
+  }
 
-.privacy-option.selected {
-  background: var(--active-bg);
-  border-color: var(--primary-color);
+  &.selected {
+    background: var(--active-bg);
+    border-color: var(--primary-color);
+  }
 }
 
 .privacy-icon {
@@ -125,37 +128,24 @@
 }
 
 .modal-btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 14px;
+  @include addChat_mixins.button-base(var(--input-bg), var(--text-light), var(--hover-bg));
 }
 
 .modal-btn-secondary {
   background: var(--input-bg);
   color: var(--text-light);
-}
 
-.modal-btn-secondary:hover {
-  background: var(--hover-bg);
+  &:hover {
+    background: var(--hover-bg);
+  }
 }
 
 .modal-btn-primary {
-  background: var(--primary-color);
-  color: #000;
-  opacity: 0.6;
-}
+  @include addChat_mixins.button-base(var(--primary-color), #000, #45cc6a, 0.6);
 
-.modal-btn-primary:not(:disabled):hover {
-  background: #45cc6a;
-  transform: translateY(-1px);
-}
-
-.modal-btn-primary:not(:disabled) {
-  opacity: 1;
+  &:not(:disabled) {
+    opacity: 1;
+  }
 }
 
 .avatar-preview {
@@ -167,8 +157,8 @@
   border: 2px solid var(--border-color);
   display: none;
   object-fit: cover;
-}
 
-.avatar-preview.show {
-  display: block;
+  &.show {
+    display: block;
+  }
 }

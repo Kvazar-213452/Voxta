@@ -1,25 +1,8 @@
-// Login Page Styles
-:root {
-  --primary-color: #58ff7f;
-  --input-bg: rgba(255, 255, 255, 0.1);
-  --panel-bg: rgba(255, 255, 255, 0.08);
-  --text-light: #eee;
-  --text-muted: #aaa;
-  --glow-color: #58ff7fc7;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  background: linear-gradient(135deg, #1f1f1f, #2d2d32, #232338);
+  background: var(--bg-gradient);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,7 +63,7 @@ body {
     border: 1px solid transparent;
     border-radius: 10px;
     background: var(--input-bg);
-    color: white;
+    color: var(--text-light);
     font-size: 14px;
     outline: none;
     transition: border 0.3s ease;
@@ -130,4 +113,3 @@ body {
     }
   }
 }
- 

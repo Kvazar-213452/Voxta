@@ -38,4 +38,8 @@ function loadIndexTemplate(): void {
   getMainWindow().webContents.send('reply', { type: "load_template", templates: templates });
 }
 
-export { safeParseJSON, getTemplate, loadIndexTemplate };
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export { safeParseJSON, getTemplate, loadIndexTemplate, delay };
