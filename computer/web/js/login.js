@@ -26,8 +26,19 @@ $('#sendBtn1').click(function() {
   });
 });
 
+// register veref
+
+$('#sendBtn2').click(function() {
+  const code = $('#code').val();
+
+  window.electronAPI.sendMessage({
+    type: "register_verification", 
+    code: code,
+  });
+});
+
 window.electronAPI.onMessage((msg) => {
-  if (msg["type"] == "register" && msg["code"] == 1) {
-    window.location.href = "registerVeref.html";
+  if (msg["type"] == "register_verification" && msg["code"] == 0) {
+    console.log("error")
   }
 });

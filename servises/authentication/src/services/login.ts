@@ -36,8 +36,8 @@ export async function loginHandler(req: Request, res: Response): Promise<void> {
     }
 
     if (!foundUser || !userCollectionName) {
-    res.status(404).json({ code: 0, error: 'user_none' });
-    return;
+      res.status(404).json({ code: 0, error: 'user_none' });
+      return;
     }
 
     foundUser._id = foundUser.id;
@@ -49,14 +49,14 @@ export async function loginHandler(req: Request, res: Response): Promise<void> {
     const jwtDoc = await jwtCollection.findOne({ _id: 'jwt' });
 
     if (jwtDoc) {
-    await jwtCollection.updateOne({ _id: 'jwt' }, { $push: { token } });
+      await jwtCollection.updateOne({ _id: 'jwt' }, { $push: { token } });
     } else {
-    await jwtCollection.insertOne({ _id: 'jwt', token: [token] });
+      await jwtCollection.insertOne({ _id: 'jwt', token: [token] });
     }
 
     const responsePayload = JSON.stringify({
-    token: token,
-    user: JSON.stringify(foundUser, null, 2)
+      token: token,
+      user: JSON.stringify(foundUser, null, 2)
     });
 
     const encrypted = encryptionMsg(key, responsePayload);

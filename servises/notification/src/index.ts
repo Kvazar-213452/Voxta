@@ -17,7 +17,7 @@ app.post('/send_gmail', async (req: Request, res: Response<ResponseData>) => {
     try {
         const data = req.body.data;
 
-        await send_gmail(data[1], data[0]);
+        await send_gmail(data[1].toString(), data[0]);
 
         res.json({ status: 1 });
     } catch (error) {

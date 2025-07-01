@@ -15,7 +15,7 @@ export const transporter = nodemailer.createTransport({
     }
 });
 
-export async function send_gmail(code: string, recipient: string): Promise<void> {
+export async function send_gmail(recipient: string, code: string): Promise<void> {
     const subject = "Notification";
     const message = `Code: ${code}`;
 
