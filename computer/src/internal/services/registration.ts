@@ -49,7 +49,7 @@ export async function registerVerification(msg: { [key: string]: any }): Promise
 
     const encryption_json = encryptionMsg(PublicKey_server, dataToEncrypt);
 
-    const response = await axios.post(`${configServises.AUTHENTICATION}/register_veref`, {
+    const response = await axios.post(`${configServises.AUTHENTICATION}/register_verification`, {
       data: encryption_json,
       key: await getPublicKey()
     });

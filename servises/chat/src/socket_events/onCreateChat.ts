@@ -6,6 +6,7 @@ import { verifyAuth } from "../utils/verifyAuth";
 import { generateId } from "../utils/generateId";
 import { sendCreateChat } from "../utils/sendCreateChat";
 import { getMongoClient } from "../models/mongoClient";
+import CONFIG from "../config";
 
 interface Chat {
   name: string;
@@ -29,7 +30,7 @@ async function uploadAvatar(base64String: string): Promise<string> {
     contentType: mimeType,
   });
 
-  const response = await axios.post("http://localhost:3004/upload_avatar", form, {
+  const response = await axios.post(`${CONFIG}/upload_avatar`, form, {
     headers: form.getHeaders(),
   });
 

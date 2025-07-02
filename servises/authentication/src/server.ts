@@ -15,6 +15,6 @@ app.use(express.json());
 app.use(publicRouter);
 app.use(authRouter);
 
-server.listen(CONFIG.port, () => {
-    console.log(`Server run on http://localhost:${CONFIG.port}`);
+server.listen(CONFIG.PORT, () => {
+    console.log(`Server run on http://localhost:${CONFIG.PORT}`);
 });

@@ -2,10 +2,11 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import { Db, Collection } from "mongodb";
 import { encryptionMsg, decryptionServer } from '../utils/cryptoFunc';
 import { getMongoClient } from '../models/getMongoClient';
 import { generateId } from '../utils/utils';
-import { Db, Collection } from "mongodb";
+import CONFIG from '../config';
 
 dotenv.config();
 
@@ -27,7 +28,7 @@ export async function registerHandler(req: Request, res: Response): Promise<void
     const gmail = parsed.gmail;
     const code = generateSixDigitCode();
 
-    await axios.post('http://localhost:3005/send_gmail', {
+    await axios.post(`${CONFIG.SERVIS_NOTIFICATION}/send_gmail`, {
       data: [code, gmail]
     });
 
@@ -81,12 +82,12 @@ export async function registerVerificationHandler(req: Request, res: Response): 
         _id: "config" as any,
         name,
         password,
-        avatar: "http://localhost:3004/avatars/306d4102-f22b-452c-9f3b-c14b7661b0f8.jpg",
+        avatar: CONFIG.AVATAR,
         time: new Date().toISOString(),
         desc: "new acaunt",
         id: userID,
         gmail,
-        chats: []
+        chats: [CONFIG.ID_CHAT_MAIN]
       };
 
       await chatCollection.insertOne(dataConfig);

@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Menu } from 'electron';
 import path from 'node:path';
-import { setupIPC } from './ipcHandler';
+import { setupIPC } from './mainIPC';
 import { MainApp } from './internal/utils/start';
 import { setMainWindow } from './internal/models/mainWindow';
 import { configApp } from './config';
@@ -24,7 +24,6 @@ async function createWindow(): Promise<BrowserWindow> {
   setMainWindow(mainWindow);
 
   mainWindow.webContents.openDevTools();
-
   mainWindow.loadFile(path.join(__dirname, '../web/load.html'));
 
   await delay(configApp.timeStop);
