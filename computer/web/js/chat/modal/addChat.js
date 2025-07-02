@@ -1,11 +1,10 @@
-function showAddChat() {
+export function showAddChat() {
   $('#addChatModal').addClass('active');
 }
 
-function closeAddChat() {
+export function closeAddChat() {
   $('#addChatModal').removeClass('active');
 }
-
 
 function createChat(chat) {
   window.electronAPI.sendMessage({

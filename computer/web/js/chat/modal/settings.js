@@ -1,75 +1,73 @@
-function toggleSetting(key, toggle) {
+export function toggleSetting(key, toggle) {
   $(toggle).toggleClass('active');
   settings[key] = $(toggle).hasClass('active');
 }
 
-function toggleDarkMode() {
+export function toggleDarkMode(event) {
   toggleSetting('darkMode', event.target);
 }
 
-function toggleBrowserNotifications() {
+export function toggleBrowserNotifications(event) {
   toggleSetting('browserNotifications', event.target);
   if (settings.browserNotifications && 'Notification' in window) {
     Notification.requestPermission();
   }
 }
 
-function toggleDoNotDisturb() {
+export function toggleDoNotDisturb(event) {
   toggleSetting('doNotDisturb', event.target);
 }
 
-function changeLanguage(language) {
+export function changeLanguage(language) {
   settings.language = language;
 }
 
-function toggleReadReceipts() {
+export function toggleReadReceipts(event) {
   toggleSetting('readReceipts', event.target);
 }
 
-function toggleOnlineStatus() {
+export function toggleOnlineStatus(event) {
   toggleSetting('onlineStatus', event.target);
 }
 
-function resetSettings() {
-  settings = {...defaultSettings};
-
+export function resetSettings() {
+  settings = { ...defaultSettings };
   updateSettingsUI();
 }
 
-function openSuccessModal() {
+export function openSuccessModal() {
   $('#successModal').addClass('active');
 }
 
-function closeSuccessModal() {
+export function closeSuccessModal() {
   $('#successModal').removeClass('active');
 }
 
-function saveSettings() {
+export function saveSettings() {
   closeSettings();
   saveSettingsApp();
 
   setTimeout(() => {
-      openSuccessModal();
+    openSuccessModal();
   }, 200);
 }
 
-function showSettings() {
+export function showSettings() {
   $('#settingsModal').addClass('active');
 }
 
-function closeSettings() {
+export function closeSettings() {
   $('#settingsModal').removeClass('active');
 }
 
-function logout() {
+export function logout() {
   if (confirm('Ви впевнені, що хочете вийти?')) {
     alert('Вихід з системи...');
   }
 }
 
-function toggleTheme() {
+export function toggleTheme() {
   const root = document.documentElement;
-
   if (root.getAttribute('data-theme') === 'light') {
     root.removeAttribute('data-theme');
   } else {
@@ -77,20 +75,20 @@ function toggleTheme() {
   }
 }
 
-function getSettings() {
+export function getSettings() {
   window.electronAPI.sendMessage({
     type: "get_settings"
   });
 }
 
-function saveSettingsApp() {
+export function saveSettingsApp() {
   window.electronAPI.sendMessage({
     type: "save_settings",
     settings: settings
   });
 }
 
-function updateSettingsUI() {
+export function updateSettingsUI() {
   $('.toggle-switch[data-setting]').each(function () {
     const key = $(this).attr('data-setting');
     const isActive = !!settings[key];
@@ -99,5 +97,3 @@ function updateSettingsUI() {
 
   $('select[onchange="changeLanguage(this.value)"]').val(settings.language);
 }
-
-// showSettings

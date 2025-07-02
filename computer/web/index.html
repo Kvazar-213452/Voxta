@@ -14,8 +14,8 @@
         <!-- Chat List Panel -->
         <div class="glass-panel chat-list-panel">
             <h2 class="title_name">Voxta</h2>
-            <div onclick="showSettings()" class="settings_btn"></div>
-            <div onclick="showAddChat()" class="plus_btn"></div>
+            <div id="showSettingsBtn" class="settings_btn"></div>
+            <div id="showAddChatBtn" class="plus_btn"></div>
             <br><br><br>
             <div class="search-box"><input type="text" id="searchInput" placeholder="Пошук чатів..."></div>
             <div class="chats-list" id="chatsList"></div>
@@ -86,14 +86,11 @@
     <div id="addChat_div_m"></div>
 
     <script src="js/lib/jquery-3.6.0.min.js"></script>
-    <script src="js/chat/template.js"></script>
     <script src="js/chat/val.js"></script>
-    <script src="js/chat/outside.js"></script>
-    <script src="js/chat/infoPanel.js"></script>
-    <script src="js/chat/ipcHandler.js"></script>
-    <script src="js/chat/modal/settings.js"></script>
-    <script src="js/chat/modal/addChat.js"></script>
-    <script src="js/chat/main.js"></script>
+    <script type="module" src="js/chat/main.js"></script>
+    <script type="module" src="js/chat/ipcHandler.js"></script>
+    <script type="module" src="js/chat/events/settingsEvents.js"></script>
+    <script type="module" src="js/chat/events/addChatEvents.js"></script>
 </body>
 </html>
 

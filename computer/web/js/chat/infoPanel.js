@@ -1,4 +1,4 @@
-function loadInfoPanel(chatData) {
+export function loadInfoPanel(chatData) {
   $(".user_info_caunt_div").html(null);
 
   $('.chat-info-panel .chat-profile .chat-avatar').attr('src', chatData.avatar);
@@ -31,7 +31,7 @@ function loadInfoPanel(chatData) {
   }
 }
 
-function renderUserOnInfoPanel(users) {
+export function renderUserOnInfoPanel(users) {
   for (const id in users) {
     const user = users[id];
     let content = `
@@ -45,6 +45,6 @@ function renderUserOnInfoPanel(users) {
   }
 }
 
-function renderNameInInfoPanel(chatData) {
+export function renderNameInInfoPanel(chatData) {
   $('.chat-info-panel #owner_chat_info').text(chatData.name);
 }
