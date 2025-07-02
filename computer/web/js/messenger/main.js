@@ -1,4 +1,4 @@
-import { reconnectSocketClient } from './other.js';
+import { reconnectSocketClient } from './misc.js';
 import { getSettings } from './modal/settings.js';
 import { selectChat } from './chat/chat.js';
 import { sendMessage } from './chat/message.js';
@@ -38,3 +38,8 @@ $(document).ready(function () {
     }
   });
 });
+
+// window.electronAPI.sendMessage({
+//   type: "get_status_user", 
+//   user_id: "1243243423",
+// });

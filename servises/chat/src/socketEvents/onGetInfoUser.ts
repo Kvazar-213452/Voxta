@@ -4,7 +4,7 @@ import { verifyAuth } from "../utils/verifyAuth";
 import { Db } from "mongodb";
 
 export function onGetInfoUser(socket: Socket, SECRET_KEY: string) {
-  socket.on("get_info_user", async (data: { id_user: string }) => {
+  socket.on("get_info_user", async (data: { id_user: string, type: string }) => {
     try {
       const auth = verifyAuth(socket, SECRET_KEY);
       if (!auth) return;
@@ -16,17 +16,17 @@ export function onGetInfoUser(socket: Socket, SECRET_KEY: string) {
       const userConfig = await collection.findOne({ _id: 'config' });
 
       if (!userConfig) {
-        socket.emit("get_info_user_return", { code: 0 });
+        socket.emit(data.type, { code: 0 });
         return;
-     }
-
-      socket.emit("get_info_user_return", {
+      }
+      console.log(data.type)
+      socket.emit(data.type, {
         code: 1,
         user: transformUserData(userConfig)
       });
 
     } catch (error) {
-      socket.emit("get_info_users_return", {
+      socket.emit(data.type, {
         code: 0,
         error: "server_error"
       });

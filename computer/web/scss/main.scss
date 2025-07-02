@@ -567,4 +567,50 @@ h2 {
   width: calc(100% - 60px);
 }
 
-// chat-item
+// userNamePopup
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+#userNamePopup {
+  position: absolute;
+  display: none;
+  width: 240px;
+  height: 160px;
+  border-radius: 20px;
+  padding: 30px;
+  color: var(--text-light);
+  pointer-events: none;
+  z-index: 1000;
+
+  background: var(--panel-bg);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 32px var(--shadow-color);
+  font-weight: bold;
+  
+  animation-fill-mode: forwards;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+// glass-panel

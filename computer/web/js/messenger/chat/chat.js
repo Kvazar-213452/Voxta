@@ -60,7 +60,11 @@ export function loadChat(content, chat_id, participants) {
         `);
       } else {
         $msgDiv.html(`
-          <img class="avatar info_profile_bnt" src="${participants[message.sender]["avatar"]}">
+          <img 
+            class="avatar info_profile_bnt" 
+            src="${participants[message.sender]["avatar"]}" 
+            data-user-id="${message.sender}"
+          >
           <div>
             <div class="message-sender info_profile_bnt">${participants[message.sender]["name"]}</div>
             <div class="message-content un_unser">${message.content}</div>

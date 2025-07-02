@@ -2,8 +2,11 @@ import { io, Socket } from "socket.io-client";
 import { getToken } from '../../models/storageApp';
 import { saveUser } from '../../models/sqliteStorage/user';
 import { getMainWindow } from '../../models/mainWindow';
-import { loadChatContentLocal } from './eventsMsg/loadChatContentLocal';
+import { loadChatContentLocal } from './utils/loadChatContentLocal';
 import { configServises } from '../../../config';
+import * as chatEvents from './socketEvents/chatEvents';
+import * as userEvents from './socketEvents/userEvents';
+import * as messageEvents from './socketEvents/messageEvents';
 
 let socketGlobal: Socket | null = null;
 let user: any;
@@ -56,49 +59,9 @@ async function startClientChat(): Promise<void> {
     socket.emit("getInfoChats", { chats: user.chats });
   });
 
-  socket.on("chatsInfo", (data) => {
-    if (data.code === 1) {
-      getMainWindow().webContents.send('reply', { type: "load_chats", chats: data.chats });
-    }
-  });
-
-  socket.on("send_message_return", (data) => {
-    getMainWindow().webContents.send('reply', {
-      type: "came_chat_msg",
-      message: data.message,
-      chat_id: data.chat_id
-    });
-  });
-
-  socket.on("create_new_chat", (data) => {
-    getMainWindow().webContents.send('reply', {
-      type: "create_new_chat_render",
-      chat: data.chat
-    });
-  });
-
-  socket.on("load_chat_content_return", (data) => {
-    getMainWindow().webContents.send('reply', {
-      type: "load_chat_content",
-      content: data.messages,
-      chat_id: data.chat_id,
-      participants: data.participants
-    });
-  });
-
-  socket.on("get_info_users_return", (data) => {
-    getMainWindow().webContents.send('reply', {
-      type: "info_users",
-      users: data.users,
-    });
-  });
-
-  socket.on("get_info_user_return", (data) => {
-    getMainWindow().webContents.send('reply', {
-      type: "info_user",
-      user: data.user,
-    });
-  });
+  chatEvents.registerChatEvents(socket);
+  userEvents.registerUserEvents(socket);
+  messageEvents.registerMessageEvents(socket);
 
   socket.on("disconnect", () => {
     console.log("disconnect");

@@ -1,14 +1,14 @@
 import { Server, Socket } from 'socket.io';
 import dotenv from 'dotenv';
-import { onGetInfoChats } from './socket_events/onGetInfoChats';
-import { onLoadChatContent } from './socket_events/onLoadChatContent';
-import { onsendMessage } from './socket_events/onsendMessage';
-import { onAuthenticate } from './socket_events/onAuthenticate';
-import { onDisconnect } from './socket_events/onDisconnect';
-import { onError } from './socket_events/onError';
-import { onCreateChat } from './socket_events/onCreateChat';
-import { onGetInfoUsers } from './socket_events/onGetInfoUsers';
-import { onGetInfoUser } from './socket_events/onGetInfoUser';
+import { onGetInfoChats } from './socketEvents/onGetInfoChats';
+import { onLoadChatContent } from './socketEvents/onLoadChatContent';
+import { onsendMessage } from './socketEvents/onsendMessage';
+import { onAuthenticate } from './socketEvents/onAuthenticate';
+import { onDisconnect } from './socketEvents/onDisconnect';
+import { onError } from './socketEvents/onError';
+import { onCreateChat } from './socketEvents/onCreateChat';
+import { onGetInfoUsers } from './socketEvents/onGetInfoUsers';
+import { onGetInfoUser } from './socketEvents/onGetInfoUser';
 
 dotenv.config();
 

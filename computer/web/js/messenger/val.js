@@ -17,3 +17,5 @@ const defaultSettings = {
   readReceipts: true,
   onlineStatus: true,
 };
+
+let thisShowUserNamePopup;

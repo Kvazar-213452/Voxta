@@ -1,6 +1,6 @@
 import { handleChat } from './ipc/chatHandler.js';
 import { handleInfoPanel } from './ipc/infoPanelHandler.js';
-import { handleRest } from './ipc/restHandler.js';
+import { handleMisc } from './ipc/miscHandler.js';
 
 // ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀ 
 // ⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀ 
@@ -23,7 +23,7 @@ import { handleRest } from './ipc/restHandler.js';
 // ⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
 window.electronAPI.onMessage((data) => {
-  handleRest(data);
+  handleMisc(data);
   handleInfoPanel(data);
   handleChat(data);
 });
