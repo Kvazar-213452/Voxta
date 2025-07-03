@@ -99,7 +99,7 @@ public class ServerStatus {
             try {
                 Boolean isAuth = client.get("authenticated");
                 if (isAuth == null || !isAuth) {
-                    client.sendEvent("get_status_return", Map.of(
+                    client.sendEvent((String) data.get("type"), Map.of(
                         "code", 0,
                         "error", "not_authenticated"
                     ));
@@ -108,7 +108,7 @@ public class ServerStatus {
 
                 String checkId = (String) data.get("id_user");
                 if (checkId == null || checkId.trim().isEmpty()) {
-                    client.sendEvent("get_status_return", Map.of(
+                    client.sendEvent((String) data.get("type"), Map.of(
                         "code", 0,
                         "error", "invalid_user_id"
                     ));
@@ -120,7 +120,7 @@ public class ServerStatus {
                     try {
                         JWT.require(jwtAlgorithm).build().verify(token);
                     } catch (Exception e) {
-                        client.sendEvent("get_status_return", Map.of(
+                        client.sendEvent((String) data.get("type"), Map.of(
                             "code", 0,
                             "error", "token_expired"
                         ));
@@ -129,7 +129,7 @@ public class ServerStatus {
                 }
 
                 boolean isOnline = onlineUsers.containsKey(checkId);
-                client.sendEvent("get_status_return", Map.of(
+                client.sendEvent((String) data.get("type"), Map.of(
                     "code", 1,
                     "status", isOnline ? "online" : "offline"
                 ));
@@ -138,7 +138,7 @@ public class ServerStatus {
                 
             } catch (Exception e) {
                 System.err.println("Error in get_status: " + e.getMessage());
-                client.sendEvent("get_status_return", Map.of(
+                client.sendEvent((String) data.get("type"), Map.of(
                     "code", 0,
                     "error", "server_error"
                 ));

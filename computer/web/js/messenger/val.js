@@ -19,3 +19,5 @@ const defaultSettings = {
 };
 
 let thisShowUserNamePopup;
+let statusUserProfile;
+let selectIdUserProfile;

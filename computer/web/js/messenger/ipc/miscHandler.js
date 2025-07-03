@@ -14,7 +14,13 @@ export function handleMisc(data) {
   } else if (data.type === "get_status_user") {
     console.log(data.status);
   } else if (data.type === "info_user_profile") {
-    console.log(data.user);
-    showUserNamePopup(data.user, $(thisShowUserNamePopup));
-  }
+    showUserNamePopup(data.user, $(thisShowUserNamePopup), statusUserProfile);
+  } else if (data.type === "get_status_user_profile") {
+    statusUserProfile = data.status;
+    
+    window.electronAPI.sendMessage({
+      type: "get_info_user_profile", 
+      id: selectIdUserProfile,
+    });
+  } 
 }

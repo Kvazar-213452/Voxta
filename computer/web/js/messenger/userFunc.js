@@ -1,6 +1,10 @@
-export function showUserNamePopup(user, $targetElement) {
+export function showUserNamePopup(user, $targetElement, status) {
   const $popup = $('#userNamePopup');
-  $popup.text(user.name);
+
+  $('#userNamePopup .avatar_p').attr('src', user.avatar);
+  $('#userNamePopup .user_info_p .user_name_p').html(user.name);
+  $('#userNamePopup .user_info_p .user_desc_p').html(user.desc);
+  $('#userNamePopup .user_info_p .user_status_p').html(status);
 
   const rect = $targetElement[0].getBoundingClientRect();
   $popup.css({

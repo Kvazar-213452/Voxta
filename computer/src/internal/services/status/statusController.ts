@@ -5,13 +5,8 @@ import { configServises } from '../../../config';
 
 let socketGlobal: Socket | null = null;
 
-function getStatus(id: string): string {
-  if (socketGlobal) {
-    socketGlobal.emit("get_status", { id_user: id });
-    return "error";
-  } else {
-    return "error";
-  }
+function getStatus(id: string, type: string = "get_status_return"): void {
+  socketGlobal?.emit("get_status", { id_user: id.toString(), type: type });
 }
 
 async function reconnectSocketClient(): Promise<void> {
@@ -43,6 +38,12 @@ async function startClientStatus(): Promise<void> {
   socket.on("get_status_return", async (data) => {
     if (data.code) {
       getMainWindow().webContents.send('reply', { type: "get_status_user", status: data.status });
+    }
+  });
+
+  socket.on("get_status_user_profile", async (data) => {
+    if (data.code) {
+      getMainWindow().webContents.send('reply', { type: "get_status_user_profile", status: data.status });
     }
   });
 
