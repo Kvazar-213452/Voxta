@@ -1,6 +1,6 @@
 import { io, Socket } from "socket.io-client";
 import { getToken } from '../../models/storageApp';
-import { saveUser } from '../../models/sqliteStorage/user';
+import { saveUser } from '../../models/sqliteStorage/serviseUtils/user';
 import { getMainWindow } from '../../models/mainWindow';
 import { loadChatContentLocal } from './utils/loadChatContentLocal';
 import { configServises } from '../../../config';

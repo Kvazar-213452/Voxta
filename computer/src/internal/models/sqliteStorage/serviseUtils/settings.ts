@@ -1,4 +1,4 @@
-import { getDatabase } from '../sqlite';
+import { getDatabase } from '../servise';
 
 export type Settings = {
   darkMode: boolean;

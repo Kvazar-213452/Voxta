@@ -11,11 +11,15 @@ const SECRET_KEY = process.env.SECRET_KEY ?? '';
 export async function loginHandler(req: Request, res: Response): Promise<void> {
   const { data, key } = req.body;
 
+  console.log(data)
+
   try {
     const decrypted = await decryptionServer(data);
     const parsed = JSON.parse(decrypted);
     const name = parsed.name;
     const password = parsed.password;
+
+    console.log(password)
 
     const client = await getMongoClient();
     const db = client.db('users');

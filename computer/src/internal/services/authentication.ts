@@ -2,7 +2,7 @@ import axios from 'axios';
 import { configServises } from '../../config';
 import { encryptionMsg, getPublicKeyServer, decryptionApp } from '../utils/cryptoFunc';
 import { getPublicKey, saveToken, getToken, deleteToken } from '../models/storageApp';
-import { saveUser, getUser, deleteUser } from '../models/sqliteStorage/user';
+import { saveUser, getUser, deleteUser } from '../models/sqliteStorage/serviseUtils/user';
 import { IpcMainEvent } from 'electron';
 import { getMainWindow } from '../models/mainWindow';
 import { safeParseJSON } from '../utils/utils';

@@ -1,5 +1,6 @@
 import { Socket } from "socket.io-client";
 import { getMainWindow } from '../../../models/mainWindow';
+import { addChatOflineOnDB } from '../utils/createChat';
 
 export function registerChatEvents(socket: Socket) {
   socket.on("chatsInfo", (data) => {
@@ -9,6 +10,10 @@ export function registerChatEvents(socket: Socket) {
   });
 
   socket.on("create_new_chat", (data) => {
+    if (data.chat["type"] === "ofline") {
+      addChatOflineOnDB(data.chat);
+    }
+
     getMainWindow().webContents.send('reply', {
       type: "create_new_chat_render",
       chat: data.chat

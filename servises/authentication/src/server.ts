@@ -15,6 +15,17 @@ app.use(express.json());
 app.use(publicRouter);
 app.use(authRouter);
 
-server.listen(CONFIG.PORT, () => {
-    console.log(`Server run on http://localhost:${CONFIG.PORT}`);
+import os from 'os';
+
+server.listen(CONFIG.PORT, '0.0.0.0', () => {
+  const interfaces = os.networkInterfaces();
+  console.log('✅ Server is running and available at:');
+  
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name] || []) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        console.log(`➡️  http://${iface.address}:${CONFIG.PORT}`);
+      }
+    }
+  }
 });

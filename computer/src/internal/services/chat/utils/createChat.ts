@@ -9,13 +9,9 @@ interface Chat {
 }
 
 export function createChat(chat: Chat): void {
-  if (chat["privacy"] === "online") {
-    createChatOnline(chat)
-  } else {
-
-  }
+  getSocketGlobal()?.emit("create_chat", { chat: chat });
 }
 
-function createChatOnline(chat: Chat) {
-    getSocketGlobal()?.emit("create_chat", { chat: chat });
+export function addChatOflineOnDB(chat) {
+  
 }

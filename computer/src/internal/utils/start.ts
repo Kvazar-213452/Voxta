@@ -1,6 +1,6 @@
 import { getMainWindow } from '../models/mainWindow';
 import { getToken, deleteToken } from '../models/storageApp';
-import { getUser } from '../models/sqliteStorage/user';
+import { getUser } from '../models/sqliteStorage/serviseUtils/user';
 import { generateKey } from './cryptoFunc';
 import { safeParseJSON } from './utils';
 import { loginToJwt } from '../services/authentication';
