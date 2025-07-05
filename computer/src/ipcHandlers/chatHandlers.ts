@@ -1,4 +1,5 @@
-import { loadChatContent, sendMessage, reconnectSocketClient } from '../internal/services/chat/chatController';
+import { loadChatContent, reconnectSocketClient } from '../internal/services/chat/chatController';
+import { sendMessage } from '../internal/services/chat/utils/sendMsg';
 import { createChat } from '../internal/services/chat/utils/createChat';
 import { getInfoUsers, getInfoUser } from '../internal/services/chat/utils/getInfoUsers';
 

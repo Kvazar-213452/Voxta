@@ -24,6 +24,7 @@ export function loadInfoPanel(chatData) {
     $('.chat-info-panel #owner_chat_info').text(user.name);
   } else {
     $('.chat-info-panel #owner_chat_info').html(null);
+
     window.electronAPI.sendMessage({
       type: "get_info_user", 
       id: chatData.owner,

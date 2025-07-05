@@ -5,13 +5,7 @@ export function createChatTables() {
 
   db.prepare(`
     CREATE TABLE IF NOT EXISTS chats (
-      id TEXT PRIMARY KEY,
-      type TEXT,
-      avatar TEXT,
-      name TEXT,
-      createdAt TEXT,
-      desc TEXT,
-      owner TEXT
+      id TEXT PRIMARY KEY
     )
   `).run();
 
@@ -36,56 +30,50 @@ export function createChatTables() {
   `).run();
 }
 
-export function createChat(chat: {
-  id: string;
-  type: string;
-  avatar: string;
-  name: string;
-  createdAt: string;
-  desc: string;
-  owner: string;
-  participants: string[];
-}) {
+export function createChat(id: string) {
   const db = getDatabase();
 
-  const insertChat = db.prepare(`
-    INSERT INTO chats (id, type, avatar, name, createdAt, desc, owner)
-    VALUES (@id, @type, @avatar, @name, @createdAt, @desc, @owner)
-  `);
-
-  const insertParticipant = db.prepare(`
-    INSERT INTO chat_participants (chatId, userId)
-    VALUES (?, ?)
-  `);
-
-  const transaction = db.transaction(() => {
-    insertChat.run(chat);
-    for (const userId of chat.participants) {
-      insertParticipant.run(chat.id, userId);
-    }
-  });
-
-  transaction();
+  db.prepare(`
+    INSERT OR IGNORE INTO chats (id)
+    VALUES (?)
+  `).run(id);
 }
 
+function generateUniqueId(length: number = 12): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return result;
+}
 
 export function addMessage(chatId: string, message: {
-  id: string;
   sender: string;
   content: string;
   time: string;
-}) {
+}): { id: string; sender: string; content: string; time: string } {
   const db = getDatabase();
+  const id = generateUniqueId();
 
   db.prepare(`
     INSERT INTO messages (id, chatId, sender, content, time)
     VALUES (@id, @chatId, @sender, @content, @time)
   `).run({
-    ...message,
-    chatId
+    id,
+    chatId,
+    sender: message.sender,
+    content: message.content,
+    time: message.time
   });
-}
 
+  return {
+    id,
+    sender: message.sender,
+    content: message.content,
+    time: message.time
+  };
+}
 
 export function getMessagesByChatId(chatId: string): any[] {
   const db = getDatabase();
@@ -99,3 +87,12 @@ export function getMessagesByChatId(chatId: string): any[] {
 
   return messages;
 }
+
+export function getAllChatIds(): string[] {
+  const db = getDatabase();
+
+  const rows = db.prepare(`SELECT id FROM chats`).all();
+
+  return rows.map(row => row.id);
+}
+

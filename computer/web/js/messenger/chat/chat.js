@@ -18,6 +18,8 @@ export function selectChat(chatId) {
 }
 
 export function loadChat(content, chat_id, participants) {
+  content = safeParseJSON(content);
+
   let chat = null;
   let chatIndex = null;
 
@@ -178,4 +180,20 @@ export function highlightChatById(val) {
   } else {
     console.warn("Елемент з таким data-chat не знайдено:", val);
   }
+}
+
+
+
+
+
+function safeParseJSON(input) {
+    if (typeof input === 'string') {
+        try {
+            return JSON.parse(input);
+        } catch (e) {
+            console.error("JSON parse error:", e);
+            return null;
+        }
+    }
+    return input;
 }

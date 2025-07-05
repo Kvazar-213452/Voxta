@@ -30,7 +30,7 @@ async function uploadAvatar(base64String: string): Promise<string> {
     contentType: mimeType,
   });
 
-  const response = await axios.post(`${CONFIG}/upload_avatar`, form, {
+  const response = await axios.post(`${CONFIG.SERVIS_DATA}/upload_avatar`, form, {
     headers: form.getHeaders(),
   });
 
@@ -64,7 +64,9 @@ export function onCreateChat(socket: Socket, SECRET_KEY: string) {
         avatar: data.chat.avatar,
         participants: [socket.data.userId],
         name: data.chat.name,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        desc: data.chat.description,
+        owner: socket.data.userId
       }
 
       await chatCollection.insertOne(dataConfig);
@@ -74,10 +76,10 @@ export function onCreateChat(socket: Socket, SECRET_KEY: string) {
 
       await userCollection.updateOne(
         { _id: "config" as any },
-        { $addToSet: { chats: chatId } }
+        { $addToSet: { chats: chatId, type: data.chat.privacy } }
       );
 
-      sendCreateChat(socket.data.userId, JSON.stringify(dataConfig));
+      sendCreateChat(socket.data.userId, JSON.stringify(dataConfig), chatId);
 
     } catch (error: unknown) {
       console.log("CONFIG DOC:", error);

@@ -6,13 +6,9 @@ import { app } from 'electron';
 
 let dbInstance: Database.Database | null = null;
 
-
 const DB_PATH = path.join(app.getPath('userData'), 'chat_database.db');
 
 export function initDatabaseChats() {
-
-
-  // 🔄 Важливо! Перевірка перед створенням бази
   const dbExists = fs.existsSync(DB_PATH);
 
   dbInstance = new Database(DB_PATH);
@@ -25,10 +21,9 @@ export function initDatabaseChats() {
   }
 }
 
-
 export function getDatabase(): Database.Database {
   if (!dbInstance) {
-    throw new Error('Базу даних не ініціалізовано. Виклич initDatabase() спочатку.');
+    throw new Error('erro none db');
   }
   return dbInstance;
 }

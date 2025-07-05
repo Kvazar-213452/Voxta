@@ -4,7 +4,7 @@ import { findChatIndex } from '../chat/utils.js';
 export function handleChat(data) {
   if (data.type === "load_chats") {
     load_chats(data.chats);
-    selectChat(1);
+    selectChat(0);
   } else if (data.type === "load_chat_content") {
     loadChat(data.content, data.chat_id, data.participants);
   } else if (data.type === "came_chat_msg") {
@@ -16,5 +16,7 @@ export function handleChat(data) {
     }
   } else if (data.type === "create_new_chat_render") {
     addChats(JSON.parse(data.chat));
+  } else if (data.type === "load_chat_content_offline") {
+    loadChat(data.content, data.id, data.participants);
   }
 }
