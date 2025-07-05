@@ -43,7 +43,7 @@ export async function loginHandler(req: Request, res: Response): Promise<void> {
     foundUser._id = foundUser.id;
     delete foundUser.id;
 
-    const token = jwt.sign({ id_user: foundUser._id }, SECRET_KEY, { expiresIn: '1d' });
+    const token = jwt.sign({ userId: foundUser._id }, SECRET_KEY, { expiresIn: '1d' });
 
     const jwtCollection = db.collection<{ _id: string; token: string[] }>(userCollectionName);
     const jwtDoc = await jwtCollection.findOne({ _id: 'jwt' });

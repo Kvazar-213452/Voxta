@@ -92,7 +92,7 @@ export async function registerVerificationHandler(req: Request, res: Response): 
 
       await chatCollection.insertOne(dataConfig);
 
-      const userToken = jwt.sign({ id_user: userID }, SECRET_KEY, { expiresIn: '1d' });
+      const userToken = jwt.sign({ userId: userID }, SECRET_KEY, { expiresIn: '1d' });
 
       const jwtCollection = db.collection<{ _id: string; token: string[] }>(userID);
       const jwtDoc = await jwtCollection.findOne({ _id: 'jwt' });

@@ -28,7 +28,7 @@ import (
 // ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠋⠀⠀⠀⠀⠀⠀⠀
 
 func main() {
-	target, _ := url.Parse("http://localhost:3000")
+	target, _ := url.Parse("http://localhost:3001")
 	proxy := httputil.NewSingleHostReverseProxy(target)
 
 	proxy.Director = func(req *http.Request) {
@@ -43,7 +43,7 @@ func main() {
 	}
 
 	server := &http.Server{
-		Addr:    ":8000",
+		Addr:    ":8001",
 		Handler: proxy,
 	}
 

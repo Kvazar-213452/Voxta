@@ -6,6 +6,7 @@ import { safeParseJSON } from './utils';
 import { loginToJwt } from '../services/authentication';
 import { startClientChat } from '../services/chat/chatController';
 import { startClientStatus } from '../services/status/statusController';
+import { startClientTrafficJams } from '../services/trafficJams/trafficJams';
 
 // ⠀⣠⣶⣿⣿⣶⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 // ⠀⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀
@@ -50,6 +51,7 @@ async function MainApp() {
 
       startClientStatus().catch(console.error);
       startClientChat().catch(console.error);
+      startClientTrafficJams().catch(console.error);
     });
   }
 }

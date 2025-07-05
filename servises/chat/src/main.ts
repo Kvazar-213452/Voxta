@@ -2,7 +2,7 @@ import { Server, Socket } from 'socket.io';
 import dotenv from 'dotenv';
 import { onGetInfoChats } from './socketEvents/onGetInfoChats';
 import { onLoadChatContent } from './socketEvents/onLoadChatContent';
-import { onsendMessage } from './socketEvents/onsendMessage';
+import { onSendMessage } from './socketEvents/onSendMessage';
 import { onAuthenticate } from './socketEvents/onAuthenticate';
 import { onDisconnect } from './socketEvents/onDisconnect';
 import { onError } from './socketEvents/onError';
@@ -32,7 +32,7 @@ io.on('connection', (socket: Socket) => {
   onAuthenticate(socket, SECRET_KEY);
   onGetInfoChats(socket, SECRET_KEY);
   onLoadChatContent(socket, SECRET_KEY);
-  onsendMessage(socket, SECRET_KEY);
+  onSendMessage(socket, SECRET_KEY);
   onCreateChat(socket, SECRET_KEY);
   onGetInfoUsers(socket, SECRET_KEY);
   onGetInfoUser(socket, SECRET_KEY);

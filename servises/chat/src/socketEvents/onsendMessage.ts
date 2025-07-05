@@ -12,7 +12,7 @@ function generateRandomId(length: number = 12): string {
   return id;
 }
 
-export function onsendMessage(socket: Socket, SECRET_KEY: string): void {
+export function onSendMessage(socket: Socket, SECRET_KEY: string): void {
   socket.on("send_message", async (data: { message: Message, chatId: string }) => {
     try {
       const auth = verifyAuth(socket, SECRET_KEY);
