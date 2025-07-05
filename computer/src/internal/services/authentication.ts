@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { configServises } from '../../config';
+import { configServises } from '../../config/config';
 import { encryptionMsg, getPublicKeyServer, decryptionApp } from '../utils/cryptoFunc';
 import { getPublicKey, saveToken, getToken, deleteToken } from '../models/storageApp';
 import { saveUser, getUser, deleteUser } from '../models/sqliteStorage/serviseUtils/user';

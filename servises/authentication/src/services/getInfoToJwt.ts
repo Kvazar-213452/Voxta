@@ -8,22 +8,6 @@ dotenv.config();
 
 const SECRET_KEY = process.env.SECRET_KEY ?? '';
 
-interface UserConfig {
-  _id: string;
-  name: string;
-  password: string;
-  time?: string;
-  avatar?: string;
-  desc?: string;
-  chats?: string[];
-  id?: string;
-}
-
-interface JWTDocument {
-  _id: string;
-  token: string[];
-}
-
 export async function getInfoToJwtHandler(req: Request, res: Response): Promise<void> {
   const { data, key } = req.body;
 

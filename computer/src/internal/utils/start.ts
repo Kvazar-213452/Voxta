@@ -32,9 +32,9 @@ async function MainApp() {
   //   sss = 1
   // }
   
-  const tokenExists = await getToken();
-  const userExists = await getUser();
-  const user = safeParseJSON(userExists);
+  const tokenExists: string | null = await getToken();
+  const userExists: any = await getUser();
+  const user: User = safeParseJSON(userExists);
 
   if (!tokenExists || !user["_id"]) {
     await generateKey();

@@ -1,5 +1,5 @@
 import keytar from 'keytar';
-import { configDB } from '../../config';
+import { configDB } from '../../config/config';
 import crypto from 'crypto';
 
 // ==== TOKENS ====
@@ -71,7 +71,7 @@ export async function getKeyText(): Promise<Buffer> {
   return Buffer.from(secretKeyHex, 'hex');
 }
 
-export async function initKeyText() {
+export async function initKeyText(): Promise<void> {
   try {
     await getKeyText();
   } catch (err) {

@@ -3,7 +3,7 @@ import path from 'node:path';
 import { setupIPC } from './mainIPC';
 import { MainApp } from './internal/utils/start';
 import { setMainWindow } from './internal/models/mainWindow';
-import { configApp } from './config';
+import { configApp } from './config/config';
 import { initDatabase } from './internal/models/sqliteStorage/servise';
 import { initDatabaseChats } from './internal/models/sqliteStorage/chats';
 import { delay } from './internal/utils/utils';

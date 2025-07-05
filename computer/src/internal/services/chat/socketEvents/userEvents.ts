@@ -1,7 +1,7 @@
 import { Socket } from "socket.io-client";
 import { getMainWindow } from '../../../models/mainWindow';
 
-export function registerUserEvents(socket: Socket) {
+export function registerUserEvents(socket: Socket): void {
   socket.on("get_info_users_return", (data) => {
     getMainWindow().webContents.send('reply', {
       type: "info_users",

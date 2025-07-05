@@ -3,18 +3,18 @@ import jwt from "jsonwebtoken";
 import { getMongoClient } from "../models/mongoClient";
 import { Db } from "mongodb";
 
-export function onAuthenticate(socket: Socket, SECRET_KEY: string) {
+export function onAuthenticate(socket: Socket, SECRET_KEY: string): void {
   socket.on("authenticate", async (data: { token: string }) => {
     try {
-      const decoded = jwt.verify(data.token, SECRET_KEY) as { id_user: string };
+      const decoded = jwt.verify(data.token, SECRET_KEY) as { userId: string };
 
-      console.log(`user ${decoded.id_user} authenticated.`);
-      socket.data.userId = decoded.id_user;
+      console.log(`user ${decoded.userId} authenticated.`);
+      socket.data.userId = decoded.userId;
       socket.data.token = data.token;
 
       const client = await getMongoClient();
       const db: Db = client.db("users");
-      const collection = db.collection<any>(decoded.id_user);
+      const collection = db.collection<any>(decoded.userId);
 
       const userConfig = await collection.findOne({ _id: 'config' });
 

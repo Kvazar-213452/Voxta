@@ -4,7 +4,7 @@ import Database from 'better-sqlite3';
 
 let db: Database.Database;
 
-export function initDatabase() {
+export function initDatabase(): void {
   const dbPath = path.join(app.getPath('userData'), 'voxta.db');
   db = new Database(dbPath);
 

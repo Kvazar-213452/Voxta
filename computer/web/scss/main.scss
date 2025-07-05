@@ -409,6 +409,12 @@ h2 {
   margin-bottom: 5px;
 }
 
+.chat-type-offline {
+  font-size: 14px;
+  color: var(--color-red);
+  margin-bottom: 5px;
+}
+
 .user-email-offline {
   font-size: 14px;
   margin-bottom: 5px;
@@ -661,4 +667,4 @@ h2 {
 }
 
 
-// glass-pane
+// .chat-type-online

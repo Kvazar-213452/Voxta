@@ -1,6 +1,6 @@
 import { getDatabase } from '../chats';
 
-export function createChatTables() {
+export function createChatTables(): void {
   const db = getDatabase();
 
   db.prepare(`
@@ -30,7 +30,7 @@ export function createChatTables() {
   `).run();
 }
 
-export function createChat(id: string) {
+export function createChat(id: string): void {
   const db = getDatabase();
 
   db.prepare(`
@@ -48,11 +48,7 @@ function generateUniqueId(length: number = 12): string {
   return result;
 }
 
-export function addMessage(chatId: string, message: {
-  sender: string;
-  content: string;
-  time: string;
-}): { id: string; sender: string; content: string; time: string } {
+export function addMessage(chatId: string, message: MsgToDb): Message {
   const db = getDatabase();
   const id = generateUniqueId();
 
@@ -75,7 +71,7 @@ export function addMessage(chatId: string, message: {
   };
 }
 
-export function getMessagesByChatId(chatId: string): any[] {
+export function getMessagesByChatId(chatId: string): Message[] {
   const db = getDatabase();
 
   const messages = db.prepare(`

@@ -1,13 +1,16 @@
 export function loadInfoPanel(chatData) {
   $(".user_info_caunt_div").html(null);
+  $('.chat-info-panel .chat-profile .chat-type-online').html(null);
+  $('.chat-info-panel .chat-profile .chat-type-offline').html(null);
 
   $('.chat-info-panel .chat-profile .chat-avatar').attr('src', chatData.avatar);
   $('.chat-info-panel .chat-profile .chat-name-info').text(chatData.name);
-
+  
   if (chatData.type === "online") {
-    $('.chat-info-panel .chat-profile .chat-type-online').text(chatData.type);
+    $('.chat-info-panel .chat-profile .chat-type-online').html(chatData.type);
   } else {
-    $('.chat-info-panel .chat-profile .chat-type-offline').text(chatData.type);
+    console.log("dddddddddddddd")
+    $('.chat-info-panel .chat-profile .chat-type-offline').html(chatData.type);
   }
 
   window.electronAPI.sendMessage({

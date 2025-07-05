@@ -1,7 +1,7 @@
 import { Socket } from "socket.io-client";
 import { getMainWindow } from '../../../models/mainWindow';
 
-export function registerMessageEvents(socket: Socket) {
+export function registerMessageEvents(socket: Socket): void {
   socket.on("send_message_return", (data) => {
     getMainWindow().webContents.send('reply', {
       type: "came_chat_msg",

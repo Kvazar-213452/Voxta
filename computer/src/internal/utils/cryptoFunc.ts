@@ -1,12 +1,7 @@
 import crypto, { CipherGCM, DecipherGCM } from 'crypto';
 import axios from 'axios';
 import { saveKeys, getPublicKey, getPrivateKey, getKeyText } from '../models/storageApp';
-import { configCrypto } from '../../config';
-
-export interface EncryptedData {
-  key: string;
-  data: string;
-}
+import { configCrypto } from '../../config/config';
 
 export async function generateKey(): Promise<void> {
   const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
@@ -30,7 +25,7 @@ export async function getPublicKeyServer(): Promise<string> {
 }
 
 // ======= encryption_msg ENDPOINT ===========
-export function encryptionMsg(publicRsaKey: string, message: string): { key: string; data: string } {
+export function encryptionMsg(publicRsaKey: string, message: string): EncryptedData {
   const aesKey = crypto.randomBytes(32);
 
   const iv = crypto.randomBytes(16);

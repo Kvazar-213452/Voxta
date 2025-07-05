@@ -4,7 +4,7 @@ import { addChatOflineOnDB } from '../utils/createChat';
 import { loadChatContentLocal } from '../utils/loadChatContentLocal';
 import { safeParseJSON } from '../../../utils/utils';
 
-export function registerChatEvents(socket: Socket) {
+export function registerChatEvents(socket: Socket): void {
   socket.on("chatsInfo", (data) => {
     if (data.code === 1) {
       getMainWindow().webContents.send('reply', { type: "load_chats", chats: data.chats });

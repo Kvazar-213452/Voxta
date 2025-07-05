@@ -1,8 +1,8 @@
-import { getSettings, Settings, saveSettings } from '../models/sqliteStorage/serviseUtils/settings';
+import { getSettings, saveSettings } from '../models/sqliteStorage/serviseUtils/settings';
 import { getMainWindow } from '../models/mainWindow';
 
-export function returnSettings() {
-  let settings = getSettings();
+export function returnSettings(): void {
+  let settings: Settings | null = getSettings();
       
   getMainWindow().webContents.send('reply', {
     type: "get_settings",
@@ -10,7 +10,7 @@ export function returnSettings() {
   });
 }
 
-export function saveSettingsFix(settings: Settings) {
+export function saveSettingsFix(settings: Settings): void {
   saveSettings(settings);
 
   getMainWindow().webContents.send('reply', {

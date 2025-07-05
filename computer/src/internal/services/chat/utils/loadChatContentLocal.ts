@@ -2,7 +2,7 @@ import { getMessagesByChatId } from "../../../models/sqliteStorage/chatUtils/cha
 import { getMainWindow } from '../../../models/mainWindow';
 
 export function loadChatContentLocal(chat_id: string, participants): void {
-  const messages = getMessagesByChatId(chat_id);
+  const messages: Message[] = getMessagesByChatId(chat_id);
   
   getMainWindow().webContents.send('reply', {
     type: "load_chat_content_offline",

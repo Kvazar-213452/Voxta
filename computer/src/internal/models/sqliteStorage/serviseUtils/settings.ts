@@ -1,15 +1,6 @@
 import { getDatabase } from '../servise';
 
-export type Settings = {
-  darkMode: boolean;
-  browserNotifications: boolean;
-  doNotDisturb: boolean;
-  language: string;
-  readReceipts: boolean;
-  onlineStatus: boolean;
-};
-
-export function saveSettings(settings: Settings) {
+export function saveSettings(settings: Settings): void {
   getDatabase().prepare(`DELETE FROM settings`).run();
 
   const stmt = getDatabase().prepare(`

@@ -21,7 +21,7 @@ export async function registerHandler(req: Request, res: Response): Promise<void
 
   try {
     const decrypted = await decryptionServer(data);
-    const parsed = JSON.parse(decrypted);
+    const parsed: RegisterData = JSON.parse(decrypted);
 
     const name = parsed.name;
     const password = parsed.password;

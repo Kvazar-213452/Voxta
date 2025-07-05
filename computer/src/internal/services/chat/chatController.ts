@@ -2,17 +2,13 @@ import { io, Socket } from "socket.io-client";
 import { getToken } from '../../models/storageApp';
 import { saveUser } from '../../models/sqliteStorage/serviseUtils/user';
 import { getMainWindow } from '../../models/mainWindow';
-import { configServises } from '../../../config';
+import { configServises } from '../../../config/config';
 import * as chatEvents from './socketEvents/chatEvents';
 import * as userEvents from './socketEvents/userEvents';
 import * as messageEvents from './socketEvents/messageEvents';
 
 let socketGlobal: Socket | null = null;
-let user: any;
-
-function loadChatContent(chat_id: string, type: string): void {
-  socketGlobal?.emit("load_chat_content", { chat_id: chat_id, type: type });
-}
+let user: User;
 
 function getSocketGlobal(): Socket | null {
   return socketGlobal;
@@ -62,6 +58,5 @@ async function startClientChat(): Promise<void> {
 export {
   startClientChat,
   reconnectSocketClient,
-  loadChatContent,
   getSocketGlobal
 };

@@ -13,7 +13,7 @@ function generateRandomId(length: number = 12): string {
 }
 
 export function onsendMessage(socket: Socket, SECRET_KEY: string): void {
-  socket.on("send_message", async (data: { message: { sender: string, content: string, time: string }, chat_id: string }) => {
+  socket.on("send_message", async (data: { message: Message, chatId: string }) => {
     try {
       const auth = verifyAuth(socket, SECRET_KEY);
       if (!auth) return;
@@ -21,7 +21,7 @@ export function onsendMessage(socket: Socket, SECRET_KEY: string): void {
       const client = await getMongoClient();
       const db: Db = client.db("chats");
 
-      const collection = db.collection<any>(data.chat_id);
+      const collection = db.collection<any>(data.chatId);
 
       const messageToInsert = {
         _id: generateRandomId(12),
@@ -34,7 +34,7 @@ export function onsendMessage(socket: Socket, SECRET_KEY: string): void {
 
       socket.emit("send_message_return", {
         code: 1,
-        chat_id: data.chat_id,
+        chat_id: data.chatId,
         message: messageToInsert
       });
 
