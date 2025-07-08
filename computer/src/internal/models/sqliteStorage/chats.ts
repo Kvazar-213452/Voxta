@@ -8,7 +8,7 @@ let dbInstance: Database.Database | null = null;
 
 const DB_PATH = path.join(app.getPath('userData'), 'chat_database.db');
 
-export function initDatabaseChats() {
+export function initDatabaseChats(): void {
   const dbExists = fs.existsSync(DB_PATH);
 
   dbInstance = new Database(DB_PATH);

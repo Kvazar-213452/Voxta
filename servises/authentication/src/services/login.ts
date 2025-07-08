@@ -11,15 +11,11 @@ const SECRET_KEY = process.env.SECRET_KEY ?? '';
 export async function loginHandler(req: Request, res: Response): Promise<void> {
   const { data, key } = req.body;
 
-  console.log(data)
-
   try {
     const decrypted = await decryptionServer(data);
     const parsed = JSON.parse(decrypted);
     const name = parsed.name;
     const password = parsed.password;
-
-    console.log(password)
 
     const client = await getMongoClient();
     const db = client.db('users');
@@ -29,14 +25,14 @@ export async function loginHandler(req: Request, res: Response): Promise<void> {
     let userCollectionName: string | null = null;
 
     for (const col of collections) {
-    const collection = db.collection<{ _id: string; [key: string]: any }>(col.name);
-    const config = await collection.findOne({ _id: 'config' });
+      const collection = db.collection<{ _id: string; [key: string]: any }>(col.name);
+      const config = await collection.findOne({ _id: 'config' });
 
-    if (config && config.name === name && config.password === password) {
-        foundUser = { ...config };
-        userCollectionName = col.name;
-        break;
-    }
+      if (config && config.name === name && config.password === password) {
+          foundUser = { ...config };
+          userCollectionName = col.name;
+          break;
+      }
     }
 
     if (!foundUser || !userCollectionName) {

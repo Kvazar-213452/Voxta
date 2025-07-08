@@ -1,11 +1,12 @@
 import { getMainWindow } from '../models/mainWindow';
 import { getToken, deleteToken } from '../models/storageApp';
-import { getUser } from '../models/sqliteStorage/serviseUtils/user';
+import { getUser, deleteUser } from '../models/sqliteStorage/serviseUtils/user';
 import { generateKey } from './cryptoFunc';
 import { safeParseJSON } from './utils';
 import { loginToJwt } from '../services/authentication';
 import { startClientChat } from '../services/chat/chatController';
 import { startClientStatus } from '../services/status/statusController';
+import { startClientTrafficJams } from '../services/trafficJams/trafficJams';
 
 // ⠀⣠⣶⣿⣿⣶⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 // ⠀⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀
@@ -24,13 +25,14 @@ import { startClientStatus } from '../services/status/statusController';
 // ⠀⠀⠀⠀⠀⠀⣼⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 // ⠀⠀⠀⠀⠀⠀⠻⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
-// let sss = 0;
+let sss = 0;
 
 async function MainApp() {
-  // if (sss == 0) {
-  //   await deleteToken();
-  //   sss = 1
-  // }
+  if (sss == 0) {
+    await deleteToken();
+    deleteUser();
+    sss = 1
+  }
   
   const tokenExists = await getToken();
   const userExists = await getUser();
@@ -50,6 +52,7 @@ async function MainApp() {
 
       startClientStatus().catch(console.error);
       startClientChat().catch(console.error);
+      startClientTrafficJams().catch(console.error);
     });
   }
 }

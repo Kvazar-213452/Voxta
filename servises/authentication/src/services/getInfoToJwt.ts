@@ -19,7 +19,7 @@ interface UserConfig {
   id?: string;
 }
 
-interface JWTDocument {
+declare interface JWTDocument {
   _id: string;
   token: string[];
 }
