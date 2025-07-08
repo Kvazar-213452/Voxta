@@ -4,7 +4,7 @@ import { verifyAuth } from "../utils/verifyAuth";
 import { Db } from "mongodb";
 
 export function onGetInfoChat(socket: Socket, SECRET_KEY: string) {
-  socket.on("getInfoChat", async (data: { chatId: string }) => {
+  socket.on("getInfoChat", async (data: { chatId: string, message: any }) => {
     try {
       const auth = verifyAuth(socket, SECRET_KEY);
       if (!auth) return;
@@ -19,18 +19,18 @@ export function onGetInfoChat(socket: Socket, SECRET_KEY: string) {
         const chatConfig = await collection.findOne({ _id: "config" });
 
         if (chatConfig) {
-          socket.emit("chatsInfo", { code: 1, chat: chatConfig });
+          socket.emit("chatInfo", { code: 1, chat: chatConfig, message: data.message });
         } else {
-          socket.emit("chatsInfo", { code: 0, error: "config_not_found" });
+          socket.emit("chatInfo", { code: 0, error: "config_not_found" });
         }
       } catch (err) {
         console.error(`DB error for chat ${chatId}:`, err);
-        socket.emit("chatsInfo", { code: 0, error: "db_error" });
+        socket.emit("chatInfo", { code: 0, error: "db_error" });
       }
 
     } catch (error) {
       console.error("getInfoChat server error:", error);
-      socket.emit("chatsInfo", { code: 0, error: "server_error" });
+      socket.emit("chatInfo", { code: 0, error: "server_error" });
     }
   });
 }

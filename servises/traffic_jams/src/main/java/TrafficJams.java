@@ -6,9 +6,10 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.corundumstudio.socketio.*;
 import com.corundumstudio.socketio.listener.*;
 import io.github.cdimascio.dotenv.Dotenv;
-
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TrafficJams {
 
@@ -17,7 +18,7 @@ public class TrafficJams {
 
     public static void main(String[] args) {
         Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-        String secret = dotenv.get("SECRET_KEY", "default-secret-key");
+        String secret = dotenv.get("SECRET_KEY", "your_secret_key");
         int port = Integer.parseInt(dotenv.get("PORT", "3002"));
         Algorithm jwtAlgorithm = Algorithm.HMAC256(secret);
 
@@ -45,16 +46,19 @@ public class TrafficJams {
                 }
 
                 DecodedJWT decoded = JWT.require(jwtAlgorithm).build().verify(token);
-                String userId = decoded.getClaim("userId").asString();
+                String userId = decoded.getClaim("id_user").asString();
 
                 if (userId == null || userId.trim().isEmpty()) {
                     throw new RuntimeException("Invalid user ID in token");
                 }
 
-                // Видаляємо попередні підключення цього користувача (якщо такі є)
-                onlineUsers.entrySet().removeIf(entry -> entry.getValue().equals(client));
+                SocketIOClient oldClient = onlineUsers.get(userId);
+                if (oldClient != null && !oldClient.getSessionId().equals(client.getSessionId())) {
+                    oldClient.disconnect();
+                    onlineUsers.remove(userId);
+                    clientTokens.remove(oldClient);
+                }
 
-                // Додаємо в список онлайн користувачів
                 onlineUsers.put(userId, client);
                 clientTokens.put(client, token);
 
@@ -77,7 +81,61 @@ public class TrafficJams {
             }
         });
 
-        // Видалено server.addEventListener("get_status", ...);
+        server.addEventListener("send", Map.class, (client, data, ackSender) -> {
+            try {
+                Boolean authenticated = client.get("authenticated");
+                if (authenticated == null || !authenticated) {
+                    client.sendEvent("error", Map.of("error", "not_authenticated"));
+                    return;
+                }
+
+                Object msgObj = data.get("msg");
+                if (!(msgObj instanceof String)) {
+                    client.sendEvent("error", Map.of("error", "msg_must_be_string"));
+                    return;
+                }
+                String msg = (String) msgObj;
+
+                Object participantsObj = data.get("participants");
+                if (!(participantsObj instanceof List<?>)) {
+                    client.sendEvent("error", Map.of("error", "participants_must_be_list"));
+                    return;
+                }
+
+                List<?> rawParticipants = (List<?>) participantsObj;
+                List<String> participants = new ArrayList<>();
+
+                for (Object o : rawParticipants) {
+                    if (o instanceof String) {
+                        participants.add((String) o);
+                    } else {
+                        client.sendEvent("error", Map.of("error", "participants_list_must_contain_strings"));
+                        return;
+                    }
+                }
+
+                System.out.println("Sending message from userId: " + client.get("userId"));
+                System.out.println("Message: " + msg);
+                System.out.println("To participants: " + participants);
+
+                for (String userId : participants) {
+                    SocketIOClient receiver = onlineUsers.get(userId);
+                    if (receiver != null) {
+                        System.out.println("Sending to: " + userId);
+                        receiver.sendEvent("message", Map.of(
+                            "from", client.get("userId"),
+                            "msg", msg
+                        ));
+                    } else {
+                        System.out.println("User " + userId + " is not online");
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Error handling send event: " + e.getMessage());
+                client.sendEvent("error", Map.of("error", "send_failed"));
+            }
+        });
+
 
         server.addDisconnectListener(client -> {
             String userId = client.get("userId");

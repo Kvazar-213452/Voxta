@@ -30,13 +30,24 @@ async function startClientTrafficJams(): Promise<void> {
     console.log(`authenticated good: ${data.status}`);
   });
 
+  socket.on("message", async (data) => {
+    console.log("msg:", data);
+  });
+
+  socket.on("error", async (data) => {
+    console.log(data);
+  });
+
   socket.on("disconnect", () => {
     console.log("disconnect");
   });
 }
 
-function sendMsgOffline(msg): void {
-  socketGlobal?.emit("send", { data: msg });
+function sendMsgOffline(msg, participants) {
+  let msgToSend = typeof msg === "string" ? msg : JSON.stringify(msg);
+
+  console.log("send message", msgToSend, participants);
+  socketGlobal?.emit("send", { msg: msgToSend, participants });
 }
 
 export {

@@ -3,12 +3,20 @@ import { getMainWindow } from '../../../models/mainWindow';
 import { addChatOflineOnDB } from '../utils/createChat';
 import { loadChatContentLocal } from '../utils/loadChatContentLocal';
 import { safeParseJSON } from '../../../utils/utils';
+import { sendMsgOffline } from '../../trafficJams/trafficJams'
 
 export function registerChatEvents(socket: Socket) {
   socket.on("chatsInfo", (data) => {
     if (data.code === 1) {
       getMainWindow().webContents.send('reply', { type: "load_chats", chats: data.chats });
     }
+  });
+
+  socket.on("chatInfo", (data) => {
+    let chat = data.chat;
+    chat = safeParseJSON(chat);
+
+    sendMsgOffline(safeParseJSON(data.message), chat.participants);
   });
 
   socket.on("create_new_chat", (data) => {
