@@ -20,7 +20,7 @@ function getTemplate(name: string): string {
 
 function loadIndexTemplate(): void {
   let templates: Record<string, string> = {};
-  let names = ["settings", "addChat"];
+  let names = ["settings", "addChat", "settingsChat"];
 
   for (let i = 0; i < names.length; i++) {
     const name = names[i];

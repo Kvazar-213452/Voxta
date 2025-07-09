@@ -384,7 +384,6 @@ h2 {
 // Chat Profile
 .chat-profile {
   text-align: center;
-  margin-bottom: 30px;
 }
 
 .chat-avatar {
@@ -444,6 +443,51 @@ h2 {
 .info-value {
   font-size: 13px;
   font-weight: 500;
+}
+
+.chat-settings-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-light);
+  font-size: 18px;
+  text-decoration: none;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.chat-settings-btn:hover .settings-icon {
+  animation: rotate 0.5s ease-in-out;
+}
+
+.chat-settings-btn:hover {
+  background: var(--hover-bg);
+  border-color: var(--primary-color);
+  transform: scale(1.05);
+  box-shadow: 0 0 0 3px rgba(88, 255, 127, 0.1);
+}
+
+.chat-settings-btn:active {
+  transform: scale(0.95);
+}
+
+.user-email-offline {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: var(--text-muted);
 }
 
 // Modal Styles
@@ -562,8 +606,8 @@ h2 {
 .div_info_panel {
   overflow-y: auto;
   position: absolute;
-  top: 230px;
-  height: calc(100% - 250px);
+  top: 250px;
+  height: calc(100% - 270px);
   width: calc(100% - 60px);
 }
 
@@ -661,4 +705,4 @@ h2 {
 }
 
 
-// glass-pane
+// chat-profile
