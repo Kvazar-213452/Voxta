@@ -1,105 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voxta</title>
-    <link rel="stylesheet" href="dist/css/global.css" />
-    <link rel="stylesheet" href="dist/css/main.css" />
-    <link rel="stylesheet" href="dist/css/modal/settings.css" />
-    <link rel="stylesheet" href="dist/css/modal/addChat.css" />
-    <link rel="stylesheet" href="dist/css/modal/settingsChat.css" />
+    <link rel="stylesheet" href="dist/css/global.css">
+    <link rel="stylesheet" href="dist/css/main.css">
+    <link rel="stylesheet" href="dist/css/modal/settings.css">
+    <link rel="stylesheet" href="dist/css/modal/addChat.css">
+    <link rel="stylesheet" href="dist/css/modal/settingsChat.css">
 </head>
 <body>
     <div class="messenger-container">
         <!-- Chat List Panel -->
         <div class="glass-panel chat-list-panel">
-            <h2 class="title_name"></h2>
+            <h2 class="title_name">Voxta</h2>
             <div id="showSettingsBtn" class="settings_btn"></div>
             <div id="showAddChatBtn" class="plus_btn"></div>
-            <br /><br /><br />
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="" />
-            </div>
+            <br><br><br>
+            <div class="search-box"><input type="text" id="searchInput" placeholder="Пошук чатів..."></div>
             <div class="chats-list" id="chatsList"></div>
         </div>
 
         <!-- Chat Room Panel -->
         <div class="glass-panel chat-room-panel">
             <div class="chat-header">
-                <img class="avatar" src="" />
+                <img class="avatar" src="">
                 <div class="chat-header-info">
                     <h3 id="currentChatName"></h3>
                     <div class="online-status" id="onlineStatus"></div>
                 </div>
             </div>
-
+            
             <div class="messages-container" id="messagesContainer"></div>
-
+            
             <div class="message-input-container">
-                <input
-                    type="text"
-                    class="message-input"
-                    id="messageInput"
-                    placeholder=""
-                />
-                <button class="send-btn" id="sendBtn"></button>
+                <input type="text" class="message-input" id="messageInput" placeholder="Напишіть повідомлення...">
+                <button class="send-btn" id="sendBtn">▶</button>
             </div>
         </div>
 
         <!-- User Info Panel -->
         <div class="glass-panel chat-info-panel">
             <div class="chat-profile">
-                <button
-                    id="openModelSettingChatBtn"
-                    class="chat-settings-btn"
-                >
-                    <span class="settings-icon"></span>
+                <button id="openModelSettingChatBtn" class="chat-settings-btn" id="openChatSettings">
+                    <span class="settings-icon">⚙️</span>
                 </button>
 
-                <img src="" class="chat-avatar" />
+                <img src="" class="chat-avatar">
                 <div class="chat-name-info"></div>
                 <div class="chat-type-online"></div>
                 <div class="chat-type-offline"></div>
-                <div class="user-email-offline"></div>
+                <div class="user-email-offline">Останній раз: 2 хв тому</div>
             </div>
-
+            
             <div class="div_info_panel">
                 <div class="user-info-section">
-                    <div
-                        id="section_title_profile_chat_users"
-                        class="section-title"
-                    ></div>
+                    <div class="section-title">Користувачі</div>
                     <div class="user_info_caunt_div"></div>
                 </div>
-                <br />
+                <br>
                 <div class="user-info-section">
-                    <div
-                        id="section_title_profile_chat_desc"
-                        class="section-title"
-                    ></div>
+                    <div class="section-title">Опис</div>
                     <p id="desc_chat_info"></p>
                 </div>
-                <br />
+                <br>
                 <div class="user-info-section">
-                    <div class="section-title"></div>
+                    <div class="section-title">Інформація</div>
                     <div class="info-item">
-                        <span class="info-label"></span>
-                        <span
-                            class="info-value"
-                            id="users_on_chat_caunt_chat_info"
-                        ></span>
+                        <span class="info-label">Учасники</span>
+                        <span class="info-value" id="users_on_chat_caunt_chat_info"></span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label"></span>
+                        <span class="info-label">Дата реєстрації</span>
                         <span class="info-value" id="time_chat_info"></span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label"></span>
+                        <span class="info-label">Тип</span>
                         <span class="info-value" id="type_chat_info"></span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label"></span>
+                        <span class="info-label">Власник</span>
                         <span class="info-value" id="owner_chat_info"></span>
                     </div>
                 </div>
@@ -112,21 +93,17 @@
     <div id="settingsChat_div_m"></div>
 
     <div id="userNamePopup">
-        <img
-            class="avatar_p"
-            src="http://localhost:3004/avatars/306d4102-f22b-452c-9f3b-c14b7661b0f8.jpg"
-        />
-        <div class="user_info_p">
-            <div class="user_name_p"></div>
-            <div class="user_desc_p"></div>
-            <div class="user_status_p"></div>
-        </div>
+    <img class="avatar_p" src="http://localhost:3004/avatars/306d4102-f22b-452c-9f3b-c14b7661b0f8.jpg">
+    <div class="user_info_p">
+        <div class="user_name_p"></div>
+        <div class="user_desc_p"></div>
+        <div class="user_status_p"></div>
+    </div>
     </div>
 
     <script src="js/lib/jquery-3.6.0.min.js"></script>
     <script src="js/messenger/val.js"></script>
     <script type="module" src="js/messenger/main.js"></script>
-    <script type="module" src="js/messenger/language.js"></script>
     <script type="module" src="js/messenger/ipcHandler.js"></script>
     <script type="module" src="js/messenger/events/settingsEvents.js"></script>
     <script type="module" src="js/messenger/events/SettingsChatEvents.js"></script>

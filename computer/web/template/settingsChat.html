@@ -1,19 +1,19 @@
 <div class="modal-overlay" id="settingsChatModal">
     <div class="modal-content">
         <div class="modal-header">
-            <h2 class="modal-title"></h2>
-            <button class="modal-close" id="closeModelSettingChatBtn"></button>
+            <h2 class="modal-title">⚙️ Налаштування чату</h2>
+            <button class="modal-close" id="closeModelSettingChatBtn">&times;</button>
         </div>
 
         <div class="modal-body">
             <form id="settingsForm">
                 <div class="chat-form-group">
-                    <label class="chat-form-label"></label>
+                    <label class="chat-form-label">Повідомлення</label>
                     
                     <div class="toggle-option">
                         <div class="toggle-info">
-                            <div class="toggle-name"></div>
-                            <div class="toggle-desc"></div>
+                            <div class="toggle-name">Звуки повідомлень</div>
+                            <div class="toggle-desc">Відтворювати звук при отриманні нових повідомлень</div>
                         </div>
                         <div class="toggle-switch active" data-setting="sounds">
                             <div class="toggle-slider"></div>
@@ -22,8 +22,8 @@
 
                     <div class="toggle-option">
                         <div class="toggle-info">
-                            <div class="toggle-name"></div>
-                            <div class="toggle-desc"></div>
+                            <div class="toggle-name">Попередження про друк</div>
+                            <div class="toggle-desc">Показувати коли хтось друкує повідомлення</div>
                         </div>
                         <div class="toggle-switch active" data-setting="typing">
                             <div class="toggle-slider"></div>
@@ -32,8 +32,8 @@
 
                     <div class="toggle-option">
                         <div class="toggle-info">
-                            <div class="toggle-name"></div>
-                            <div class="toggle-desc"></div>
+                            <div class="toggle-name">Часові мітки</div>
+                            <div class="toggle-desc">Показувати час відправки повідомлень</div>
                         </div>
                         <div class="toggle-switch active" data-setting="timestamps">
                             <div class="toggle-slider"></div>
@@ -42,12 +42,12 @@
                 </div>
 
                 <div class="chat-form-group">
-                    <label class="chat-form-label"></label>
+                    <label class="chat-form-label">Приватність</label>
                     
                     <div class="toggle-option">
                         <div class="toggle-info">
-                            <div class="toggle-name"></div>
-                            <div class="toggle-desc"></div>
+                            <div class="toggle-name">Статус онлайн</div>
+                            <div class="toggle-desc">Показувати ваш статус активності іншим</div>
                         </div>
                         <div class="toggle-switch active" data-setting="online-status">
                             <div class="toggle-slider"></div>
@@ -56,8 +56,8 @@
 
                     <div class="toggle-option">
                         <div class="toggle-info">
-                            <div class="toggle-name"></div>
-                            <div class="toggle-desc"></div>
+                            <div class="toggle-name">Підтвердження прочитання</div>
+                            <div class="toggle-desc">Показувати галочки про прочитання повідомлень</div>
                         </div>
                         <div class="toggle-switch active" data-setting="read-receipts">
                             <div class="toggle-slider"></div>
@@ -66,36 +66,36 @@
                 </div>
 
                 <div class="chat-form-group">
-                    <label class="chat-form-label" for="autoDeleteTime"></label>
+                    <label class="chat-form-label" for="autoDeleteTime">Автовидалення повідомлень</label>
                     <select id="autoDeleteTime" class="chat-form-input">
-                        <option value="never"></option>
-                        <option value="24h"></option>
-                        <option value="7d"></option>
-                        <option value="30d"></option>
-                        <option value="1y"></option>
+                        <option value="never">Ніколи</option>
+                        <option value="24h">Через 24 години</option>
+                        <option value="7d">Через 7 днів</option>
+                        <option value="30d">Через 30 днів</option>
+                        <option value="1y">Через 1 рік</option>
                     </select>
-                    <div class="form-hint"></div>
+                    <div class="form-hint">Повідомлення будуть автоматично видалені через вибраний час</div>
                 </div>
 
                 <div class="chat-form-group">
-                    <label class="chat-form-label" for="backgroundImage"></label>
+                    <label class="chat-form-label" for="backgroundImage">Фон чату</label>
                     <select id="backgroundImage" class="chat-form-input">
-                        <option value="default"></option>
-                        <option value="gradient1"></option>
-                        <option value="gradient2"></option>
-                        <option value="pattern1"></option>
-                        <option value="pattern2"></option>
-                        <option value="custom"></option>
+                        <option value="default">За замовчуванням</option>
+                        <option value="gradient1">Градієнт 1</option>
+                        <option value="gradient2">Градієнт 2</option>
+                        <option value="pattern1">Візерунок 1</option>
+                        <option value="pattern2">Візерунок 2</option>
+                        <option value="custom">Власне зображення</option>
                     </select>
-                    <div class="form-hint"></div>
+                    <div class="form-hint">Налаштуйте фон для області повідомлень</div>
                 </div>
             </form>
         </div>
 
         <div class="modal-footer">
-            <button class="modal-btn modal-btn-secondary" id="resetBtn"></button>
-            <button class="modal-btn modal-btn-secondary" id="closeSettingsBtn2"></button>
-            <button class="modal-btn modal-btn-primary" id="saveBtn"></button>
+            <button class="modal-btn modal-btn-secondary" id="resetBtn">Скинути</button>
+            <button class="modal-btn modal-btn-secondary" id="closeSettingsBtn2">Скасувати</button>
+            <button class="modal-btn modal-btn-primary" id="saveBtn">Зберегти</button>
         </div>
     </div>
 </div>

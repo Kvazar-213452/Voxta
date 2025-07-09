@@ -1,16 +1,16 @@
 <div class="modal-overlay" id="settingsModal">
   <div class="modal-content">
     <div class="modal-header">
-      <h2 class="modal-title"></h2>
-      <button class="modal-close" id="closeSettingsBtn"></button>
+      <h2 class="modal-title">⚙️ Налаштування</h2>
+      <button class="modal-close" id="closeSettingsBtn">&times;</button>
     </div>
 
     <div class="settings-group">
-      <div class="settings-group-title"></div>
+      <div class="settings-group-title">🎨 Зовнішній вигляд</div>
       <div class="settings-item">
         <div class="settings-label">
-          <div class="settings-label-text"></div>
-          <div class="settings-label-desc"></div>
+          <div class="settings-label-text">Темна тема</div>
+          <div class="settings-label-desc">Використовувати темну тему оформлення</div>
         </div>
         <div class="settings-control">
           <div class="toggle-switch" id="toggleDarkMode" data-setting="darkMode"></div>
@@ -19,12 +19,12 @@
     </div>
 
     <div class="settings-group">
-      <div class="settings-group-title"></div>
+      <div class="settings-group-title">🔔 Сповіщення</div>
 
       <div class="settings-item">
         <div class="settings-label">
-          <div class="settings-label-text"></div>
-          <div class="settings-label-desc"></div>
+          <div class="settings-label-text">Браузерні сповіщення</div>
+          <div class="settings-label-desc">Показувати сповіщення в браузері</div>
         </div>
         <div class="settings-control">
           <div class="toggle-switch" id="toggleBrowserNotifications" data-setting="browserNotifications"></div>
@@ -33,8 +33,8 @@
 
       <div class="settings-item">
         <div class="settings-label">
-          <div class="settings-label-text"></div>
-          <div class="settings-label-desc"></div>
+          <div class="settings-label-text">Режим "Не турбувати"</div>
+          <div class="settings-label-desc">Вимкнути всі сповіщення</div>
         </div>
         <div class="settings-control">
           <div class="toggle-switch" id="toggleDoNotDisturb" data-setting="doNotDisturb"></div>
@@ -43,29 +43,29 @@
     </div>
 
     <div class="settings-group">
-      <div class="settings-group-title"></div>
+      <div class="settings-group-title">💬 Чат</div>
 
       <div class="settings-item">
         <div class="settings-label">
-          <div class="settings-label-text"></div>
-          <div class="settings-label-desc"></div>
+          <div class="settings-label-text">Мова інтерфейсу</div>
+          <div class="settings-label-desc">Вибрати мову додатка</div>
         </div>
         <div class="settings-control">
           <select class="settings-select" id="changeLanguageSelect">
-            <option value="uk"></option>
-            <option value="en"></option>
+            <option value="uk" selected>Українська</option>
+            <option value="en">English</option>
           </select>
         </div>
       </div>
     </div>
 
     <div class="settings-group">
-      <div class="settings-group-title"></div>
+      <div class="settings-group-title">🔒 Приватність</div>
 
       <div class="settings-item">
         <div class="settings-label">
-          <div class="settings-label-text"></div>
-          <div class="settings-label-desc"></div>
+          <div class="settings-label-text">Читання повідомлень</div>
+          <div class="settings-label-desc">Показувати коли повідомлення прочитане</div>
         </div>
         <div class="settings-control">
           <div class="toggle-switch" id="toggleReadReceipts" data-setting="readReceipts"></div>
@@ -74,8 +74,8 @@
 
       <div class="settings-item">
         <div class="settings-label">
-          <div class="settings-label-text"></div>
-          <div class="settings-label-desc"></div>
+          <div class="settings-label-text">Статус онлайн</div>
+          <div class="settings-label-desc">Показувати коли ви онлайн</div>
         </div>
         <div class="settings-control">
           <div class="toggle-switch" id="toggleOnlineStatus" data-setting="onlineStatus"></div>
@@ -84,9 +84,9 @@
     </div>
 
     <div class="modal-footer">
-      <button class="modal-btn modal-btn-logout" id="logoutBtn"></button>
-      <button class="modal-btn modal-btn-secondary" id="resetSettingsBtn"></button>
-      <button class="modal-btn modal-btn-primary" id="saveSettingsBtn"></button>
+      <button class="modal-btn modal-btn-logout" id="logoutBtn">Вихід</button>
+      <button class="modal-btn modal-btn-secondary" id="resetSettingsBtn">Скинути</button>
+      <button class="modal-btn modal-btn-primary" id="saveSettingsBtn">Зберегти</button>
     </div>
   </div>
 </div>
@@ -94,8 +94,8 @@
 <div class="modal-overlay success-modal" id="successModal">
   <div class="modal-content">
     <div class="success-icon"></div>
-    <h2 class="success-title"></h2>
-    <p class="success-message"></p>
-    <button class="success-btn" id="closeSuccessModalBtn"></button>
+    <h2 class="success-title">Voxta</h2>
+    <p class="success-message">Налаштування збережено успішно!<br>Всі зміни застосовано.</p>
+    <button class="success-btn" id="closeSuccessModalBtn">Готово</button>
   </div>
 </div>
