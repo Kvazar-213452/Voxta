@@ -1,6 +1,6 @@
 import { loadIndexTemplate } from '../internal/utils/utils';
 import { getStatus } from '../internal/services/status/statusController';
-import { getInfoUser } from '../internal/services/chat/utils/getInfoUsers';
+import { getInfoUser } from '../internal/services/chat/utils/getInfo';
 
 export function handleMisc(msg: any): boolean {
   if (msg.type === 'load_template') {

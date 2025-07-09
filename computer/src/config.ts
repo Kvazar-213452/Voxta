@@ -47,3 +47,12 @@ export const configServises = {
   CHAT: "http://localhost:3001",
   TRAFFIC_JAMS: "http://localhost:3005"
 }
+
+export const defaultSettings = {
+  darkMode: 1,
+  browserNotifications: 1,
+  doNotDisturb: 0,
+  language: 'uk',
+  readReceipts: 1,
+  onlineStatus: 1
+};

@@ -10,8 +10,8 @@ import * as messageEvents from './socketEvents/messageEvents';
 let socketGlobal: Socket | null = null;
 let user: any;
 
-function loadChatContent(chat_id: string, type: string): void {
-  socketGlobal?.emit("load_chat_content", { chat_id: chat_id, type: type });
+function loadChatContent(chatId: string, type: string): void {
+  socketGlobal?.emit("load_chat_content", { chatId: chatId, type: type });
 }
 
 function getSocketGlobal(): Socket | null {

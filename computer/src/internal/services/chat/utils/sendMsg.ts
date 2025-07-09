@@ -2,18 +2,18 @@ import { getSocketGlobal } from "../chatController";
 import { addMessage, getAllChatIds } from "../../../models/sqliteStorage/chatUtils/chats";
 import { getMainWindow } from '../../../models/mainWindow';
 
-export function sendMessage(message: any, chat_id: string, type: string): void {
+export function sendMessage(message: any, chatId: string, type: string): void {
   if (type === "online") {
-    getSocketGlobal()?.emit("send_message", { message, chat_id });
+    getSocketGlobal()?.emit("send_message", { message, chatId });
   } else {
-    message = addMessage(chat_id, message);
+    message = addMessage(chatId, message);
 
     getMainWindow().webContents.send('reply', {
       type: "came_chat_msg",
       message: message,
-      chat_id: chat_id
+      chat_id: chatId
     });
 
-    getSocketGlobal()?.emit("getInfoChat", { chatId: chat_id, message: message });
+    getSocketGlobal()?.emit("get_info_chat", { chatId: chatId, message: message });
   }
 }

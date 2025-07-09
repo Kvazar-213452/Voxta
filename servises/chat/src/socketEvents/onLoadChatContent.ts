@@ -3,8 +3,8 @@ import { getMongoClient } from "../models/mongoClient";
 import { verifyAuth } from "../utils/verifyAuth";
 import { Db } from "mongodb";
 
-export function onLoadChatContent(socket: Socket, SECRET_KEY: string) {
-  socket.on("load_chat_content", async (data: { chat_id: string, type: string }) => {
+export function onLoadChatContent(socket: Socket, SECRET_KEY: string): void {
+  socket.on("load_chat_content", async (data: { chatId: string, type: string }) => {
     try {
       const auth = verifyAuth(socket, SECRET_KEY);
       if (!auth) return;
@@ -12,7 +12,7 @@ export function onLoadChatContent(socket: Socket, SECRET_KEY: string) {
       const client = await getMongoClient();
       const db: Db = client.db("chats");
 
-      const collection = db.collection<any>(data.chat_id);
+      const collection = db.collection<any>(data.chatId);
 
       const config = await collection.findOne({ _id: "config" });
       if (!config) {
@@ -42,7 +42,7 @@ export function onLoadChatContent(socket: Socket, SECRET_KEY: string) {
 
         socket.emit("load_chat_content_return", {
           code: 1,
-          chat_id: data.chat_id,
+          chatId: data.chatId,
           messages: messages.reverse(),
           participants: participantsData,
           type: data.type
@@ -50,7 +50,7 @@ export function onLoadChatContent(socket: Socket, SECRET_KEY: string) {
       } else {
         socket.emit("load_chat_content_return", {
           code: 1,
-          chat_id: data.chat_id,
+          chatId: data.chatId,
           participants: participantsData,
           type: data.type
         });
@@ -60,7 +60,7 @@ export function onLoadChatContent(socket: Socket, SECRET_KEY: string) {
       console.log(`Error loading chat content:`, err);
       socket.emit("load_chat_content_return", {
         code: 0,
-        chat_id: data.chat_id,
+        chatId: data.chatId,
         error: "server_error"
       });
     }

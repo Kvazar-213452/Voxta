@@ -6,13 +6,13 @@ import { safeParseJSON } from '../../../utils/utils';
 import { sendMsgOffline } from '../../trafficJams/trafficJams'
 
 export function registerChatEvents(socket: Socket) {
-  socket.on("chatsInfo", (data) => {
+  socket.on("chats_info", (data) => {
     if (data.code === 1) {
       getMainWindow().webContents.send('reply', { type: "load_chats", chats: data.chats });
     }
   });
 
-  socket.on("chatInfo", (data) => {
+  socket.on("chat_info", (data) => {
     let chat = data.chat;
     chat = safeParseJSON(chat);
 
@@ -35,12 +35,12 @@ export function registerChatEvents(socket: Socket) {
 
   socket.on("load_chat_content_return", (data) => {
     if (data.type === "offline") {
-      loadChatContentLocal(data.chat_id, data.participants);
+      loadChatContentLocal(data.chatId, data.participants);
     } else {
       getMainWindow().webContents.send('reply', {
         type: "load_chat_content",
         content: data.messages,
-        chat_id: data.chat_id,
+        chat_id: data.chatId,
         participants: data.participants
       });
     }

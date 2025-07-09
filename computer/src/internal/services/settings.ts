@@ -1,4 +1,4 @@
-import { getSettings, Settings, saveSettings } from '../models/sqliteStorage/serviseUtils/settings';
+import { getSettings, saveSettings } from '../models/sqliteStorage/serviseUtils/settings';
 import { getMainWindow } from '../models/mainWindow';
 
 export function returnSettings() {

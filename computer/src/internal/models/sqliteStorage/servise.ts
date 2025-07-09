@@ -1,10 +1,11 @@
 import path from 'path';
 import { app } from 'electron';
 import Database from 'better-sqlite3';
+import { defaultSettings } from '../../../config';
 
 let db: Database.Database;
 
-export function initDatabase() {
+export function initDatabase(): void {
   const dbPath = path.join(app.getPath('userData'), 'voxta.db');
   db = new Database(dbPath);
 
@@ -34,15 +35,6 @@ export function initDatabase() {
   const rowCount = db.prepare(`SELECT COUNT(*) AS count FROM settings`).get().count;
 
   if (rowCount === 0) {
-    const defaultSettings = {
-      darkMode: 1,
-      browserNotifications: 1,
-      doNotDisturb: 0,
-      language: 'uk',
-      readReceipts: 1,
-      onlineStatus: 1
-    };
-
     db.prepare(`
       INSERT INTO settings (
         darkMode,

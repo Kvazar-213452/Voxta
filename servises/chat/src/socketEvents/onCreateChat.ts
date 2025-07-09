@@ -8,14 +8,6 @@ import { sendCreateChat } from "../utils/sendCreateChat";
 import { getMongoClient } from "../models/mongoClient";
 import CONFIG from "../config";
 
-interface Chat {
-  name: string;
-  description: string;
-  privacy: string;
-  avatar: string | null;
-  createdAt: string;
-}
-
 async function uploadAvatar(base64String: string): Promise<string> {
   const matches = base64String.match(/^data:(.+);base64,(.+)$/);
   if (!matches) throw new Error("Invalid base64 string");
@@ -37,7 +29,7 @@ async function uploadAvatar(base64String: string): Promise<string> {
   return response.data.url;
 }
 
-export function onCreateChat(socket: Socket, SECRET_KEY: string) {
+export function onCreateChat(socket: Socket, SECRET_KEY: string): void {
   socket.on("create_chat", async (data: { chat: Chat }) => {
     try {
       const auth = verifyAuth(socket, SECRET_KEY);

@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { getMongoClient } from "../models/mongoClient";
 import { Db } from "mongodb";
 
-export function onAuthenticate(socket: Socket, SECRET_KEY: string) {
+export function onAuthenticate(socket: Socket, SECRET_KEY: string): void {
   socket.on("authenticate", async (data: { token: string }) => {
     try {
       const decoded = jwt.verify(data.token, SECRET_KEY) as { id_user: string };

@@ -6,15 +6,25 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.corundumstudio.socketio.*;
 import com.corundumstudio.socketio.listener.*;
 import io.github.cdimascio.dotenv.Dotenv;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
+import java.util.*;
+import java.util.concurrent.*;
 
 public class TrafficJams {
 
     private static final Map<String, SocketIOClient> onlineUsers = new ConcurrentHashMap<>();
     private static final Map<SocketIOClient, String> clientTokens = new ConcurrentHashMap<>();
+    private static final Map<String, List<DelayedMessage>> delayedMessages = new ConcurrentHashMap<>();
+
+    private static class DelayedMessage {
+        public final Map<String, Object> message;
+        public final long timestamp;
+
+        public DelayedMessage(Map<String, Object> message) {
+            this.message = message;
+            this.timestamp = System.currentTimeMillis();
+        }
+    }
 
     public static void main(String[] args) {
         Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
@@ -26,13 +36,41 @@ public class TrafficJams {
         config.setHostname("0.0.0.0");
         config.setPort(port);
         config.setOrigin("*");
-
         config.setAllowCustomRequests(true);
         config.setUpgradeTimeout(10000);
         config.setPingTimeout(5000);
         config.setPingInterval(25000);
 
         SocketIOServer server = new SocketIOServer(config);
+
+        new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(1000);
+                    long now = System.currentTimeMillis();
+
+                    for (String userId : new ArrayList<>(delayedMessages.keySet())) {
+                        List<DelayedMessage> list = delayedMessages.get(userId);
+                        if (list == null) continue;
+
+                        SocketIOClient receiver = onlineUsers.get(userId);
+                        if (receiver != null) {
+                            for (DelayedMessage dm : list) {
+                                receiver.sendEvent("message", dm.message);
+                                System.out.println("Delivered delayed message to " + userId);
+                            }
+                            delayedMessages.remove(userId);
+                        } else {
+                            list.removeIf(dm -> now - dm.timestamp > 30L * 60 * 60 * 1000); // 30 годин
+                            if (list.isEmpty()) {
+                                delayedMessages.remove(userId);
+                                System.out.println("Expired delayed messages for user: " + userId);
+                            }
+                        }
+                    }
+                } catch (InterruptedException ignored) {}
+            }
+        }).start();
 
         server.addConnectListener(client -> {
             System.out.println("Client connected: " + client.getSessionId());
@@ -41,16 +79,11 @@ public class TrafficJams {
         server.addEventListener("authenticate", Map.class, (client, data, ackSender) -> {
             try {
                 String token = (String) data.get("token");
-                if (token == null || token.trim().isEmpty()) {
-                    throw new RuntimeException("Token is required");
-                }
+                if (token == null || token.trim().isEmpty()) throw new RuntimeException("Token is required");
 
                 DecodedJWT decoded = JWT.require(jwtAlgorithm).build().verify(token);
-                String userId = decoded.getClaim("id_user").asString();
-
-                if (userId == null || userId.trim().isEmpty()) {
-                    throw new RuntimeException("Invalid user ID in token");
-                }
+                String userId = decoded.getClaim("userId").asString();
+                if (userId == null || userId.trim().isEmpty()) throw new RuntimeException("Invalid user ID");
 
                 SocketIOClient oldClient = onlineUsers.get(userId);
                 if (oldClient != null && !oldClient.getSessionId().equals(client.getSessionId())) {
@@ -61,22 +94,14 @@ public class TrafficJams {
 
                 onlineUsers.put(userId, client);
                 clientTokens.put(client, token);
-
                 client.set("userId", userId);
                 client.set("authenticated", true);
 
-                client.sendEvent("authenticated", Map.of(
-                    "code", 1,
-                    "status", "online"
-                ));
+                client.sendEvent("authenticated", Map.of("code", 1, "status", "online"));
                 System.out.println("User authenticated: " + userId);
-
             } catch (Exception e) {
                 System.err.println("Authentication failed: " + e.getMessage());
-                client.sendEvent("authenticated", Map.of(
-                    "code", 0,
-                    "error", "authentication_failed"
-                ));
+                client.sendEvent("authenticated", Map.of("code", 0, "error", "authentication_failed"));
                 client.disconnect();
             }
         });
@@ -102,10 +127,8 @@ public class TrafficJams {
                     return;
                 }
 
-                List<?> rawParticipants = (List<?>) participantsObj;
                 List<String> participants = new ArrayList<>();
-
-                for (Object o : rawParticipants) {
+                for (Object o : (List<?>) participantsObj) {
                     if (o instanceof String) {
                         participants.add((String) o);
                     } else {
@@ -114,20 +137,20 @@ public class TrafficJams {
                     }
                 }
 
-                System.out.println("Sending message from userId: " + client.get("userId"));
-                System.out.println("Message: " + msg);
-                System.out.println("To participants: " + participants);
+                String from = client.get("userId");
+                System.out.println("Sending message from " + from + " to " + participants);
 
                 for (String userId : participants) {
+                    Map<String, Object> msgPayload = Map.of("from", from, "msg", msg);
                     SocketIOClient receiver = onlineUsers.get(userId);
+
                     if (receiver != null) {
-                        System.out.println("Sending to: " + userId);
-                        receiver.sendEvent("message", Map.of(
-                            "from", client.get("userId"),
-                            "msg", msg
-                        ));
+                        receiver.sendEvent("message", msgPayload);
+                        System.out.println("Sent immediately to " + userId);
                     } else {
-                        System.out.println("User " + userId + " is not online");
+                        System.out.println("Queued message for offline user: " + userId);
+                        delayedMessages.computeIfAbsent(userId, k -> new ArrayList<>())
+                            .add(new DelayedMessage(msgPayload));
                     }
                 }
             } catch (Exception e) {
@@ -135,7 +158,6 @@ public class TrafficJams {
                 client.sendEvent("error", Map.of("error", "send_failed"));
             }
         });
-
 
         server.addDisconnectListener(client -> {
             String userId = client.get("userId");

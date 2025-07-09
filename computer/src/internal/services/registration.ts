@@ -6,7 +6,7 @@ import { saveUser } from '../models/sqliteStorage/serviseUtils/user';
 import { getMainWindow } from '../models/mainWindow';
 import { MainApp } from '../utils/start';
 
-let tempToken;
+let tempToken: string;
 
 export async function register(msg: { [key: string]: any }): Promise<void> {
   try {

@@ -6,7 +6,7 @@ export function registerMessageEvents(socket: Socket) {
     getMainWindow().webContents.send('reply', {
       type: "came_chat_msg",
       message: data.message,
-      chat_id: data.chat_id
+      chat_id: data.chatId
     });
   });
 }

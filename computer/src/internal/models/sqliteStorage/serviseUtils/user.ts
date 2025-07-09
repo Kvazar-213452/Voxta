@@ -1,15 +1,7 @@
 import { getDatabase } from '../servise';
 import { encryptText, decryptText } from '../../../utils/cryptoFunc';
 
-export async function saveUser(user: {
-  _id: string;
-  name: string;
-  password: string;
-  time: string;
-  avatar: string;
-  desc: string;
-  chats: string[];
-}) {
+export async function saveUser(user: User): Promise<void> {
   getDatabase().prepare(`DELETE FROM users`).run();
 
   const stmt = getDatabase().prepare(`
@@ -28,7 +20,7 @@ export async function saveUser(user: {
   });
 }
 
-export async function getUser() {
+export async function getUser(): Promise<User | null> {
   try {
     const row = getDatabase().prepare(`SELECT * FROM users LIMIT 1`).get();
 
@@ -49,6 +41,6 @@ export async function getUser() {
   }
 }
 
-export function deleteUser() {
+export function deleteUser(): void {
   getDatabase().prepare(`DELETE FROM users`).run();
 }

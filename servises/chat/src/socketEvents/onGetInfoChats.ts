@@ -3,7 +3,7 @@ import { getMongoClient } from "../models/mongoClient";
 import { verifyAuth } from "../utils/verifyAuth";
 import { Db } from "mongodb";
 
-export function onGetInfoChats(socket: Socket, SECRET_KEY: string) {
+export function onGetInfoChats(socket: Socket, SECRET_KEY: string): void {
   socket.on("getInfoChats", async (data: { chats: string[] }) => {
     try {
       const auth = verifyAuth(socket, SECRET_KEY);
@@ -27,11 +27,11 @@ export function onGetInfoChats(socket: Socket, SECRET_KEY: string) {
             }
         }
 
-      socket.emit("chatsInfo", { code: 1, chats: result });
+      socket.emit("chats_info", { code: 1, chats: result });
 
     } catch (error) {
       console.error("getInfoChats error:", error);
-      socket.emit("chatsInfo", { code: 0, error: "server_error" });
+      socket.emit("chats_info", { code: 0, error: "server_error" });
     }
   });
 }
