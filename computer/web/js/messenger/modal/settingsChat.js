@@ -59,6 +59,11 @@ $('#backgroundImage').on('change', function() {
 });
 
 export function showSettingsChat() {
+  window.electronAPI.sendMessage({
+    type: "load_chat_info_for_settings", 
+    id: chat_id_select,
+  });
+
   $('#settingsChatModal').addClass('active');
 }
 

@@ -5,12 +5,12 @@ export async function saveUser(user: User): Promise<void> {
   getDatabase().prepare(`DELETE FROM users`).run();
 
   const stmt = getDatabase().prepare(`
-    INSERT INTO users (_id, name, password, time, avatar, desc, chats)
-    VALUES (@_id, @name, @password, @time, @avatar, @desc, @chats)
+    INSERT INTO users (id, name, password, time, avatar, desc, chats)
+    VALUES (@id, @name, @password, @time, @avatar, @desc, @chats)
   `);
 
   stmt.run({
-    _id: user._id,
+    id: user.id,
     name: user.name,
     password: await encryptText(user.password),
     time: user.time,
@@ -27,7 +27,7 @@ export async function getUser(): Promise<User | null> {
     if (!row) return null;
 
     return {
-      _id: row._id,
+      id: row.id,
       name: row.name,
       password: await decryptText(row.password),
       time: row.time,

@@ -11,7 +11,7 @@ export function initDatabase(): void {
 
   db.prepare(`
     CREATE TABLE IF NOT EXISTS users (
-      _id TEXT PRIMARY KEY,
+      id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
       password TEXT NOT NULL,
       time TEXT,

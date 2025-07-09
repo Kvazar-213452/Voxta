@@ -25,7 +25,7 @@ import { startClientTrafficJams } from '../services/trafficJams/trafficJams';
 // ⠀⠀⠀⠀⠀⠀⣼⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 // ⠀⠀⠀⠀⠀⠀⠻⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
-// let sss = 0;
+let sss = 0;
 
 async function MainApp() {
   // if (sss == 0) {
@@ -37,8 +37,9 @@ async function MainApp() {
   const tokenExists = await getToken();
   const userExists = await getUser();
   const user = safeParseJSON(userExists);
+  console.log(user)
 
-  if (!tokenExists || !user["_id"]) {
+  if (!tokenExists || !user["id"]) {
     await generateKey();
 
     getMainWindow().loadFile('web/login.html');

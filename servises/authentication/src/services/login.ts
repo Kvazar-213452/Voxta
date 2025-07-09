@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { encryptionMsg, decryptionServer } from '../utils/cryptoFunc';
 import { getMongoClient } from '../models/getMongoClient';
+import { transforUser } from '../utils/utils'
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ export async function loginHandler(req: Request, res: Response): Promise<void> {
 
   try {
     const decrypted = await decryptionServer(data);
-    const parsed = JSON.parse(decrypted);
+    const parsed: LoginData = JSON.parse(decrypted);
     const name = parsed.name;
     const password = parsed.password;
 
@@ -43,7 +44,7 @@ export async function loginHandler(req: Request, res: Response): Promise<void> {
     foundUser._id = foundUser.id;
     delete foundUser.id;
 
-    const token = jwt.sign({ id_user: foundUser._id }, SECRET_KEY, { expiresIn: '1d' });
+    const token = jwt.sign({ userId: foundUser._id }, SECRET_KEY, { expiresIn: '1d' });
 
     const jwtCollection = db.collection<{ _id: string; token: string[] }>(userCollectionName);
     const jwtDoc = await jwtCollection.findOne({ _id: 'jwt' });
@@ -56,7 +57,7 @@ export async function loginHandler(req: Request, res: Response): Promise<void> {
 
     const responsePayload = JSON.stringify({
       token: token,
-      user: JSON.stringify(foundUser, null, 2)
+      user: JSON.stringify(transforUser(foundUser), null, 2)
     });
 
     const encrypted = encryptionMsg(key, responsePayload);

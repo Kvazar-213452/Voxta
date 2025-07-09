@@ -25,7 +25,7 @@ declare type Settings = {
 
 // ======= global =======
 declare interface User {
-  _id: string;
+  id: string;
   name: string;
   password: string;
   time: string;

@@ -16,7 +16,9 @@ export function onAuthenticate(socket: Socket, SECRET_KEY: string): void {
       const db: Db = client.db("users");
       const collection = db.collection<any>(decoded.id_user);
 
-      const userConfig = await collection.findOne({ _id: 'config' });
+      let userConfig = await collection.findOne({ _id: 'config' });
+      userConfig._id = userConfig.id;
+      delete userConfig.id;
 
       if (!userConfig) {
         socket.emit("authenticated", { code: 0 });
@@ -26,7 +28,7 @@ export function onAuthenticate(socket: Socket, SECRET_KEY: string): void {
 
       socket.emit("authenticated", {
         code: 1,
-        user: transformUserData(userConfig)
+        user: transforUser(userConfig)
       });
 
     } catch (error) {
@@ -36,13 +38,14 @@ export function onAuthenticate(socket: Socket, SECRET_KEY: string): void {
   });
 }
 
-function transformUserData(user: Record<string, any>): Record<string, any> {
-  const newUser = { ...user };
-  
-  if ('id' in newUser) {
-    newUser._id = newUser.id;
-    delete newUser.id;
-  }
-  
-  return newUser;
+function transforUser(user: Record<string, any>): Record<string, any> {
+  return {
+    id: user._id,
+    name: user.name,
+    password: user.password,
+    time: user.time,
+    avatar: user.avatar,
+    desc: user.desc,
+    chats: user.chats
+  };
 }

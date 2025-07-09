@@ -2,26 +2,23 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import axios from 'axios';
-import { Db, Collection } from "mongodb";
+import { Db, Collection } from 'mongodb';
 import { encryptionMsg, decryptionServer } from '../utils/cryptoFunc';
 import { getMongoClient } from '../models/getMongoClient';
 import { generateId } from '../utils/utils';
 import CONFIG from '../config';
+import { generateSixDigitCode, transforUser } from '../utils/utils'
 
 dotenv.config();
 
 const SECRET_KEY = process.env.SECRET_KEY ?? 'default_secret';
-
-function generateSixDigitCode(): string {
-  return Math.floor(100000 + Math.random() * 900000).toString();
-}
 
 export async function registerHandler(req: Request, res: Response): Promise<void> {
   const { data, key } = req.body;
 
   try {
     const decrypted = await decryptionServer(data);
-    const parsed = JSON.parse(decrypted);
+    const parsed: RegisterData = JSON.parse(decrypted);
 
     const name = parsed.name;
     const password = parsed.password;
@@ -69,7 +66,7 @@ export async function registerVerificationHandler(req: Request, res: Response): 
       const gmail = decoded.gmail;
 
       const client = await getMongoClient();
-      const db: Db = client.db("users");
+      const db: Db = client.db('users');
 
       let userID: string = generateId();
       while (await db.listCollections({ name: userID }).hasNext()) {
@@ -78,21 +75,21 @@ export async function registerVerificationHandler(req: Request, res: Response): 
 
       const chatCollection: Collection = db.collection(userID);
 
-      const dataConfig = {
-        _id: "config" as any,
+      let dataConfig: any = {
+        _id: 'config' as any,
         name,
         password,
         avatar: CONFIG.AVATAR,
         time: new Date().toISOString(),
-        desc: "new acaunt",
-        id: userID,
+        desc: 'new acaunt',
         gmail,
+        id: userID,
         chats: [CONFIG.ID_CHAT_MAIN]
       };
 
       await chatCollection.insertOne(dataConfig);
 
-      const userToken = jwt.sign({ id_user: userID }, SECRET_KEY, { expiresIn: '1d' });
+      const userToken = jwt.sign({ userId: userID }, SECRET_KEY, { expiresIn: '1d' });
 
       const jwtCollection = db.collection<{ _id: string; token: string[] }>(userID);
       const jwtDoc = await jwtCollection.findOne({ _id: 'jwt' });
@@ -103,9 +100,12 @@ export async function registerVerificationHandler(req: Request, res: Response): 
         await jwtCollection.insertOne({ _id: 'jwt', token: [userToken] });
       }
 
+      dataConfig['_id'] = dataConfig['id'];
+      delete dataConfig['id'];
+
       const responsePayload = JSON.stringify({
         token: userToken,
-        user: JSON.stringify(dataConfig, null, 2)
+        user: JSON.stringify(transforUser(dataConfig), null, 2)
       });
 
       const encrypted = encryptionMsg(key, responsePayload);

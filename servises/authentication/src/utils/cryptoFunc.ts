@@ -18,11 +18,6 @@ export function generateKey() {
     fs.writeFileSync('public_key.pem', publicKey);
 }
 
-export interface EncryptedData {
-  key: string;
-  data: string;
-}
-
 // ======= encryption_msg ENDPOINT ===========
 export function encryptionMsg(publicRsaKey: string, message: string): { key: string; data: string } {
   const aesKey = crypto.randomBytes(32);
