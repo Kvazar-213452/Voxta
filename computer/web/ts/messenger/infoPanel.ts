@@ -20,8 +20,8 @@ export function loadInfoPanel(chatData) {
   $('.chat-info-panel #type_chat_info').text(chatData.type);
   $('.chat-info-panel #desc_chat_info').text(chatData.desc);
 
-  if (user["_id"] == chatData.owner) {
-    $('.chat-info-panel #owner_chat_info').text(user.name);
+  if (window.user.id == chatData.owner) {
+    $('.chat-info-panel #owner_chat_info').text(window.user.name);
   } else {
     $('.chat-info-panel #owner_chat_info').html(null);
 

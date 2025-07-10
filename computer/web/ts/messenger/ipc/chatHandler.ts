@@ -8,10 +8,10 @@ export function handleChat(data) {
   } else if (data.type === "load_chat_content") {
     loadChat(data.content, data.chat_id, data.participants);
   } else if (data.type === "came_chat_msg") {
-    if (data.chat_id === chat_id_select) {
+    if (data.chat_id === window.AppData.chat_id_select) {
       addMessageToChat(data.message, true);
     } else {
-      let index = findChatIndex(chats, data.chat_id);
+      let index = findChatIndex(window.AppData.chats, data.chat_id);
       highlightChatById(index);
     }
   } else if (data.type === "create_new_chat_render") {

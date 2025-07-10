@@ -38,14 +38,14 @@ export const configCrypto = {
 
 export const configDB = {
   // app db
-  SERVICE_NAME: "voxta",
+  SERVICE_NAME: 'voxta',
 }
 
 export const configServises = {
-  AUTHENTICATION: "http://localhost:3000",
-  STATUS: "http://localhost:3002",
-  CHAT: "http://localhost:3001",
-  TRAFFIC_JAMS: "http://localhost:3005"
+  AUTHENTICATION: 'http://localhost:3000',
+  STATUS: 'http://localhost:3002',
+  CHAT: 'http://localhost:3001',
+  TRAFFIC_JAMS: 'http://localhost:3005'
 }
 
 export const defaultSettings = {

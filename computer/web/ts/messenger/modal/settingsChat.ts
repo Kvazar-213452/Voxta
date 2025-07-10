@@ -1,7 +1,7 @@
 
 
 // Color picker
-$('.color-option').on('click', function() {
+$('.color-option').on('click', function(this: HTMLElement) {
     $('.color-option').removeClass('selected');
     $(this).addClass('selected');
     
@@ -10,12 +10,12 @@ $('.color-option').on('click', function() {
 });
 
 // Font size slider
-$('#fontSize').on('input', function() {
+$('#fontSize').on('input', function(this: HTMLElement) {
     $('#fontSizeValue').text($(this).val() + 'px');
 });
 
 // Toggle switches
-$('.toggle-switch').on('click', function() {
+$('.toggle-switch').on('click', function(this: HTMLElement) {
     $(this).toggleClass('active');
 });
 
@@ -49,19 +49,19 @@ $('#saveBtn').on('click', function() {
 });
 
 // Auto-delete select styling
-$('#autoDeleteTime').on('change', function() {
+$('#autoDeleteTime').on('change', function(this: HTMLElement) {
     console.log('Auto-delete time changed to:', $(this).val());
 });
 
 // Background image select
-$('#backgroundImage').on('change', function() {
+$('#backgroundImage').on('change', function(this: HTMLElement) {
     console.log('Background changed to:', $(this).val());
 });
 
 export function showSettingsChat() {
   window.electronAPI.sendMessage({
     type: "load_chat_info_for_settings", 
-    id: chat_id_select,
+    id: window.AppData.chat_id_select,
   });
 
   $('#settingsChatModal').addClass('active');

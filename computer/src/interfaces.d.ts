@@ -49,4 +49,4 @@ declare interface EncryptedData {
 
 
 
-declare type typeChat = "offline" | "online";;
+declare type typeChat = 'offline' | 'online';;
