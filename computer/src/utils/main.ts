@@ -25,7 +25,7 @@ import { startClientTrafficJams } from '../services/trafficJams/trafficJams';
 // ⠀⠀⠀⠀⠀⠀⣼⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 // ⠀⠀⠀⠀⠀⠀⠻⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
-let sss = 0;
+// let sss = 0;
 
 async function MainApp() {
   // if (sss == 0) {

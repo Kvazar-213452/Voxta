@@ -2,7 +2,7 @@ import { io, Socket } from 'socket.io-client';
 import { getToken } from '../../models/storageApp';
 import { saveUser } from '../../models/sqliteStorage/serviseUtils/user';
 import { getMainWindow } from '../../models/mainWindow';
-import { configServises } from '../../../config';
+import { configServises } from '../../config';
 import * as chatEvents from './socketEvents/chatEvents';
 import * as userEvents from './socketEvents/userEvents';
 import * as messageEvents from './socketEvents/messageEvents';

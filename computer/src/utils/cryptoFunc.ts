@@ -1,7 +1,7 @@
 import crypto, { CipherGCM, DecipherGCM } from 'crypto';
 import axios from 'axios';
 import { saveKeys, getPublicKey, getPrivateKey, getKeyText } from '../models/storageApp';
-import { configCrypto } from '../../config';
+import { configCrypto } from '../config';
 
 export interface EncryptedData {
   key: string;

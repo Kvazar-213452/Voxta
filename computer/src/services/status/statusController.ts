@@ -1,7 +1,7 @@
 import { io, Socket } from 'socket.io-client';
 import { getToken } from '../../models/storageApp';
 import { getMainWindow } from '../../models/mainWindow';
-import { configServises } from '../../../config';
+import { configServises } from '../../config';
 
 let socketGlobal: Socket | null = null;
 

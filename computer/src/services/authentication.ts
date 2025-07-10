@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { configServises } from '../../config';
+import { configServises } from '../config';
 import { encryptionMsg, getPublicKeyServer, decryptionApp } from '../utils/cryptoFunc';
 import { getPublicKey, saveToken, getToken, deleteToken } from '../models/storageApp';
 import { saveUser, getUser, deleteUser } from '../models/sqliteStorage/serviseUtils/user';
 import { IpcMainEvent } from 'electron';
 import { getMainWindow } from '../models/mainWindow';
 import { safeParseJSON } from '../utils/utils';
-import { MainApp } from '../utils/start';
+import { MainApp } from '../utils/main';
 
 export async function login(event: IpcMainEvent, msg: { [key: string]: any }): Promise<void> {
   try {
