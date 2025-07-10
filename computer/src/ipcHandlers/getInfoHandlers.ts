@@ -1,5 +1,5 @@
-import { getStatus } from '../internal/services/status/statusController';
-import { getInfoUser } from '../internal/services/chat/utils/getInfo';
+import { getStatus } from '../services/status/statusController';
+import { getInfoUser, getInfoUsers } from '../services/chat/utils/getInfo';
 
 export function handleGetInfo(msg: any): boolean {
   if (msg.type === 'get_status_user') {
@@ -11,7 +11,13 @@ export function handleGetInfo(msg: any): boolean {
   } else if (msg.type === 'get_status_user_profile') {
     getStatus(msg.userId, "profile");
     return true;
-  } 
+  } else if (msg.type === 'get_info_users') {
+    getInfoUsers(msg.users);
+    return true;
+  } else if (msg.type === 'get_info_user') {
+    getInfoUser(msg.id, 'simple');
+    return true;
+  }
 
   return false;
 }

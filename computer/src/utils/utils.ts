@@ -15,7 +15,7 @@ function safeParseJSON(input: any): any {
 }
 
 function getTemplate(name: string): string {
-  return path.join(__dirname, '..', '..', '..', 'web', 'template', `${name}.html`);
+  return path.join(__dirname, '..', '..', 'web', 'template', `${name}.html`);
 }
 
 function loadIndexTemplate(): void {
@@ -42,4 +42,12 @@ function delay(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export { safeParseJSON, getTemplate, loadIndexTemplate, delay };
+// ============ debug ============
+function debugLog(msg: string): void {
+  const now = new Date();
+  const time = now.toLocaleTimeString();
+  
+  console.log(`[${time}] ${msg}`);
+}
+
+export { safeParseJSON, getTemplate, loadIndexTemplate, delay, debugLog };

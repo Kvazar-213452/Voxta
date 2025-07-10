@@ -20,7 +20,6 @@ export function registerChatEvents(socket: Socket) {
 
       sendMsgOffline(safeParseJSON(getMsgOffline()), chat.participants);
     } else if (data.type == 'settings_chat') {
-      console.log("dddddddddddd")
       getMainWindow().webContents.send('reply', {
         type: 'chat_settings_load',
         chat: data.chat

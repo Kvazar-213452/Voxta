@@ -1,6 +1,7 @@
 import { io, Socket } from "socket.io-client";
 import { getToken } from '../../models/storageApp';
 import { configServises } from '../../config';
+import { debugLog } from '../../utils/utils';
 
 let socketGlobal: Socket | null = null;
 
@@ -14,7 +15,7 @@ async function reconnectSocketClient(): Promise<void> {
 }
 
 async function startClientTrafficJams(): Promise<void> {
-  console.log("start trafficJams");
+  debugLog("start trafficJams server");
 
   const socket = io(configServises.TRAFFIC_JAMS);
   socketGlobal = socket;

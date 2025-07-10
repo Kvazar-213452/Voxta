@@ -1,7 +1,7 @@
 import path from 'path';
 import { app } from 'electron';
 import Database from 'better-sqlite3';
-import { defaultSettings } from '../../../config';
+import { defaultSettings } from '../../config';
 
 let db: Database.Database;
 

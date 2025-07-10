@@ -3,6 +3,7 @@ import { getToken } from '../../models/storageApp';
 import { saveUser } from '../../models/sqliteStorage/serviseUtils/user';
 import { getMainWindow } from '../../models/mainWindow';
 import { configServises } from '../../config';
+import { debugLog } from '../../utils/utils';
 import * as chatEvents from './socketEvents/chatEvents';
 import * as userEvents from './socketEvents/userEvents';
 import * as messageEvents from './socketEvents/messageEvents';
@@ -28,7 +29,7 @@ async function reconnectSocketClient(): Promise<void> {
 }
 
 async function startClientChat(): Promise<void> {
-  console.log('start');
+  debugLog('start chat server');
 
   const socket = io(configServises.CHAT);
   socketGlobal = socket;

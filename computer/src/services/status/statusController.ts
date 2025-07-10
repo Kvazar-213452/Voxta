@@ -2,6 +2,7 @@ import { io, Socket } from 'socket.io-client';
 import { getToken } from '../../models/storageApp';
 import { getMainWindow } from '../../models/mainWindow';
 import { configServises } from '../../config';
+import { debugLog } from '../../utils/utils';
 
 let socketGlobal: Socket | null = null;
 
@@ -19,7 +20,7 @@ async function reconnectSocketClient(): Promise<void> {
 }
 
 async function startClientStatus(): Promise<void> {
-  console.log('start status');
+  debugLog('start status server');
 
   const socket = io(configServises.STATUS);
   socketGlobal = socket;

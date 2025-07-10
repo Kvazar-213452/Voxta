@@ -1,5 +1,5 @@
 import keytar from 'keytar';
-import { configDB } from '../../config';
+import { configDB } from '../config';
 import crypto from 'crypto';
 
 // ==== TOKENS ====

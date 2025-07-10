@@ -1,7 +1,6 @@
-import { loadChatContent, reconnectSocketClient } from '../internal/services/chat/chatController';
-import { sendMessage } from '../internal/services/chat/utils/sendMsg';
-import { createChat } from '../internal/services/chat/utils/createChat';
-import { getInfoUsers, getInfoUser, getInfoChat } from '../internal/services/chat/utils/getInfo';
+import { loadChatContent, reconnectSocketClient } from '../services/chat/chatController';
+import { sendMessage } from '../services/chat/utils/sendMsg';
+import { createChat } from '../services/chat/utils/createChat';
 
 export async function handleChat(msg: any): Promise<boolean> {
   if (msg.type === 'load_chat') {
@@ -16,15 +15,7 @@ export async function handleChat(msg: any): Promise<boolean> {
   } else if (msg.type === 'create_chat') {
     createChat(msg.chat);
     return true;
-  } else if (msg.type === 'get_info_users') {
-    getInfoUsers(msg.users);
-    return true;
-  } else if (msg.type === 'get_info_user') {
-    getInfoUser(msg.id, 'simple');
-    return true;
-  } else if (msg.type === 'load_chat_info_for_settings') {
-    getInfoChat(msg.id, 'settings_chat');
-    return true;
   }
+
   return false;
 }

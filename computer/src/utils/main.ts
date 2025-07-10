@@ -37,7 +37,6 @@ async function MainApp() {
   const tokenExists = await getToken();
   const userExists = await getUser();
   const user = safeParseJSON(userExists);
-  console.log(user)
 
   if (!tokenExists || !user["id"]) {
     await generateKey();
