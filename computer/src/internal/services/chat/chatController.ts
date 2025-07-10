@@ -1,4 +1,4 @@
-import { io, Socket } from "socket.io-client";
+import { io, Socket } from 'socket.io-client';
 import { getToken } from '../../models/storageApp';
 import { saveUser } from '../../models/sqliteStorage/serviseUtils/user';
 import { getMainWindow } from '../../models/mainWindow';
@@ -11,7 +11,7 @@ let socketGlobal: Socket | null = null;
 let user: any;
 
 function loadChatContent(chatId: string, type: string): void {
-  socketGlobal?.emit("load_chat_content", { chatId: chatId, type: type });
+  socketGlobal?.emit('load_chat_content', { chatId: chatId, type: type });
 }
 
 function getSocketGlobal(): Socket | null {
@@ -28,34 +28,34 @@ async function reconnectSocketClient(): Promise<void> {
 }
 
 async function startClientChat(): Promise<void> {
-  console.log("start");
+  console.log('start');
 
   const socket = io(configServises.CHAT);
   socketGlobal = socket;
 
   const token = await getToken();
 
-  socket.on("connect", () => {
-    console.log("conect good:", socket.id);
-    socket.emit("authenticate", { token });
+  socket.on('connect', () => {
+    console.log('conect good:', socket.id);
+    socket.emit('authenticate', { token });
   });
 
-  socket.on("authenticated", async (data) => {
-    console.log("auf good:");
+  socket.on('authenticated', async (data) => {
+    console.log('auf good:');
     user = data.user;
 
-    getMainWindow().webContents.send('reply', { type: "get_user", user: data.user });
+    getMainWindow().webContents.send('reply', { type: 'get_user', user: data.user });
     await saveUser(data.user);
 
-    socket.emit("getInfoChats", { chats: user.chats });
+    socket.emit('getInfoChats', { chats: user.chats });
   });
 
   chatEvents.registerChatEvents(socket);
   userEvents.registerUserEvents(socket);
   messageEvents.registerMessageEvents(socket);
 
-  socket.on("disconnect", () => {
-    console.log("disconnect");
+  socket.on('disconnect', () => {
+    console.log('disconnect');
   });
 }
 

@@ -1,7 +1,7 @@
 import { getSettings, saveSettings } from '../models/sqliteStorage/serviseUtils/settings';
 import { getMainWindow } from '../models/mainWindow';
 
-export function returnSettings() {
+export function returnSettings(): void {
   let settings = getSettings();
       
   getMainWindow().webContents.send('reply', {
@@ -10,7 +10,7 @@ export function returnSettings() {
   });
 }
 
-export function saveSettingsFix(settings: Settings) {
+export function saveSettingsFix(settings: Settings): void {
   saveSettings(settings);
 
   getMainWindow().webContents.send('reply', {

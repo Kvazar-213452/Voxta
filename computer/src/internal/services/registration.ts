@@ -13,9 +13,9 @@ export async function register(msg: { [key: string]: any }): Promise<void> {
     const PublicKey_server = await getPublicKeyServer();
 
     const dataToEncrypt = JSON.stringify({
-      name: msg["name"],
-      password: msg["pasw"],
-      gmail: msg["gmail"]
+      name: msg.name,
+      password: msg.pasw,
+      gmail: msg.gmail
     });
 
     const encryption_json = encryptionMsg(PublicKey_server, dataToEncrypt);
@@ -26,8 +26,8 @@ export async function register(msg: { [key: string]: any }): Promise<void> {
     });
 
     if (response.data.code == 1) {
-      let data_to_web = await decryptionApp(response.data.data);
-      let parsed = JSON.parse(data_to_web);
+      let dataServer = await decryptionApp(response.data.data);
+      let parsed = JSON.parse(dataServer);
 
       tempToken = parsed["tempToken"]
 
@@ -43,7 +43,7 @@ export async function registerVerification(msg: { [key: string]: any }): Promise
     const PublicKey_server = await getPublicKeyServer();
 
     const dataToEncrypt = JSON.stringify({
-      code: msg["code"],
+      code: msg.code,
       tempToken: tempToken
     });
 
@@ -55,11 +55,11 @@ export async function registerVerification(msg: { [key: string]: any }): Promise
     });
 
     if (response.data.code == 1) {
-        let data_to_web = await decryptionApp(response.data.data);
-        let parsed = JSON.parse(data_to_web);
+        let dataServer = await decryptionApp(response.data.data);
+        let parsed = JSON.parse(dataServer);
 
-        await saveToken(parsed["token"]);
-        const userObject = JSON.parse(parsed["user"]);
+        await saveToken(parsed.token);
+        const userObject = JSON.parse(parsed.user);
 
         if (userObject.id) {
           userObject._id = userObject.id;

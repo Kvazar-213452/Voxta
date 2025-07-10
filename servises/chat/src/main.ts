@@ -18,8 +18,8 @@ const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
 const io = new Server({
   cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
+    origin: '*',
+    methods: ['GET', 'POST']
   }
 });
 

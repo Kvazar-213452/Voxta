@@ -13,8 +13,8 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
     const PublicKey_server = await getPublicKeyServer();
 
     const dataToEncrypt = JSON.stringify({
-      name: msg["name"],
-      password: msg["pasw"]
+      name: msg.name,
+      password: msg.pasw
     });
 
     const encryptionJson = encryptionMsg(PublicKey_server, dataToEncrypt);
@@ -28,8 +28,8 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
       let dataFromServer = await decryptionApp(response.data.data);
       let parsed = JSON.parse(dataFromServer);
       
-      await saveToken(parsed["token"]);
-      await saveUser(JSON.parse(parsed["user"]));
+      await saveToken(parsed.token);
+      await saveUser(JSON.parse(parsed.user));
 
       event.reply('reply', parsed);
       await MainApp();
@@ -50,7 +50,7 @@ export async function loginToJwt(): Promise<void> {
 
   const dataToEncrypt = JSON.stringify({
     jwt: jwtToken,
-    id: userJson["id"]
+    id: userJson.id
   });
 
   const encryptionJson = encryptionMsg(PublicKey_server, dataToEncrypt);
