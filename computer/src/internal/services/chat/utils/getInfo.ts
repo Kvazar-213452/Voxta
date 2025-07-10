@@ -5,9 +5,9 @@ export function getInfoUsers(users: any): void {
 }
 
 export function getInfoUser(id: string, type: string): void {
-  getSocketGlobal()?.emit("get_info_user", { chatId: id.toString(), type: type });
+  getSocketGlobal()?.emit("get_info_user", { userId: id.toString(), type: type });
 }
 
-export function getInfoChat(id: string): void {
-  // getSocketGlobal()?.emit("get_info_user", { chatId: id.toString(), type: type });
+export function getInfoChat(id: string, type: string): void {
+  getSocketGlobal()?.emit("get_info_chat", { chatId: id.toString(), type: type });
 }

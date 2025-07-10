@@ -5,7 +5,7 @@ import { configServises } from '../../../config';
 
 let socketGlobal: Socket | null = null;
 
-function getStatus(id: string, type: string = "get_status_return"): void {
+function getStatus(id: string, type: string): void {
   socketGlobal?.emit("get_status", { id_user: id.toString(), type: type });
 }
 
@@ -36,14 +36,14 @@ async function startClientStatus(): Promise<void> {
   });
 
   socket.on("get_status_return", async (data) => {
-    if (data.code) {
-      getMainWindow().webContents.send('reply', { type: "get_status_user", status: data.status });
-    }
-  });
-
-  socket.on("get_status_user_profile", async (data) => {
-    if (data.code) {
-      getMainWindow().webContents.send('reply', { type: "get_status_user_profile", status: data.status });
+    if (data.type == "simple") {
+      if (data.code) {
+        getMainWindow().webContents.send('reply', { type: "get_status_user", status: data.status });
+      }
+    } else if (data.type == "profile") {
+      if (data.code) {
+        getMainWindow().webContents.send('reply', { type: "get_status_user_profile", status: data.status });
+      }
     }
   });
 

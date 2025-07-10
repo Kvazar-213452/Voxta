@@ -3,24 +3,28 @@ import { toggleTheme } from '../misc.js';
 import { showUserNamePopup } from '../userFunc.js';
 
 export function handleMisc(data) {
-  if (data.type === "theme_load" && data.theme === "white") {
+  if (data.type === 'theme_load' && data.theme === 'white') {
     toggleTheme();
-  } else if (data.type === "get_settings") {
+  } else if (data.type === 'get_settings') {
     settings = data.settings;
     updateSettingsUI();
-  } else if (data.type === "get_user") {
+  } else if (data.type === 'get_user') {
     user = data.user;
     user_id = data.user.id;
-  } else if (data.type === "get_status_user") {
+  } else if (data.type === 'get_status_user') {
     console.log(data.status);
-  } else if (data.type === "info_user_profile") {
+  } else if (data.type === 'info_user_profile') {
     showUserNamePopup(data.user, $(thisShowUserNamePopup), statusUserProfile);
-  } else if (data.type === "get_status_user_profile") {
+  } else if (data.type === 'get_status_user_profile') {
     statusUserProfile = data.status;
     
     window.electronAPI.sendMessage({
-      type: "get_info_user_profile", 
+      type: 'get_info_user_profile', 
       id: selectIdUserProfile,
     });
-  } 
+  } else if (data.type === 'chat_settings_load') {
+    console.log(data.chat)
+
+    $('#settingsChatModal').addClass('active');
+  }
 }

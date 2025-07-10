@@ -63,8 +63,6 @@ export function showSettingsChat() {
     type: "load_chat_info_for_settings", 
     id: chat_id_select,
   });
-
-  $('#settingsChatModal').addClass('active');
 }
 
 export function closeSettingsChat() {
