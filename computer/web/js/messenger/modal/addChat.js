@@ -18,7 +18,7 @@ $(document).ready(function() {
     let selectedPrivacy = 'offline';
     let avatarBase64 = null;
 
-    $('.privacy-option').on('click', function(this: HTMLElement) {
+    $('.privacy-option').on('click', function() {
         $('.privacy-option').removeClass('selected');
         $(this).addClass('selected');
         selectedPrivacy = $(this).data('privacy');
@@ -31,37 +31,33 @@ $(document).ready(function() {
         }
     });
 
-    $('#chatAvatar').on('change', function(this: HTMLInputElement) {
-    const file = this.files?.[0];
-    const label = $('#avatarLabel');
-    const preview = $('#avatarPreview');
-    let avatarBase64: string | null = null;
-    
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e: ProgressEvent<FileReader>) {
-        if (e.target && typeof e.target.result === 'string') {
-            avatarBase64 = e.target.result;
-            preview.attr('src', avatarBase64).addClass('show');
-            label.addClass('has-file').html(`
-            <span>✅</span>
-            <span>${file.name}</span>
+    $('#chatAvatar').on('change', function() {
+        const file = this.files[0];
+        const label = $('#avatarLabel');
+        const preview = $('#avatarPreview');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                avatarBase64 = e.target.result;
+                preview.attr('src', avatarBase64).addClass('show');
+                label.addClass('has-file').html(`
+                    <span>✅</span>
+                    <span>${file.name}</span>
+                `);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            avatarBase64 = null;
+            preview.removeClass('show');
+            label.removeClass('has-file').html(`
+                <span>📷</span>
+                <span>Оберіть зображення для аватару</span>
             `);
         }
-        };
-        reader.readAsDataURL(file);
-    } else {
-        avatarBase64 = null;
-        preview.removeClass('show');
-        label.removeClass('has-file').html(`
-        <span>📷</span>
-        <span>Оберіть зображення для аватару</span>
-        `);
-    }
     });
 
-
-    $('#chatName').on('input', function(this: HTMLElement) {
+    $('#chatName').on('input', function() {
         const createBtn = $('#createBtn');
         const value = $(this).val().trim();
         

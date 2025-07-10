@@ -1,34 +1,39 @@
-import { Socket } from "socket.io";
-import { getMongoClient } from "../models/mongoClient";
-import { verifyAuth } from "../utils/verifyAuth";
-import { Db } from "mongodb";
+import { Socket } from 'socket.io';
+import { getMongoClient } from '../models/mongoClient';
+import { verifyAuth } from '../utils/verifyAuth';
+import { Db } from 'mongodb';
 
 export function onGetInfoUser(socket: Socket, SECRET_KEY: string): void {
-  socket.on("get_info_user", async (data: { userId: string, type: string }) => {
+  socket.on('get_info_user', async (data: { userId: string, type: string }) => {
     try {
       const auth = verifyAuth(socket, SECRET_KEY);
       if (!auth) return;
 
       const client = await getMongoClient();
-      const db: Db = client.db("users");
+      const db: Db = client.db('users');
       const collection = db.collection<any>(data.userId);
 
       const userConfig = await collection.findOne({ _id: 'config' });
 
       if (!userConfig) {
-        socket.emit(data.type, { code: 0 });
+        socket.emit('get_info_user_return', { 
+          code: 0,
+          type: data.type
+        });
         return;
       }
-      console.log(data.type)
-      socket.emit(data.type, {
+
+      socket.emit('get_info_user_return', {
         code: 1,
-        user: transformUserData(userConfig)
+        user: transformUserData(userConfig),
+        type: data.type
       });
 
     } catch (error) {
-      socket.emit(data.type, {
+      socket.emit('get_info_user_return', {
         code: 0,
-        error: "server_error"
+        error: 'server_error',
+        type: data.type
       });
     }
   });

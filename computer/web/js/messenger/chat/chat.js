@@ -1,13 +1,12 @@
 import { scrollToBottom } from './utils.js';
 import { loadInfoPanel } from '../infoPanel.js';
-import { sendMessage } from './message.js';
 
 export function selectChat(chatId) {
   $('.chat-item').removeClass('active');
   $(`[data-chat="${chatId}"]`).addClass('active');
-  window.AppData.currentChatId = chatId;
+  currentChatId = chatId;
 
-  const chat = window.AppData.chats[chatId];
+  const chat = chats[chatId];
 
   if (chat) {
     window.electronAPI.sendMessage({
@@ -21,12 +20,12 @@ export function selectChat(chatId) {
 export function loadChat(content, chatId, participants) {
   content = safeParseJSON(content);
 
-  let chat: any = null;
-  let chatIndex: any = null;
+  let chat = null;
+  let chatIndex = null;
 
-  for (let index in window.AppData.chats) {
-    if (window.AppData.chats[index].id === chatId) {
-      chat = window.AppData.chats[index];
+  for (let index in chats) {
+    if (chats[index].id === chatId) {
+      chat = chats[index];
       chatIndex = index;
       break;
     }
@@ -37,8 +36,8 @@ export function loadChat(content, chatId, participants) {
     return;
   }
 
-  window.AppData.chat_select = chat;
-  window.AppData.chat_id_select = chat.id;
+  chat_select = chat;
+  chat_id_select = chat.id;
 
   $('#currentChatName').text(chat.name);
   $('#onlineStatus').text('');
@@ -49,7 +48,7 @@ export function loadChat(content, chatId, participants) {
 
   if (content && Array.isArray(content)) {
     content.forEach(message => {
-      const isOwnMessage = message.sender === window.AppData.user_id;
+      const isOwnMessage = message.sender === user_id;
       const $msgDiv = $('<div>', {
         class: `message ${isOwnMessage ? 'own' : ''}`
       });
@@ -80,7 +79,7 @@ export function loadChat(content, chatId, participants) {
     });
   }
 
-  window.AppData.currentChatId = parseInt(chatIndex);
+  currentChatId = parseInt(chatIndex);
   $('.chat-item').removeClass('active');
   $(`[data-chat="${chatIndex}"]`).addClass('active');
 
@@ -89,12 +88,12 @@ export function loadChat(content, chatId, participants) {
 }
 
 export function addMessageToChat(message, isNew = true) {
-  const chat = window.AppData.chats[window.AppData.currentChatId];
+  const chat = chats[currentChatId];
   if (!chat) return;
 
-  const $msgDiv = $('<div>', { class: `message ${message.sender === window.AppData.user_id ? 'own' : ''}` });
+  const $msgDiv = $('<div>', { class: `message ${message.sender === user_id ? 'own' : ''}` });
 
-  if (message.sender === window.AppData.user_id) {
+  if (message.sender === user_id) {
     $msgDiv.html(`
       <div>
         <div class="message-content">${message.content}</div>
@@ -119,7 +118,7 @@ export function updateChatsList() {
   const $chatsList = $('#chatsList');
   $chatsList.empty();
 
-  $.each(window.AppData.chats, function (index, chat) {
+  $.each(chats, function (index, chat) {
     const $chatItem = $(`
       <div class="chat-item" data-chat="${index}">
         <img class="avatar" src="${chat.avatar}">
@@ -152,12 +151,12 @@ export function load_chats(chatsData) {
     index++;
   });
 
-  window.AppData.chats = chatList;
+  chats = chatList;
   updateChatsList();
 }
 
 export function addChats(chatsData) {
-  window.AppData.chats[window.AppData.index] = {
+  chats[index] = {
     name: chatsData.name,
     avatar: chatsData.avatar,
     id: chatsData.id,

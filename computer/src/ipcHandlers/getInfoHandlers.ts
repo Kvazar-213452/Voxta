@@ -6,10 +6,10 @@ export function handleGetInfo(msg: any): boolean {
     getStatus(msg.user_id);
     return true;
   } else if (msg.type === 'get_info_user_profile') {
-    getInfoUser(msg.id, "get_info_user_return_profile");
+    getInfoUser(msg.id, "profile");
     return true;
   } else if (msg.type === 'get_status_user_profile') {
-    getStatus(msg.user_id, "get_status_user_profile");
+    getStatus(msg.userId, "get_status_user_profile");
     return true;
   } 
 

@@ -1,6 +1,6 @@
 export function toggleSetting(key, toggle) {
   $(toggle).toggleClass('active');
-  window.AppData.settings[key] = $(toggle).hasClass('active');
+  settings[key] = $(toggle).hasClass('active');
 }
 
 export function toggleDarkMode(event) {
@@ -9,7 +9,7 @@ export function toggleDarkMode(event) {
 
 export function toggleBrowserNotifications(event) {
   toggleSetting('browserNotifications', event.target);
-  if (window.AppData.settings.browserNotifications && 'Notification' in window) {
+  if (settings.browserNotifications && 'Notification' in window) {
     Notification.requestPermission();
   }
 }
@@ -19,7 +19,7 @@ export function toggleDoNotDisturb(event) {
 }
 
 export function changeLanguage(language) {
-  window.AppData.settings.language = language;
+  settings.language = language;
 }
 
 export function toggleReadReceipts(event) {
@@ -31,7 +31,7 @@ export function toggleOnlineStatus(event) {
 }
 
 export function resetSettings() {
-  window.AppData.settings = { ...window.AppData.defaultSettings };
+  settings = { ...defaultSettings };
   updateSettingsUI();
 }
 
@@ -84,16 +84,16 @@ export function getSettings() {
 export function saveSettingsApp() {
   window.electronAPI.sendMessage({
     type: "save_settings",
-    settings: window.settings
+    settings: settings
   });
 }
 
 export function updateSettingsUI() {
-  $('.toggle-switch[data-setting]').each(function (this: HTMLElement) {
+  $('.toggle-switch[data-setting]').each(function () {
     const key = $(this).attr('data-setting');
-    const isActive = !!window.settings[key];
+    const isActive = !!settings[key];
     $(this).toggleClass('active', isActive);
   });
 
-  $('select[onchange="changeLanguage(this.value)"]').val(window.AppData.settings.language);
+  $('select[onchange="changeLanguage(this.value)"]').val(settings.language);
 }

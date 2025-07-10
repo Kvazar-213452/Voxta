@@ -20,7 +20,7 @@ export async function handleChat(msg: any): Promise<boolean> {
     getInfoUsers(msg.users);
     return true;
   } else if (msg.type === 'get_info_user') {
-    getInfoUser(msg.id);
+    getInfoUser(msg.id, 'simple');
     return true;
   } else if (msg.type === 'load_chat_info_for_settings') {
     getInfoChat(msg.id);

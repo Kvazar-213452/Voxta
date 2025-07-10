@@ -21,7 +21,7 @@ $(document).ready(function () {
   $('#toggleDoNotDisturb').on('click', toggleDoNotDisturb);
   $('#toggleReadReceipts').on('click', toggleReadReceipts);
   $('#toggleOnlineStatus').on('click', toggleOnlineStatus);
-  $('#changeLanguageSelect').on('change', function (this: HTMLSelectElement) {
+  $('#changeLanguageSelect').on('change', function () {
     changeLanguage(this.value);
   });
   $('#logoutBtn').on('click', logout);

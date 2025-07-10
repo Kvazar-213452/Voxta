@@ -13,6 +13,7 @@ export function registerChatEvents(socket: Socket) {
   });
 
   socket.on("chat_info", (data) => {
+    
     let chat = data.chat;
     chat = safeParseJSON(chat);
 
