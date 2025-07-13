@@ -1,16 +1,16 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-type MessageData = any;
+type Message = any;
 
 type Callback<T> = (data: T) => void;
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  sendMessage: (msg: MessageData): void => {
+  sendMessage: (msg: Message): void => {
     ipcRenderer.send('message', msg);
   },
 
-  onMessage: (callback: Callback<MessageData>): void => {
-    ipcRenderer.on('reply', (_event: IpcRendererEvent, msg: MessageData) => {
+  onMessage: (callback: Callback<Message>): void => {
+    ipcRenderer.on('reply', (_event: IpcRendererEvent, msg: Message) => {
       callback(msg);
     });
   }

@@ -9,6 +9,7 @@ import { onError } from './socketEvents/onError';
 import { onCreateChat } from './socketEvents/onCreateChat';
 import { onGetInfoUsers } from './socketEvents/onGetInfoUsers';
 import { onGetInfoUser } from './socketEvents/onGetInfoUser';
+import { onGetInfoChat } from './socketEvents/onGetInfoChat';
 
 dotenv.config();
 
@@ -17,8 +18,8 @@ const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
 const io = new Server({
   cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
+    origin: '*',
+    methods: ['GET', 'POST']
   }
 });
 
@@ -36,6 +37,7 @@ io.on('connection', (socket: Socket) => {
   onCreateChat(socket, SECRET_KEY);
   onGetInfoUsers(socket, SECRET_KEY);
   onGetInfoUser(socket, SECRET_KEY);
+  onGetInfoChat(socket, SECRET_KEY)
   onDisconnect(socket);
   onError(socket);
 });

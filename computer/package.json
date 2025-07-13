@@ -3,7 +3,7 @@
   "productName": "voxta",
   "version": "1.0.0",
   "description": "My Electron application description",
-  "main": "dist/index.js",
+  "main": "dist/core.js",
   "type": "commonjs",
   "scripts": {
     "build": "tsc",

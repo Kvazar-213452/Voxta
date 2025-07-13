@@ -3,9 +3,9 @@ export function scrollToBottom() {
   $container.scrollTop($container.prop('scrollHeight'));
 }
 
-export function findChatIndex(chats, chat_id) {
+export function findChatIndex(chats, chatId) {
   for (const index in chats) {
-    if (chat_id.includes(chats[index].id)) {
+    if (chatId.includes(chats[index].id)) {
       return index;
     }
   }

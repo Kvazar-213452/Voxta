@@ -1,16 +1,13 @@
 export function loadInfoPanel(chatData) {
   $(".user_info_caunt_div").html(null);
-  $('.chat-info-panel .chat-profile .chat-type-online').html(null);
-  $('.chat-info-panel .chat-profile .chat-type-offline').html(null);
 
   $('.chat-info-panel .chat-profile .chat-avatar').attr('src', chatData.avatar);
   $('.chat-info-panel .chat-profile .chat-name-info').text(chatData.name);
-  
+
   if (chatData.type === "online") {
-    $('.chat-info-panel .chat-profile .chat-type-online').html(chatData.type);
+    $('.chat-info-panel .chat-profile .chat-type-online').text(chatData.type);
   } else {
-    console.log("dddddddddddddd")
-    $('.chat-info-panel .chat-profile .chat-type-offline').html(chatData.type);
+    $('.chat-info-panel .chat-profile .chat-type-offline').text(chatData.type);
   }
 
   window.electronAPI.sendMessage({
@@ -23,7 +20,7 @@ export function loadInfoPanel(chatData) {
   $('.chat-info-panel #type_chat_info').text(chatData.type);
   $('.chat-info-panel #desc_chat_info').text(chatData.desc);
 
-  if (user["_id"] == chatData.owner) {
+  if (user.id == chatData.owner) {
     $('.chat-info-panel #owner_chat_info').text(user.name);
   } else {
     $('.chat-info-panel #owner_chat_info').html(null);

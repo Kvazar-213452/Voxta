@@ -42,7 +42,7 @@ export function onLoadChatContent(socket: Socket, SECRET_KEY: string): void {
 
         socket.emit("load_chat_content_return", {
           code: 1,
-          chat_id: data.chatId,
+          chatId: data.chatId,
           messages: messages.reverse(),
           participants: participantsData,
           type: data.type
@@ -50,7 +50,7 @@ export function onLoadChatContent(socket: Socket, SECRET_KEY: string): void {
       } else {
         socket.emit("load_chat_content_return", {
           code: 1,
-          chat_id: data.chatId,
+          chatId: data.chatId,
           participants: participantsData,
           type: data.type
         });
@@ -60,7 +60,7 @@ export function onLoadChatContent(socket: Socket, SECRET_KEY: string): void {
       console.log(`Error loading chat content:`, err);
       socket.emit("load_chat_content_return", {
         code: 0,
-        chat_id: data.chatId,
+        chatId: data.chatId,
         error: "server_error"
       });
     }

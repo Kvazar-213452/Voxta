@@ -6,3 +6,19 @@ export function generateId(length = 14): string {
   }
   return id;
 }
+
+export function transforUser(user: UserConfig): User {
+  return {
+    id: user._id,
+    name: user.name,
+    password: user.password,
+    time: user.time,
+    avatar: user.avatar,
+    desc: user.desc,
+    chats: user.chats
+  };
+}
+
+export function generateSixDigitCode(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}

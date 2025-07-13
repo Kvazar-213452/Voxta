@@ -6,7 +6,7 @@ $(document).on('click', '.avatar.info_profile_bnt', function() {
 
     window.electronAPI.sendMessage({
       type: "get_status_user_profile", 
-      user_id: id,
+      userId: id,
     })
   }
 });

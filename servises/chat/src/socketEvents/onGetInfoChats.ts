@@ -27,11 +27,11 @@ export function onGetInfoChats(socket: Socket, SECRET_KEY: string): void {
             }
         }
 
-      socket.emit("chatsInfo", { code: 1, chats: result });
+      socket.emit("chats_info", { code: 1, chats: result });
 
     } catch (error) {
       console.error("getInfoChats error:", error);
-      socket.emit("chatsInfo", { code: 0, error: "server_error" });
+      socket.emit("chats_info", { code: 0, error: "server_error" });
     }
   });
 }

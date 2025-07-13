@@ -17,14 +17,14 @@ export function selectChat(chatId) {
   }
 }
 
-export function loadChat(content, chat_id, participants) {
+export function loadChat(content, chatId, participants) {
   content = safeParseJSON(content);
 
   let chat = null;
   let chatIndex = null;
 
   for (let index in chats) {
-    if (chats[index].id === chat_id) {
+    if (chats[index].id === chatId) {
       chat = chats[index];
       chatIndex = index;
       break;
@@ -32,7 +32,7 @@ export function loadChat(content, chat_id, participants) {
   }
 
   if (!chat) {
-    console.log('Chat not found with ID:', chat_id);
+    console.log('Chat not found with ID:', chatId);
     return;
   }
 

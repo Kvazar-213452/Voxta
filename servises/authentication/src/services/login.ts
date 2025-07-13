@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { encryptionMsg, decryptionServer } from '../utils/cryptoFunc';
 import { getMongoClient } from '../models/getMongoClient';
+import { transforUser } from '../utils/utils'
 
 dotenv.config();
 
@@ -25,14 +26,14 @@ export async function loginHandler(req: Request, res: Response): Promise<void> {
     let userCollectionName: string | null = null;
 
     for (const col of collections) {
-    const collection = db.collection<{ _id: string; [key: string]: any }>(col.name);
-    const config = await collection.findOne({ _id: 'config' });
+      const collection = db.collection<{ _id: string; [key: string]: any }>(col.name);
+      const config = await collection.findOne({ _id: 'config' });
 
-    if (config && config.name === name && config.password === password) {
-        foundUser = { ...config };
-        userCollectionName = col.name;
-        break;
-    }
+      if (config && config.name === name && config.password === password) {
+          foundUser = { ...config };
+          userCollectionName = col.name;
+          break;
+      }
     }
 
     if (!foundUser || !userCollectionName) {
@@ -56,7 +57,7 @@ export async function loginHandler(req: Request, res: Response): Promise<void> {
 
     const responsePayload = JSON.stringify({
       token: token,
-      user: JSON.stringify(foundUser, null, 2)
+      user: JSON.stringify(transforUser(foundUser), null, 2)
     });
 
     const encrypted = encryptionMsg(key, responsePayload);

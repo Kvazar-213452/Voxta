@@ -13,3 +13,9 @@ declare interface Message {
   content: string; 
   time: string
 }
+
+declare interface MessageNoneId {
+  sender: string; 
+  content: string; 
+  time: string
+}

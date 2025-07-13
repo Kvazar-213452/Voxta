@@ -1,6 +1,6 @@
 import { IpcMainEvent } from 'electron';
-import { login } from '../internal/services/authentication';
-import { register, registerVerification } from '../internal/services/registration';
+import { login } from '../services/authentication';
+import { register, registerVerification } from '../services/registration';
 
 export function handleAuth(event: IpcMainEvent, msg: any): boolean {
   if (msg.type === 'login') {
@@ -13,5 +13,6 @@ export function handleAuth(event: IpcMainEvent, msg: any): boolean {
     registerVerification(msg);
     return true;
   }
+  
   return false;
 }

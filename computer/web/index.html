@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="dist/css/main.css">
     <link rel="stylesheet" href="dist/css/modal/settings.css">
     <link rel="stylesheet" href="dist/css/modal/addChat.css">
+    <link rel="stylesheet" href="dist/css/modal/settingsChat.css">
 </head>
 <body>
     <div class="messenger-container">
@@ -42,10 +43,15 @@
         <!-- User Info Panel -->
         <div class="glass-panel chat-info-panel">
             <div class="chat-profile">
+                <button id="openModelSettingChatBtn" class="chat-settings-btn" id="openChatSettings">
+                    <span class="settings-icon">⚙️</span>
+                </button>
+
                 <img src="" class="chat-avatar">
                 <div class="chat-name-info"></div>
                 <div class="chat-type-online"></div>
                 <div class="chat-type-offline"></div>
+                <div class="user-email-offline">Останній раз: 2 хв тому</div>
             </div>
             
             <div class="div_info_panel">
@@ -84,6 +90,7 @@
 
     <div id="settings_div_m"></div>
     <div id="addChat_div_m"></div>
+    <div id="settingsChat_div_m"></div>
 
     <div id="userNamePopup">
     <img class="avatar_p" src="http://localhost:3004/avatars/306d4102-f22b-452c-9f3b-c14b7661b0f8.jpg">
@@ -99,6 +106,7 @@
     <script type="module" src="js/messenger/main.js"></script>
     <script type="module" src="js/messenger/ipcHandler.js"></script>
     <script type="module" src="js/messenger/events/settingsEvents.js"></script>
+    <script type="module" src="js/messenger/events/SettingsChatEvents.js"></script>
     <script type="module" src="js/messenger/events/addChatEvents.js"></script>
     <script type="module" src="js/messenger/events/miscEvents.js"></script>
 </body>

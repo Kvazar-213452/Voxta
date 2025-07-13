@@ -99,18 +99,20 @@ public class ServerStatus {
             try {
                 Boolean isAuth = client.get("authenticated");
                 if (isAuth == null || !isAuth) {
-                    client.sendEvent((String) data.get("type"), Map.of(
+                    client.sendEvent("get_status_return", Map.of(
                         "code", 0,
-                        "error", "not_authenticated"
+                        "error", "not_authenticated",
+                        "type", data.get("type")
                     ));
                     return;
                 }
 
                 String checkId = (String) data.get("id_user");
                 if (checkId == null || checkId.trim().isEmpty()) {
-                    client.sendEvent((String) data.get("type"), Map.of(
+                    client.sendEvent("get_status_return", Map.of(
                         "code", 0,
-                        "error", "invalid_user_id"
+                        "error", "invalid_user_id",
+                        "type", data.get("type")
                     ));
                     return;
                 }
@@ -120,27 +122,30 @@ public class ServerStatus {
                     try {
                         JWT.require(jwtAlgorithm).build().verify(token);
                     } catch (Exception e) {
-                        client.sendEvent((String) data.get("type"), Map.of(
+                        client.sendEvent("get_status_return", Map.of(
                             "code", 0,
-                            "error", "token_expired"
+                            "error", "token_expired",
+                            "type", data.get("type")
                         ));
                         return;
                     }
                 }
 
                 boolean isOnline = onlineUsers.containsKey(checkId);
-                client.sendEvent((String) data.get("type"), Map.of(
+                client.sendEvent("get_status_return", Map.of(
                     "code", 1,
-                    "status", isOnline ? "online" : "offline"
+                    "status", isOnline ? "online" : "offline",
+                    "type", data.get("type")
                 ));
                 
                 System.out.println("Status check for user " + checkId + ": " + (isOnline ? "online" : "offline"));
                 
             } catch (Exception e) {
                 System.err.println("Error in get_status: " + e.getMessage());
-                client.sendEvent((String) data.get("type"), Map.of(
+                client.sendEvent("get_status_return", Map.of(
                     "code", 0,
-                    "error", "server_error"
+                    "error", "server_error",
+                    "type", data.get("type")
                 ));
             }
         });

@@ -11,5 +11,5 @@
     "skipLibCheck": true,
     "noImplicitAny": false
   },
-  "include": ["src/**/*", "src/config/interfaces.d.ts"]
+  "include": ["src/**/*"]
 }
