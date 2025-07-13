@@ -2,12 +2,11 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import axios from 'axios';
-import { Db, Collection } from 'mongodb';
+import { Db, Collection } from "mongodb";
 import { encryptionMsg, decryptionServer } from '../utils/cryptoFunc';
 import { getMongoClient } from '../models/getMongoClient';
-import { generateId } from '../utils/utils';
+import { generateId, generateSixDigitCode, transforUser } from '../utils/utils';
 import CONFIG from '../config';
-import { generateSixDigitCode, transforUser } from '../utils/utils'
 
 dotenv.config();
 
@@ -66,7 +65,7 @@ export async function registerVerificationHandler(req: Request, res: Response): 
       const gmail = decoded.gmail;
 
       const client = await getMongoClient();
-      const db: Db = client.db('users');
+      const db: Db = client.db("users");
 
       let userID: string = generateId();
       while (await db.listCollections({ name: userID }).hasNext()) {
@@ -75,21 +74,21 @@ export async function registerVerificationHandler(req: Request, res: Response): 
 
       const chatCollection: Collection = db.collection(userID);
 
-      let dataConfig: any = {
-        _id: 'config' as any,
+      const dataConfig = {
+        _id: "config" as any,
         name,
         password,
         avatar: CONFIG.AVATAR,
         time: new Date().toISOString(),
-        desc: 'new acaunt',
-        gmail,
+        desc: "new acaunt",
         id: userID,
+        gmail,
         chats: [CONFIG.ID_CHAT_MAIN]
       };
 
       await chatCollection.insertOne(dataConfig);
 
-      const userToken = jwt.sign({ userId: userID }, SECRET_KEY, { expiresIn: '1d' });
+      const userToken = jwt.sign({ id_user: userID }, SECRET_KEY, { expiresIn: '1d' });
 
       const jwtCollection = db.collection<{ _id: string; token: string[] }>(userID);
       const jwtDoc = await jwtCollection.findOne({ _id: 'jwt' });
@@ -99,9 +98,6 @@ export async function registerVerificationHandler(req: Request, res: Response): 
       } else {
         await jwtCollection.insertOne({ _id: 'jwt', token: [userToken] });
       }
-
-      dataConfig['_id'] = dataConfig['id'];
-      delete dataConfig['id'];
 
       const responsePayload = JSON.stringify({
         token: userToken,

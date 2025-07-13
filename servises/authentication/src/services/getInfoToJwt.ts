@@ -23,9 +23,9 @@ export async function getInfoToJwtHandler(req: Request, res: Response): Promise<
       return;
     }
 
-    const decoded = jwt.verify(jwtToken, SECRET_KEY) as { id_user: string };
+    const decoded = jwt.verify(jwtToken, SECRET_KEY) as { userId: string };
 
-    if (decoded.id_user !== id) {
+    if (decoded.userId !== id) {
       res.json({ code: 0, data: 'error jwt no user' });
       return;
     }
