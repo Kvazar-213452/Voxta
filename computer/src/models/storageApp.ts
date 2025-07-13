@@ -1,6 +1,7 @@
 import keytar from 'keytar';
 import { configDB } from '../config';
 import crypto from 'crypto';
+import fs from 'fs/promises';
 
 // ==== TOKENS ====
 const ACCOUNT_TOKEN = 'sessionToken';
@@ -32,7 +33,15 @@ export async function saveKeys(publicKey: string, privateKey: string): Promise<v
 }
 
 export async function getPublicKey(): Promise<string | null> {
-  return await keytar.getPassword(configDB.SERVICE_NAME, ACCOUNT_PUBLIC_KEY);
+  const pem = await keytar.getPassword(configDB.SERVICE_NAME, ACCOUNT_PUBLIC_KEY);
+  if (!pem) return null;
+
+  const cleaned = pem
+    .replace('-----BEGIN PUBLIC KEY-----', '')
+    .replace('-----END PUBLIC KEY-----', '')
+    .replace(/\r?\n|\s/g, ''); // видаляє всі пробіли й переноси
+
+  return cleaned;
 }
 
 export async function getPrivateKey(): Promise<string> {

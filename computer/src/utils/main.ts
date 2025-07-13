@@ -1,5 +1,5 @@
 import { getMainWindow } from '../models/mainWindow';
-import { getToken, deleteToken } from '../models/storageApp';
+import { getToken, deleteToken, deleteKeys } from '../models/storageApp';
 import { getUser, deleteUser } from '../models/sqliteStorage/serviseUtils/user';
 import { generateKey } from './cryptoFunc';
 import { safeParseJSON } from './utils';
@@ -31,6 +31,7 @@ async function MainApp() {
   if (sss == 0) {
     await deleteToken();
     deleteUser();
+    await deleteKeys();
     sss = 1
   }
   

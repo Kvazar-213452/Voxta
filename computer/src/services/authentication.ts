@@ -26,10 +26,10 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
 
     if (response.data.code == 1) {
       let dataFromServer = await decryptionApp(response.data.data);
-      let parsed = JSON.parse(dataFromServer);
+      let parsed = safeParseJSON(dataFromServer);
       
       await saveToken(parsed.token);
-      await saveUser(JSON.parse(parsed.user));
+      await saveUser(safeParseJSON(parsed.user));
 
       event.reply('reply', parsed);
       await MainApp();
