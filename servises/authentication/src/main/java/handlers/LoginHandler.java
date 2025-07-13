@@ -54,9 +54,6 @@ public class LoginHandler {
             String name = json.getString("name");
             String password = json.getString("password");
 
-            System.out.println("Name: " + name);
-            System.out.println("Password: " + password);
-
             MongoClient client = MongoConnection.getMongoClient();
             MongoDatabase db = client.getDatabase("users");
 
@@ -87,10 +84,9 @@ public class LoginHandler {
 
             String userId = foundUser.getString("_id");
             String token = JWT.create()
-                .withSubject(userId)
-                .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
+                .withClaim("userId", userId)
+                .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 24 години
                 .sign(Algorithm.HMAC256(secretKey));
-
 
             MongoCollection<Document> jwtCollection = db.getCollection(foundUserCollectionName);
             Document jwtDoc = jwtCollection.find(Filters.eq("_id", "jwt")).first();
@@ -104,7 +100,7 @@ public class LoginHandler {
                 jwtCollection.insertOne(new Document("_id", "jwt").append("token", List.of(token)));
             }
 
-            Map<String, Object> user = Transform.TransformUser(foundUser);
+            Map<String, Object> user = Transform.transformUser(foundUser);
 
             String clientPublicKey = (String) body.get("key");
 

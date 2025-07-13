@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Transform {
-    public static Map<String, Object> TransformUser(Document userDoc) {
+    public static Map<String, Object> transformUser(Document userDoc) {
         Map<String, Object> user = new HashMap<>();
         user.put("id", userDoc.getString("_id"));
         user.put("name", userDoc.getString("name"));

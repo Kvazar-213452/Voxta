@@ -62,8 +62,8 @@ export async function loginToJwt(): Promise<void> {
 
   if (response.data.code == 1) {
     let data = await decryptionApp(response.data.data);
-    
-    await saveUser(JSON.parse(data));
+
+    await saveUser(safeParseJSON(data));
   } else {
     deleteUser();
     await deleteToken();
