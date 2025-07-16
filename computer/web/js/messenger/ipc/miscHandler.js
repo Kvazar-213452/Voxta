@@ -20,8 +20,9 @@ export function handleMisc(data) {
     statusUserProfile = data.status;
     
     window.electronAPI.sendMessage({
-      type: 'get_info_user_profile', 
+      type: 'get_info_user', 
       id: selectIdUserProfile,
+      _type: 'profile'
     });
   } else if (data.type === 'chat_settings_load') {
     renderInfoChatSettings(data.chat);

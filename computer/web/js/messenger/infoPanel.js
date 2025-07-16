@@ -13,6 +13,7 @@ export function loadInfoPanel(chatData) {
   window.electronAPI.sendMessage({
     type: "get_info_users", 
     users: chatData.participants,
+    _type: "info_panel"
   });
 
   $('.chat-info-panel #users_on_chat_caunt_chat_info').text(chatData.participants.length);
@@ -28,6 +29,7 @@ export function loadInfoPanel(chatData) {
     window.electronAPI.sendMessage({
       type: "get_info_user", 
       id: chatData.owner,
+      _type: 'simple'
     });
   }
 }

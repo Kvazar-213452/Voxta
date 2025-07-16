@@ -17,9 +17,10 @@ export function onGetInfoChat(socket: Socket, SECRET_KEY: string): void {
       try {
         const collection = db.collection<{ _id: string; [key: string]: any }>(chatId);
         const chatConfig = await collection.findOne({ _id: "config" });
-
+        
         if (chatConfig) {
-          socket.emit("chat_info", { code: 1, chat: chatConfig, type: data.type });
+          const { _id, ...chatWithoutId } = chatConfig;
+          socket.emit("chat_info", { code: 1, chat: chatWithoutId, type: data.type });
         } else {
           socket.emit("chat_info", { code: 0, error: "config_not_found", type: data.type });
         }
