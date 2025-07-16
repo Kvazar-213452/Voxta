@@ -55,5 +55,6 @@ export const defaultSettings = {
   doNotDisturb: 0,
   language: 'uk',
   readReceipts: 1,
-  onlineStatus: 1
+  onlineStatus: 1,
+  cripto: 'm1'
 };

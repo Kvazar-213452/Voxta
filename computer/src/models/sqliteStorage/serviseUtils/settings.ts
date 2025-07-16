@@ -10,14 +10,16 @@ export function saveSettings(settings: Settings): void {
       doNotDisturb,
       language,
       readReceipts,
-      onlineStatus
+      onlineStatus,
+      cripto
     ) VALUES (
       @darkMode,
       @browserNotifications,
       @doNotDisturb,
       @language,
       @readReceipts,
-      @onlineStatus
+      @onlineStatus,
+      @cripto
     )
   `);
 
@@ -27,7 +29,8 @@ export function saveSettings(settings: Settings): void {
     doNotDisturb: settings.doNotDisturb ? 1 : 0,
     language: settings.language,
     readReceipts: settings.readReceipts ? 1 : 0,
-    onlineStatus: settings.onlineStatus ? 1 : 0
+    onlineStatus: settings.onlineStatus ? 1 : 0,
+    cripto: settings.cripto
   });
 }
 
@@ -42,7 +45,8 @@ export function getSettings(): Settings | null {
       doNotDisturb: !!row.doNotDisturb,
       language: row.language,
       readReceipts: !!row.readReceipts,
-      onlineStatus: !!row.onlineStatus
+      onlineStatus: !!row.onlineStatus,
+      cripto: row.cripto
     };
   } catch (error) {
     console.error('Failed to get settings:', error);

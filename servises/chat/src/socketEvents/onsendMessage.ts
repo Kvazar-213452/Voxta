@@ -3,17 +3,15 @@ import { Db } from "mongodb";
 import { getMongoClient } from "../models/mongoClient";
 import { verifyAuth } from "../utils/verifyAuth";
 import { generateId } from "../utils/generateId";
-import { safeParseJSON } from "../utils/utils";
-import { fastDecrypt, getKeyLite } from "../utils/cripto/SPX_CriptoLite";
+import { autoDecrypt } from "../utils/cripto/autoCrypto";
 
 export function onSendMessage(socket: Socket, SECRET_KEY: string): void {
-  socket.on("send_message", async (data: { message: any, chatId: string, pubKey: string }) => {
+  socket.on("send_message", async (data: { message: any, chatId: string, pubKey: string, crypto: string }) => {
     try {
       const auth = verifyAuth(socket, SECRET_KEY);
       if (!auth) return;
-
-      let message: any = fastDecrypt(data.message, getKeyLite().privateKey);
-      message = safeParseJSON(message);
+      
+      let message = autoDecrypt(data.crypto, data.message);
 
       const client = await getMongoClient();
       const db: Db = client.db("chats");

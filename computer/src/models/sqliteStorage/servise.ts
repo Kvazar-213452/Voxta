@@ -28,7 +28,8 @@ export function initDatabase(): void {
       doNotDisturb INTEGER DEFAULT 0,
       language TEXT DEFAULT 'uk',
       readReceipts INTEGER DEFAULT 1,
-      onlineStatus INTEGER DEFAULT 1
+      onlineStatus INTEGER DEFAULT 1,
+      cripto TEXT DEFAULT 'm1'
     )
   `).run();
 
@@ -42,14 +43,16 @@ export function initDatabase(): void {
         doNotDisturb,
         language,
         readReceipts,
-        onlineStatus
+        onlineStatus,
+        cripto
       ) VALUES (
         @darkMode,
         @browserNotifications,
         @doNotDisturb,
         @language,
         @readReceipts,
-        @onlineStatus
+        @onlineStatus,
+        @cripto
       )
     `).run(defaultSettings);
   }

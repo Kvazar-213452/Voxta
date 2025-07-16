@@ -1,20 +1,15 @@
 import { getSocketGlobal } from '../chatController';
 import { addMessage, getAllChatIds } from '../../../models/sqliteStorage/chatUtils/chats';
 import { getMainWindow } from '../../../models/mainWindow';
-import { getKeyLite, fastEncrypt, getPublicKeyServerLite, initKeyLite }from '../../../utils/crypto/SPX_CriptoLite';
+import { autoCrypto } from '../../../utils/crypto/cryproAuto';
 
 let msgOffline: Message;
-let countCripto: number = 0;
 
 export async function sendMessage(message: MessageNoneId, chatId: string, type: string): Promise<void> {
   if (type === 'online') {
-    if (countCripto > 5) {
-      initKeyLite();
-    }
+    let data = await autoCrypto(message);
 
-    const { packet } = fastEncrypt(JSON.stringify(message), await getPublicKeyServerLite());
-
-    getSocketGlobal()?.emit('send_message', { message: packet, chatId: chatId, pubKey: getKeyLite().publicKey });
+    getSocketGlobal()?.emit('send_message', { message: data.msg, chatId: chatId, pubKey: data.key, crypto: data.crypto });
   } else {
     msgOffline = addMessage(chatId, message);
 

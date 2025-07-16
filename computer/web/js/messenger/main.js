@@ -2,9 +2,6 @@ import { reconnectSocketClient } from './misc.js';
 import { getSettings } from './modal/settings.js';
 import { selectChat } from './chat/chat.js';
 import { sendMessage } from './chat/message.js';
-import { loadTemplate } from './template.js';
-
-loadTemplate();
 
 if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
   reconnectSocketClient();

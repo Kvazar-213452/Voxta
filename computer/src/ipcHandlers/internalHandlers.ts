@@ -1,6 +1,5 @@
 import { returnSettings, saveSettingsFix } from '../internal/settings';
 import { getInfoChat } from '../services/chat/utils/getInfo';
-import { loadIndexTemplate } from '../utils/utils';
 
 export function handleInternal(msg: any): boolean {
   if (msg.type === 'get_settings') {
@@ -11,9 +10,6 @@ export function handleInternal(msg: any): boolean {
     return true;
   } else if (msg.type === 'load_chat_info_for_settings') {
     getInfoChat(msg.id, 'settings_chat');
-    return true;
-  } else if (msg.type === 'load_template') {
-    loadIndexTemplate();
     return true;
   }
 

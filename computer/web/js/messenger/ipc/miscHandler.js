@@ -1,6 +1,7 @@
 import { updateSettingsUI } from '../modal/settings.js';
 import { toggleTheme } from '../misc.js';
 import { showUserNamePopup } from '../userFunc.js';
+import { renderInfoChatSettings } from '../modal/settingsChat.js';
 
 export function handleMisc(data) {
   if (data.type === 'theme_load' && data.theme === 'white') {
@@ -23,8 +24,8 @@ export function handleMisc(data) {
       id: selectIdUserProfile,
     });
   } else if (data.type === 'chat_settings_load') {
-    console.log(data.chat)
-
+    renderInfoChatSettings(data.chat);
+    
     $('#settingsChatModal').addClass('active');
   }
 }

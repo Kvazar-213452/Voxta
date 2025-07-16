@@ -16,8 +16,10 @@ const defaultSettings = {
   language: 'uk',
   readReceipts: true,
   onlineStatus: true,
+  cripto: 'SPX.cripto.lite'
 };
 
 let thisShowUserNamePopup;
 let statusUserProfile;
 let selectIdUserProfile;
+let vasdqfd = 0;

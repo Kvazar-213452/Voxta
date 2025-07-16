@@ -11,6 +11,12 @@
     <link rel="stylesheet" href="dist/css/modal/settingsChat.css">
 </head>
 <body>
+
+    <!-- ========= main ========= -->
+    <!-- ========= main ========= -->
+    <!-- ========= main ========= -->
+    <!-- ========= main ========= -->
+
     <div class="messenger-container">
         <!-- Chat List Panel -->
         <div class="glass-panel chat-list-panel">
@@ -88,12 +94,249 @@
         </div>
     </div>
 
-    <div id="settings_div_m"></div>
-    <div id="addChat_div_m"></div>
-    <div id="settingsChat_div_m"></div>
+    <!-- ========= settings ========= -->
+    <!-- ========= settings ========= -->
+    <!-- ========= settings ========= -->
+    <!-- ========= settings ========= -->
+
+    <div class="modal-overlay" id="settingsModal1">
+      <div class="modal-content">
+        <div class="modal-header">
+        <h2 class="modal-title">⚙️ Налаштування</h2>
+        <button class="modal-close" id="closeSettingsBtn">&times;</button>
+        </div>
+
+        <div class="settings-group">
+        <div class="settings-group-title">🎨 Зовнішній вигляд</div>
+        <div class="settings-item">
+            <div class="settings-label">
+            <div class="settings-label-text">Темна тема</div>
+            <div class="settings-label-desc">Використовувати темну тему оформлення</div>
+            </div>
+            <div class="settings-control">
+            <div class="toggle-switch" id="toggleDarkMode" data-setting="darkMode"></div>
+            </div>
+        </div>
+        </div>
+
+        <div class="settings-group">
+        <div class="settings-group-title">🔔 Сповіщення</div>
+
+        <div class="settings-item">
+            <div class="settings-label">
+            <div class="settings-label-text">Браузерні сповіщення</div>
+            <div class="settings-label-desc">Показувати сповіщення в браузері</div>
+            </div>
+            <div class="settings-control">
+            <div class="toggle-switch" id="toggleBrowserNotifications" data-setting="browserNotifications"></div>
+            </div>
+        </div>
+
+        <div class="settings-item">
+            <div class="settings-label">
+            <div class="settings-label-text">Режим "Не турбувати"</div>
+            <div class="settings-label-desc">Вимкнути всі сповіщення</div>
+            </div>
+            <div class="settings-control">
+            <div class="toggle-switch" id="toggleDoNotDisturb" data-setting="doNotDisturb"></div>
+            </div>
+        </div>
+        </div>
+
+        <div class="settings-group">
+        <div class="settings-group-title">💬 Чат</div>
+
+        <div class="settings-item">
+            <div class="settings-label">
+            <div class="settings-label-text">Мова інтерфейсу</div>
+            <div class="settings-label-desc">Вибрати мову додатка</div>
+            </div>
+            <div class="settings-control">
+            <select class="settings-select" id="changeLanguageSelect">
+                <option value="uk">Українська</option>
+                <option value="en">English</option>
+            </select>
+            </div>
+        </div>
+
+        <div class="settings-item">
+            <div class="settings-label">
+            <div class="settings-label-text">Тип шифрування</div>
+            <div class="settings-label-desc">Вибрати тип шифрування</div>
+            </div>
+            <div class="settings-control">
+            <select class="settings-select" id="changeCriptoSelect">
+                <option value="m1">SPX.cripto.lite (m1)</option>
+                <option value="m2">SPX.ump.net (m2)</option>
+                <option value="m3">SPX.ump.better (m3)</option>
+            </select>
+            </div>
+        </div>
+        </div>
+
+        <div class="settings-group">
+            <div class="settings-group-title">🔒 Приватність</div>
+
+            <div class="settings-item">
+                <div class="settings-label">
+                <div class="settings-label-text">Читання повідомлень</div>
+                <div class="settings-label-desc">Показувати коли повідомлення прочитане</div>
+                </div>
+                <div class="settings-control">
+                <div class="toggle-switch" id="toggleReadReceipts" data-setting="readReceipts"></div>
+                </div>
+            </div>
+
+            <div class="settings-item">
+                <div class="settings-label">
+                <div class="settings-label-text">Статус онлайн</div>
+                <div class="settings-label-desc">Показувати коли ви онлайн</div>
+                </div>
+                <div class="settings-control">
+                <div class="toggle-switch" id="toggleOnlineStatus" data-setting="onlineStatus"></div>
+                </div>
+            </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-logout" id="logoutBtn">Вихід</button>
+                <button class="modal-btn modal-btn-secondary" id="resetSettingsBtn">Скинути</button>
+                <button class="modal-btn modal-btn-primary" id="saveSettingsBtn">Зберегти</button>
+            </div>
+        </div>
+        </div>
+
+        <div class="modal-overlay success-modal" id="successModal">
+        <div class="modal-content">
+            <div class="success-icon"></div>
+            <h2 class="success-title">Voxta</h2>
+            <p class="success-message">Налаштування збережено успішно!<br>Всі зміни застосовано.</p>
+            <button class="success-btn" id="closeSuccessModalBtn">Готово</button>
+        </div>
+        </div>
+
+    <!-- ========= settings chat ========= -->
+    <!-- ========= settings chat ========= -->
+    <!-- ========= settings chat ========= -->
+    <!-- ========= settings chat ========= -->
+
+    <div class="modal-overlay" id="settingsChatModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">⚙️ Налаштування чату</h2>
+                <button class="modal-close" id="closeModelSettingChatBtn">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <form id="settingsForm">
+                    <div class="chat-form-group">
+                        <label class="chat-form-label">Користувачі</label>
+                        
+                        <div class="toggle-option">
+                        eeeee
+                        </div>
+                    </div>
+
+                        <!-- <div class="toggle-option">
+                            <div class="toggle-info">
+                                <div class="toggle-name">Підтвердження прочитання</div>
+                                <div class="toggle-desc">Показувати галочки про прочитання повідомлень</div>
+                            </div>
+                            <div class="toggle-switch active" data-setting="read-receipts">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div> -->
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" id="resetBtn">Скинути</button>
+                <button class="modal-btn modal-btn-secondary" id="closeSettingsBtn2">Скасувати</button>
+                <button class="modal-btn modal-btn-primary" id="saveBtn">Зберегти</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========= addChat ========= -->
+    <!-- ========= addChat ========= -->
+    <!-- ========= addChat ========= -->
+    <!-- ========= addChat ========= -->
+
+    <div class="modal-overlay" id="addChatModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">💬 Створити чат</h2>
+                <button class="modal-close" id="closeAddChatBtn">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <form id="createChatForm">
+                    <div class="chat-form-group">
+                        <label class="chat-form-label" for="chatAvatar">Аватар чату</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="chatAvatar" class="file-input" accept="image/*">
+                            <label for="chatAvatar" class="file-input-label" id="avatarLabel">
+                                <span>📷</span>
+                                <span>Оберіть зображення для аватару</span>
+                            </label>
+                        </div>
+                        <img id="avatarPreview" class="avatar-preview" alt="Avatar preview">
+                        <div class="form-hint">Підтримуються формати: JPG, PNG, GIF (макс. 5MB)</div>
+                    </div>
+
+                    <div class="chat-form-group">
+                        <label class="chat-form-label" for="chatName">Назва чату *</label>
+                        <input 
+                            type="text" 
+                            id="chatName" 
+                            class="chat-form-input" 
+                            placeholder="Введіть назву чату..."
+                            required
+                        >
+                        <div class="form-hint">Оберіть зрозумілу назву для вашого чату</div>
+                    </div>
+
+                    <div class="chat-form-group">
+                        <label class="chat-form-label" for="chatDescription">Опис чату</label>
+                        <textarea 
+                            id="chatDescription" 
+                            class="chat-form-input chat-form-textarea" 
+                            placeholder="Опишіть тему або мету чату..."
+                        ></textarea>
+                        <div class="form-hint">Короткий опис допоможе іншим зрозуміти тему чату</div>
+                    </div>
+
+                    <div class="chat-form-group">
+                        <label class="chat-form-label">Приватність</label>
+                        <div class="privacy-options">
+                            <div class="privacy-option selected" data-privacy="offline">
+                                <span class="privacy-icon">🔒</span>
+                                <span class="privacy-name">Приватний</span>
+                            </div>
+                            <div class="privacy-option" data-privacy="online">
+                                <span class="privacy-icon">🌐</span>
+                                <span class="privacy-name">Публічний</span>
+                            </div>
+                        </div>
+                        <div class="form-hint">Приватні чати видимі тільки вам</div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" id="closeAddChatBtn">Скасувати</button>
+                <button class="modal-btn modal-btn-primary" id="createBtn" disabled>Створити чат</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========= other ========= -->
+    <!-- ========= other ========= -->
+    <!-- ========= other ========= -->
+    <!-- ========= other ========= -->
 
     <div id="userNamePopup">
-    <img class="avatar_p" src="http://localhost:3004/avatars/306d4102-f22b-452c-9f3b-c14b7661b0f8.jpg">
+    <img class="avatar_p" src="">
     <div class="user_info_p">
         <div class="user_name_p"></div>
         <div class="user_desc_p"></div>

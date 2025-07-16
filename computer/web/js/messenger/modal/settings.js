@@ -22,6 +22,10 @@ export function changeLanguage(language) {
   settings.language = language;
 }
 
+export function changeCripto(cripto) {
+  settings.cripto = cripto;
+}
+
 export function toggleReadReceipts(event) {
   toggleSetting('readReceipts', event.target);
 }
@@ -53,11 +57,11 @@ export function saveSettings() {
 }
 
 export function showSettings() {
-  $('#settingsModal').addClass('active');
+  $('#settingsModal1').addClass('active');
 }
 
 export function closeSettings() {
-  $('#settingsModal').removeClass('active');
+  $('#settingsModal1').removeClass('active');
 }
 
 export function logout() {
@@ -95,5 +99,6 @@ export function updateSettingsUI() {
     $(this).toggleClass('active', isActive);
   });
 
-  $('select[onchange="changeLanguage(this.value)"]').val(settings.language);
+  $('#changeLanguageSelect').val(settings.language);
+  $('#changeCriptoSelect').val(settings.cripto);
 }

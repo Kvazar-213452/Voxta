@@ -5,7 +5,7 @@ import axios from 'axios';
 let key: any;
 
 export interface EncryptedPacket {
-  ephemeralPubKey: string; // base64
+  ephemeralPubKey: string;
   nonce: string;
   ciphertext: string;
 }
@@ -18,7 +18,6 @@ export function generateKeyPair() {
   };
 }
 
-// AES-GCM симуляція через NaCl box
 export function fastEncrypt(message: string, recipientPubKeyB64: string): { packet: EncryptedPacket, ephemeralPrivKey: string } {
   const recipientPubKey = naclUtil.decodeBase64(recipientPubKeyB64);
   const ephemeral = nacl.box.keyPair();
@@ -34,7 +33,7 @@ export function fastEncrypt(message: string, recipientPubKeyB64: string): { pack
       nonce: naclUtil.encodeBase64(nonce),
       ciphertext: naclUtil.encodeBase64(ciphertext),
     },
-    ephemeralPrivKey: naclUtil.encodeBase64(ephemeral.secretKey), // не передавати
+    ephemeralPrivKey: naclUtil.encodeBase64(ephemeral.secretKey),
   };
 }
 

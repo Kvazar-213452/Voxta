@@ -27,6 +27,7 @@ declare type Settings = {
   language: string;
   readReceipts: boolean;
   onlineStatus: boolean;
+  cripto: string;
 };
 
 // ======= global =======

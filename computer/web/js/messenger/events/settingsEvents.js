@@ -10,6 +10,7 @@ import {
   saveSettings,
   closeSuccessModal,
   changeLanguage,
+  changeCripto,
 
   showSettings
 } from '../modal/settings.js';
@@ -28,6 +29,9 @@ $(document).ready(function () {
   $('#resetSettingsBtn').on('click', resetSettings);
   $('#saveSettingsBtn').on('click', saveSettings);
   $('#closeSuccessModalBtn').on('click', closeSuccessModal);
+  $('#changeCriptoSelect').on('change', function () {
+    changeCripto(this.value);
+  });
 
   $('#showSettingsBtn').on('click', showSettings);
 });

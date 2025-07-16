@@ -72,3 +72,8 @@ export function closeSettingsChat() {
 
 
 
+export function renderInfoChatSettings(data) {
+  console.log(data)
+}
+
+
