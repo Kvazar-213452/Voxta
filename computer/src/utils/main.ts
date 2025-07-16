@@ -1,7 +1,7 @@
 import { getMainWindow } from '../models/mainWindow';
 import { getToken, deleteToken, deleteKeys } from '../models/storageApp';
 import { getUser, deleteUser } from '../models/sqliteStorage/serviseUtils/user';
-import { generateKey } from './cryptoFunc';
+import { generateKey } from './crypto/cryptoFunc';
 import { safeParseJSON } from './utils';
 import { loginToJwt } from '../services/authentication';
 import { startClientChat } from '../services/chat/chatController';
@@ -25,15 +25,15 @@ import { startClientTrafficJams } from '../services/trafficJams/trafficJams';
 // ⠀⠀⠀⠀⠀⠀⣼⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 // ⠀⠀⠀⠀⠀⠀⠻⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
-let sss = 0;
+// let sss = 0;
 
 async function MainApp() {
-  if (sss == 0) {
-    await deleteToken();
-    deleteUser();
-    await deleteKeys();
-    sss = 1
-  }
+  // if (sss == 0) {
+  //   await deleteToken();
+  //   deleteUser();
+  //   await deleteKeys();
+  //   sss = 1
+  // }
   
   const tokenExists = await getToken();
   const userExists = await getUser();

@@ -13,6 +13,12 @@ declare interface Message {
   time: string
 }
 
+declare interface MessageNoneId {
+  sender: string; 
+  content: string; 
+  time: string
+}
+
 // ======= settings =======
 declare type Settings = {
   darkMode: boolean;

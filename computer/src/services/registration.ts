@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { configServises } from '../config';
-import { encryptionMsg, getPublicKeyServer, decryptionApp } from '../utils/cryptoFunc';
+import { encryptionMsg, getPublicKeyServer, decryptionApp } from '../utils/crypto/cryptoFunc';
 import { getPublicKey, saveToken } from '../models/storageApp';
 import { saveUser } from '../models/sqliteStorage/serviseUtils/user';
 import { getMainWindow } from '../models/mainWindow';

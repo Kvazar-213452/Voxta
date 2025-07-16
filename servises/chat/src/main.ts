@@ -1,5 +1,8 @@
+import express, { Request, Response } from 'express';
+import http from 'http';
 import { Server, Socket } from 'socket.io';
 import dotenv from 'dotenv';
+import { initKeyLite, getKeyLite } from './utils/cripto/SPX_CriptoLite';
 import { onGetInfoChats } from './socketEvents/onGetInfoChats';
 import { onLoadChatContent } from './socketEvents/onLoadChatContent';
 import { onSendMessage } from './socketEvents/onSendMessage';
@@ -13,22 +16,38 @@ import { onGetInfoChat } from './socketEvents/onGetInfoChat';
 
 dotenv.config();
 
+const EXPRESS_PORT = parseInt(process.env.PORT_SERVER || '3000');
+const SOCKET_PORT = parseInt(process.env.PORT || '3001');
 const SECRET_KEY = process.env.SECRET_KEY ?? 'default-secret-key';
-const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
-const io = new Server({
-  cors: {
-    origin: '*',
-    methods: ['GET', 'POST']
-  }
+// ------------------------
+// EXPRESS SERVER
+// ------------------------
+const app = express();
+
+initKeyLite();
+
+app.get('/public_key_lite', (req: Request, res: Response) => {
+  res.json({ key: getKeyLite().publicKey });
 });
 
-export function getIO(): Server {
-  return io;
-}
+app.listen(EXPRESS_PORT, () => {
+  console.log(`📦 Express API запущено на http://localhost:${EXPRESS_PORT}`);
+});
+
+// ------------------------
+// SOCKET.IO SERVER
+// ------------------------
+const socketServer = http.createServer();
+const io = new Server(socketServer, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+  },
+});
 
 io.on('connection', (socket: Socket) => {
-  console.log('connection user', socket.id);
+  console.log(`🔌 Клієнт підключився: ${socket.id}`);
 
   onAuthenticate(socket, SECRET_KEY);
   onGetInfoChats(socket, SECRET_KEY);
@@ -37,14 +56,19 @@ io.on('connection', (socket: Socket) => {
   onCreateChat(socket, SECRET_KEY);
   onGetInfoUsers(socket, SECRET_KEY);
   onGetInfoUser(socket, SECRET_KEY);
-  onGetInfoChat(socket, SECRET_KEY)
+  onGetInfoChat(socket, SECRET_KEY);
   onDisconnect(socket);
   onError(socket);
 });
 
-io.listen(PORT);
-console.log(`server start on ${PORT}`);
+export function getIO(): Server {
+  return io;
+}
+
+socketServer.listen(SOCKET_PORT, () => {
+  console.log(`Socket.IO запущено на http://localhost:${SOCKET_PORT}`);
+});
 
 io.engine.on('connection_error', (error) => {
-  console.error('error Socket.IO:', error);
+  console.error('Socket.IO помилка з’єднання:', error);
 });

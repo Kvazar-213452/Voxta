@@ -7,6 +7,7 @@ import { configApp } from './config';
 import { initDatabase } from './models/sqliteStorage/servise';
 import { initDatabaseChats } from './models/sqliteStorage/chats';
 import { delay } from './utils/utils';
+import { initKeyLite } from './utils/crypto/SPX_CriptoLite';
 import { initKeyText } from './models/storageApp';
 
 let mainWindow: BrowserWindow | null;
@@ -25,14 +26,18 @@ async function createWindow(): Promise<BrowserWindow> {
   setMainWindow(mainWindow);
 
   mainWindow.webContents.openDevTools();
-  mainWindow.loadFile(path.join(__dirname, '../web/load.html'));
 
-  await delay(configApp.timeStop);
+  if (configApp.Debug) {
+    mainWindow.loadFile(path.join(__dirname, '../web/load.html'));
+
+    await delay(configApp.timeStop);
+  }
 
   return mainWindow;
 }
 
 app.whenReady().then(async () => {
+  initKeyLite();
   await initKeyText();
   initDatabase();
   initDatabaseChats();

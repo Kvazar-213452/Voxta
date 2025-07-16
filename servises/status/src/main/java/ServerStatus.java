@@ -66,7 +66,7 @@ public class ServerStatus {
                 }
 
                 DecodedJWT decoded = JWT.require(jwtAlgorithm).build().verify(token);
-                String userId = decoded.getClaim("id_user").asString();
+                String userId = decoded.getClaim("userId").asString();
                 
                 if (userId == null || userId.trim().isEmpty()) {
                     throw new RuntimeException("Invalid user ID in token");

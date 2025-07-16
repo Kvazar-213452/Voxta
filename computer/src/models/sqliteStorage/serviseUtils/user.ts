@@ -1,5 +1,5 @@
 import { getDatabase } from '../servise';
-import { encryptText, decryptText } from '../../../utils/cryptoFunc';
+import { encryptText, decryptText } from '../../../utils/crypto/cryptoFunc';
 
 export async function saveUser(user: User): Promise<void> {
   getDatabase().prepare(`DELETE FROM users`).run();
