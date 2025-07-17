@@ -1,5 +1,5 @@
 // button
-@mixin round-icon-button($hover-icon, $default-icon, $hover-rotate: 0deg) {
+@mixin round-icon-button($hover-icon, $default-icon, $hover-rotate: 0deg, $color: var(--primary-color)) {
   position: absolute;
   right: 30px;
   width: 40px;
@@ -29,7 +29,7 @@
 
   &:hover {
     background: var(--hover-bg);
-    border-color: var(--primary-color);
+    border-color: $color;
     transform: scale(1.05);
 
     &::before {

@@ -13,6 +13,16 @@ export function registerUserEvents(socket: Socket) {
         type: 'chat_settings',
         users: data.users,
       });
+    } else if (data.type === 'friends_modal_render') {
+      getMainWindow().webContents.send('reply', {
+        type: 'friends_modal_render',
+        friends: data.users,
+      });
+    } else if (data.type === 'friends_add_chat_modal_render') {
+      getMainWindow().webContents.send('reply', {
+        type: 'friends_add_chat_modal_render',
+        friends: data.users,
+      });
     }
   });
 
@@ -32,6 +42,27 @@ export function registerUserEvents(socket: Socket) {
         type: 'chat_settings_admin_web',
         user: data.user,
       });
-    } 
+    }
+  });
+
+  socket.on('get_friends', (data) => {
+    if (data.type === "modal_friends") {
+      getMainWindow().webContents.send('reply', {
+        type: 'friends_modal',
+        friends: data.friends,
+      });
+    } else if (data.type === "add_friend_in_chat") {
+      getMainWindow().webContents.send('reply', {
+        type: 'add_friend_in_chat_web',
+        friends: data.friends,
+      });
+    }
+  });
+
+  socket.on('del_friend', (data) => {
+    getMainWindow().webContents.send('reply', {
+      type: 'friends_modal',
+      friends: data.friends,
+    });
   });
 }

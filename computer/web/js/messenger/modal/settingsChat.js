@@ -1,3 +1,4 @@
+let usersInChat;
 
 export function showSettingsChat() {
   window.electronAPI.sendMessage({
@@ -9,9 +10,6 @@ export function showSettingsChat() {
 export function closeSettingsChat() {
   $('#settingsChatModal').removeClass('active');
 }
-
-
-
 
 export function renderInfoChatSettings(data) {
   window.electronAPI.sendMessage({
@@ -44,9 +42,12 @@ export function renderInfoChatSettings(data) {
 export function renderUsersInChatSettings(users) {
   $("#users_modal_settings_chat").html(null);
 
+  let content;
+  usersInChat = users;
+
   for (const id in users) {
     const user = users[id];
-    let content = `
+    content = `
       <div class="user_info_div">
         <img class="logo" src="${user.avatar}">
         <p class="name">${user.name}</p>
@@ -55,6 +56,14 @@ export function renderUsersInChatSettings(users) {
     
     $("#users_modal_settings_chat").append(content);
   }
+
+  content = `
+    <div onclick="openModaladdUserInChat()" class='user_info_div add_user_in_chat_div'>
+      <p class='add_user_in_chat'>Додати користувача +</p>
+    </div>
+  `;
+
+  $('#users_modal_settings_chat').prepend(content);
 }
 
 export function renderUserChatSettings(user) {
@@ -66,6 +75,52 @@ export function renderUserChatSettings(user) {
   `;
 
   $("#user_modal_settings_chat").html(content);
+}
+
+function openModaladdUserInChat() {
+  window.electronAPI.sendMessage({
+    type: 'get_friends', 
+    _type: 'add_friend_in_chat',
+  });
+}
+
+export function opneModalAddFriendInChat(friends) {
+  const userIdsInChat = Object.keys(usersInChat);
+  const uniqueFriends = friends.filter(id => !userIdsInChat.includes(id));
+
+  window.electronAPI.sendMessage({
+    type: 'get_info_users',
+    _type: 'friends_add_chat_modal_render',
+    users: uniqueFriends
+  });
+}
+
+export function opneModalAddFriendInChatRender(friends) {
+  $("#modal_friends_add_in_chat").html(null);
+
+  for (const id in friends) {
+    const user = friends[id];
+    let content = `
+      <div onclick="addFriendInChat(${user.id})" class="user_info_div add_user_in_chat_div">
+        <img class="logo" src="${user.avatar}">
+        <p class="name">${user.name}</p>
+      </div>
+    `;
+    
+    $("#modal_friends_add_in_chat").append(content);
+  }
+
+  $('#friendsModalAdd').addClass('active');
+}
+
+function addFriendInChat(id) {
+  window.electronAPI.sendMessage({
+    type: 'add_user_in_chat',
+    id: chat_id_select,
+    userId: id
+  });
+
+  $('#friendsModalAdd').removeClass('active');
 }
 
 
@@ -111,3 +166,7 @@ $(document).ready(function() {
         }
     });
 });
+
+
+window.openModaladdUserInChat = openModaladdUserInChat;
+window.addFriendInChat = addFriendInChat;

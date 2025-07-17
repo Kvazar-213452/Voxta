@@ -22,4 +22,3 @@ const defaultSettings = {
 let thisShowUserNamePopup;
 let statusUserProfile;
 let selectIdUserProfile;
-let vasdqfd = 0;

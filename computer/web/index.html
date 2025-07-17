@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="dist/css/modal/settings.css">
     <link rel="stylesheet" href="dist/css/modal/addChat.css">
     <link rel="stylesheet" href="dist/css/modal/settingsChat.css">
+    <link rel="stylesheet" href="dist/css/modal/friends.css">
 </head>
 <body>
 
@@ -23,6 +24,7 @@
             <h2 class="title_name">Voxta</h2>
             <div id="showSettingsBtn" class="settings_btn"></div>
             <div id="showAddChatBtn" class="plus_btn"></div>
+            <div id="friendsBtn" class="friend_btn"></div>
             <br><br><br>
             <div class="search-box"><input type="text" id="searchInput" placeholder="Пошук чатів..."></div>
             <div class="chats-list" id="chatsList"></div>
@@ -300,6 +302,16 @@
             </div>
         </div>
     </div>
+    
+    <div class="modal-overlay" id="friendsModalAdd">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Додати друга 🤗</h2>
+                <button class="modal-close" id="closefriendsModalAdd">&times;</button>
+            </div>
+            <div class="chat-form-group" id="modal_friends_add_in_chat"></div>
+        </div>
+    </div>
 
     <!-- ========= addChat ========= -->
     <!-- ========= addChat ========= -->
@@ -374,6 +386,21 @@
         </div>
     </div>
 
+    <!-- ========= friends ========= -->
+    <!-- ========= friends ========= -->
+    <!-- ========= friends ========= -->
+    <!-- ========= friends ========= -->
+
+    <div class="modal-overlay" id="friendsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Друзі 🤗</h2>
+                <button class="modal-close" id="closefriends">&times;</button>
+            </div>
+            <div class="chat-form-group" id="user_modal_friends"></div>
+        </div>
+    </div>
+
     <!-- ========= other ========= -->
     <!-- ========= other ========= -->
     <!-- ========= other ========= -->
@@ -396,5 +423,6 @@
     <script type="module" src="js/messenger/events/SettingsChatEvents.js"></script>
     <script type="module" src="js/messenger/events/addChatEvents.js"></script>
     <script type="module" src="js/messenger/events/miscEvents.js"></script>
+    <script type="module" src="js/messenger/events/friendsEvent.js"></script>
 </body>
 </html>

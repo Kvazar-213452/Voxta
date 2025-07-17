@@ -1,7 +1,7 @@
 import { updateSettingsUI } from '../modal/settings.js';
 import { toggleTheme } from '../misc.js';
 import { showUserNamePopup } from '../userFunc.js';
-import { renderInfoChatSettings } from '../modal/settingsChat.js';
+import { renderInfoChatSettings, opneModalAddFriendInChat } from '../modal/settingsChat.js';
 
 export function handleMisc(data) {
   if (data.type === 'theme_load' && data.theme === 'white') {
@@ -28,5 +28,7 @@ export function handleMisc(data) {
     renderInfoChatSettings(data.chat);
     
     $('#settingsChatModal').addClass('active');
+  } else if (data.type === 'add_friend_in_chat_web') {
+    opneModalAddFriendInChat(data.friends);
   }
 }

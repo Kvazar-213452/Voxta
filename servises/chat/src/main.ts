@@ -13,6 +13,9 @@ import { onCreateChat } from './socketEvents/onCreateChat';
 import { onGetInfoUsers } from './socketEvents/onGetInfoUsers';
 import { onGetInfoUser } from './socketEvents/onGetInfoUser';
 import { onGetInfoChat } from './socketEvents/onGetInfoChat';
+import { onGetFriends } from './socketEvents/onGetFriends';
+import { onDelFriend } from './socketEvents/onDelFriend';
+import { onAddUserInChat } from './socketEvents/onAddUserInChat';
 
 dotenv.config();
 
@@ -32,7 +35,7 @@ app.get('/public_key_lite', (req: Request, res: Response) => {
 });
 
 app.listen(EXPRESS_PORT, () => {
-  console.log(`📦 Express API запущено на http://localhost:${EXPRESS_PORT}`);
+  console.log(`Express API запущено на http://localhost:${EXPRESS_PORT}`);
 });
 
 // ------------------------
@@ -47,7 +50,7 @@ const io = new Server(socketServer, {
 });
 
 io.on('connection', (socket: Socket) => {
-  console.log(`🔌 Клієнт підключився: ${socket.id}`);
+  console.log(`Клієнт підключився: ${socket.id}`);
 
   onAuthenticate(socket, SECRET_KEY);
   onGetInfoChats(socket, SECRET_KEY);
@@ -57,6 +60,9 @@ io.on('connection', (socket: Socket) => {
   onGetInfoUsers(socket, SECRET_KEY);
   onGetInfoUser(socket, SECRET_KEY);
   onGetInfoChat(socket, SECRET_KEY);
+  onGetFriends(socket, SECRET_KEY);
+  onDelFriend(socket, SECRET_KEY);
+  onAddUserInChat(socket, SECRET_KEY);
   onDisconnect(socket);
   onError(socket);
 });
