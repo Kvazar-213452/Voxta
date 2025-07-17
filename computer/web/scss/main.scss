@@ -554,6 +554,36 @@ h2 {
   }
 }
 
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-add {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: var(--hover-bg);
+    color: var(--text-light);
+  }
+}
+
+
+
+
+
 
 
 
@@ -687,4 +717,4 @@ h2 {
 }
 
 
-// div_info_panel
+// modal-close

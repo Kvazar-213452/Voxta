@@ -389,13 +389,28 @@
     <!-- ========= friends ========= -->
 
     <div class="modal-overlay" id="friendsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Друзі 🤗</h2>
-                <button class="modal-close" id="closefriends">&times;</button>
-            </div>
-            <div class="chat-form-group" id="user_modal_friends"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+        <h2 class="modal-title">Друзі 🤗</h2>
+        <div class="modal-actions">
+            <button class="modal-add" id="addFriendBtnAuk">+</button>
+            <button class="modal-close" id="closefriends">&times;</button>
         </div>
+        </div>
+        <div class="chat-form-group" id="user_modal_friends"></div>
+    </div>
+    </div>
+
+    <div class="modal-overlay" id="friendsModalAddAuk">
+    <div class="modal-content">
+        <div class="modal-header">
+        <input class="input_find_friend" id="input_find_friend" placeholder="Ведіть нікнейм друга" type="text">
+        <div class="modal-actions">
+            <button class="modal-close" id="closefriendsAddAuk">&times;</button>
+        </div>
+        </div>
+        <div class="chat-form-group" id="add_modal_friends_auk"></div>
+    </div>
     </div>
 
     <!-- ========= other ========= -->

@@ -1,6 +1,6 @@
 import { returnSettings, saveSettingsFix } from '../internal/settings';
 import { getInfoChat } from '../services/chat/utils/getInfo';
-import { delFriend } from '../services/chat/utils/friend';
+import { delFriend, findFriend, adddFriend } from '../services/chat/utils/friend';
 
 export function handleInternal(msg: any): boolean {
   if (msg.type === 'get_settings') {
@@ -15,7 +15,13 @@ export function handleInternal(msg: any): boolean {
   } else if (msg.type === 'del_friend') {
     delFriend(msg.id);
     return true;
-  }
+  } else if (msg.type === 'find_friend') {
+    findFriend(msg.name);
+    return true;
+  } else if (msg.type === 'add_friend') {
+    adddFriend(msg.id);
+    return true;
+  } 
 
   return false;
 }

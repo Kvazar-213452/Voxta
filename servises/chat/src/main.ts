@@ -18,6 +18,8 @@ import { onDelFriend } from './socketEvents/onDelFriend';
 import { onAddUserInChat } from './socketEvents/onAddUserInChat';
 import { onDelMemberInChat } from './socketEvents/onDelMemberInChat';
 import { onSaveSettingsChat } from './socketEvents/onSaveSettingsChat';
+import { onFindFriend } from './socketEvents/onFindFriend';
+import { onAddFriend } from './socketEvents/onAddFriend';
 
 dotenv.config();
 
@@ -67,6 +69,8 @@ io.on('connection', (socket: Socket) => {
   onAddUserInChat(socket, SECRET_KEY);
   onDelMemberInChat(socket, SECRET_KEY);
   onSaveSettingsChat(socket, SECRET_KEY);
+  onFindFriend(socket, SECRET_KEY);
+  onAddFriend(socket, SECRET_KEY);
   onDisconnect(socket);
   onError(socket);
 });
