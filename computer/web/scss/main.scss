@@ -402,18 +402,6 @@ h2 {
   color: var(--text-light);
 }
 
-.chat-type-online {
-  font-size: 14px;
-  color: var(--primary-color);
-  margin-bottom: 5px;
-}
-
-.user-email-offline {
-  font-size: 14px;
-  margin-bottom: 5px;
-  color: var(--text-muted);
-}
-
 // Info Sections
 .section-title {
   font-size: 16px;
@@ -482,12 +470,6 @@ h2 {
 
 .chat-settings-btn:active {
   transform: scale(0.95);
-}
-
-.user-email-offline {
-  font-size: 14px;
-  margin-bottom: 5px;
-  color: var(--text-muted);
 }
 
 // Modal Styles
@@ -606,8 +588,8 @@ h2 {
 .div_info_panel {
   overflow-y: auto;
   position: absolute;
-  top: 250px;
-  height: calc(100% - 270px);
+  top: 200px;
+  height: calc(100% - 250px);
   width: calc(100% - 60px);
 }
 
@@ -705,4 +687,4 @@ h2 {
 }
 
 
-// chat-form-input
+// div_info_panel

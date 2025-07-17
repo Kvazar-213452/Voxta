@@ -150,6 +150,14 @@ export function saveSettingsChat() {
   closeSettingsChat();
 }
 
+export function closeSettingsChatAddMember() {
+  $('#friendsModalAdd').removeClass('active');
+}
+
+
+
+
+
 
 
 $(document).ready(function() {
