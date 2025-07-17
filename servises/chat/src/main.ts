@@ -16,6 +16,8 @@ import { onGetInfoChat } from './socketEvents/onGetInfoChat';
 import { onGetFriends } from './socketEvents/onGetFriends';
 import { onDelFriend } from './socketEvents/onDelFriend';
 import { onAddUserInChat } from './socketEvents/onAddUserInChat';
+import { onDelMemberInChat } from './socketEvents/onDelMemberInChat';
+import { onSaveSettingsChat } from './socketEvents/onSaveSettingsChat';
 
 dotenv.config();
 
@@ -63,6 +65,8 @@ io.on('connection', (socket: Socket) => {
   onGetFriends(socket, SECRET_KEY);
   onDelFriend(socket, SECRET_KEY);
   onAddUserInChat(socket, SECRET_KEY);
+  onDelMemberInChat(socket, SECRET_KEY);
+  onSaveSettingsChat(socket, SECRET_KEY);
   onDisconnect(socket);
   onError(socket);
 });

@@ -57,4 +57,8 @@ export function registerChatEvents(socket: Socket) {
   socket.on('add_user_in_chat', (data) => {
     console.log(data.code);
   });
+
+  socket.on('del_user_in_chat', (data) => {
+    console.log(data.code);
+  });
 }
