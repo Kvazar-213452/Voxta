@@ -19,7 +19,7 @@ export function selectChat(chatId) {
 
 export function loadChat(content, chatId, participants) {
   content = safeParseJSON(content);
-
+  console.log(content)
   let chat = null;
   let chatIndex = null;
 

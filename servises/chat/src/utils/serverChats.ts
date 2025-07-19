@@ -30,13 +30,25 @@ export function getChatsServer(chatIds: string[]): { [chatId: string]: ChatData 
     for (const serverId in ChatsServers) {
       if (ChatsServers[serverId][chatId]) {
         result[chatId] = ChatsServers[serverId][chatId];
-        break; // Знайшли чат, переходимо до наступного chatId
+        break;
       }
     }
   }
 
   return result;
 }
+
+export function getServerIdToChat(chatId: string): string | null {
+  for (const serverId in ChatsServers) {
+    if (ChatsServers[serverId]?.[chatId]) {
+      return serverId;
+    }
+  }
+
+  console.error(`Chat with ID "${chatId}" not found in any server.`);
+  return null;
+}
+
 
 // let ChatsServers1 = {
 //   "idserver": {
