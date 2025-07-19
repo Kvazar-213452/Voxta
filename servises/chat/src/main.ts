@@ -20,6 +20,8 @@ import { onDelMemberInChat } from './socketEvents/onDelMemberInChat';
 import { onSaveSettingsChat } from './socketEvents/onSaveSettingsChat';
 import { onFindFriend } from './socketEvents/onFindFriend';
 import { onAddFriend } from './socketEvents/onAddFriend';
+import { onCreateChatServer } from './socketEvents/onCreateChatServer';
+import { onNewChatCreateServer } from './socketEvents/onNewChatCreateServer';
 
 dotenv.config();
 
@@ -56,6 +58,8 @@ const io = new Server(socketServer, {
 io.on('connection', (socket: Socket) => {
   console.log(`Клієнт підключився: ${socket.id}`);
 
+  onCreateChatServer(socket, SECRET_KEY);
+  onNewChatCreateServer(socket);
   onAuthenticate(socket, SECRET_KEY);
   onGetInfoChats(socket, SECRET_KEY);
   onLoadChatContent(socket, SECRET_KEY);

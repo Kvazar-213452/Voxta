@@ -1,11 +1,18 @@
 import { Socket } from "socket.io";
 import jwt from "jsonwebtoken";
 import { getMongoClient } from "../models/mongoClient";
+import { addServer } from "../utils/serverChats";
 import { Db } from "mongodb";
 
 export function onAuthenticate(socket: Socket, SECRET_KEY: string): void {
-  socket.on("authenticate", async (data: { token: string }) => {
+  socket.on("authenticate", async (data: { token: string, chats }) => {
     try {
+      if (data.token === 'server') {
+        addServer(socket.id, data.chats);
+        socket.emit("authenticated", { code: 1, id: socket.id});
+        return
+      }
+
       const decoded = jwt.verify(data.token, SECRET_KEY) as { userId: string };
 
       console.log(`user ${decoded.userId} authenticated.`);

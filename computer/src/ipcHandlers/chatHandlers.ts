@@ -1,6 +1,6 @@
 import { loadChatContent, reconnectSocketClient } from '../services/chat/chatController';
 import { sendMessage } from '../services/chat/utils/sendMsg';
-import { createChat } from '../services/chat/utils/createChat';
+import { createChat, createChatServer } from '../services/chat/utils/createChat';
 import { addUserInChat, delUserInChat, saveChatSettings } from '../services/chat/utils/chat';
 
 export async function handleChat(msg: any): Promise<boolean> {
@@ -24,6 +24,9 @@ export async function handleChat(msg: any): Promise<boolean> {
     return true;
   } else if (msg.type === 'save_chat_settings') {
     saveChatSettings(msg.id, msg.dataChat);
+    return true;
+  } else if (msg.type === 'create_chat_server') {
+    createChatServer(msg.chat);
     return true;
   }
 

@@ -370,6 +370,10 @@
                                 <span class="privacy-icon">🌐</span>
                                 <span class="privacy-name">Публічний</span>
                             </div>
+                            <div class="privacy-option" data-privacy="server">
+                                <span class="privacy-icon">⚙️</span>
+                                <span class="privacy-name">Серверний</span>
+                            </div>
                         </div>
                         <div class="form-hint">Приватні чати видимі тільки вам</div>
                     </div>
@@ -379,6 +383,46 @@
             <div class="modal-footer">
                 <button class="modal-btn modal-btn-secondary" id="closeAddChatBtn">Скасувати</button>
                 <button class="modal-btn modal-btn-primary" id="createBtn" disabled>Створити чат</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="serverModalChatAdd">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h2 class="modal-title">Встановлення зєднання 🤗</h2>
+            <div class="modal-actions">
+                <button class="modal-close closeServerModalChatAdd">&times;</button>
+            </div>
+            </div>
+
+            <div class="chat-form-group">
+                <label class="chat-form-label" for="idServer">ID сервера</label>
+                <input 
+                    type="text" 
+                    id="idServer" 
+                    class="chat-form-input" 
+                    placeholder="Введіть ID сервера..."
+                    required
+                >
+                <div class="form-hint">Його можна знайти в консолі при запуску</div>
+            </div>
+
+            <div class="chat-form-group">
+                <label class="chat-form-label" for="codeServer">Код сервера</label>
+                <input 
+                    type="text" 
+                    id="codeServer" 
+                    class="chat-form-input" 
+                    placeholder="Введіть код сервера..."
+                    required
+                >
+                <div class="form-hint">Його можна знайти в консолі при запуску</div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary closeServerModalChatAdd">Скасувати</button>
+                <button class="modal-btn modal-btn-primary" id="createServerChatBtn">Створити чат</button>
             </div>
         </div>
     </div>

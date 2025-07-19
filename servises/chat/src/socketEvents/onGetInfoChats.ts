@@ -1,6 +1,7 @@
 import { Socket } from "socket.io";
 import { getMongoClient } from "../models/mongoClient";
 import { verifyAuth } from "../utils/verifyAuth";
+import { getChatsServer } from "../utils/serverChats";
 import { Db } from "mongodb";
 
 export function onGetInfoChats(socket: Socket, SECRET_KEY: string): void {
@@ -14,18 +15,26 @@ export function onGetInfoChats(socket: Socket, SECRET_KEY: string): void {
 
       const result: Record<string, any> = {};
 
-        for (const chatId of data.chats) {
-            try {
-                const collection = db.collection<{ _id: string; [key: string]: any }>(chatId);
-                const chatConfig = await collection.findOne({ _id: "config" });
+      const cachedChats = getChatsServer(data.chats);
 
-                if (chatConfig) {
-                    result[chatId] = chatConfig;
-                }
-            } catch (err) {
-                console.error(`error chats ${chatId}:`, err);
-            }
+      for (const [chatId, chatData] of Object.entries(cachedChats)) {
+        result[chatId] = chatData;
+      }
+
+      const remainingChats = data.chats.filter(chatId => !result.hasOwnProperty(chatId));
+      
+      for (const chatId of remainingChats) {
+        try {
+          const collection = db.collection<{ _id: string; [key: string]: any }>(chatId);
+          const chatConfig = await collection.findOne({ _id: "config" });
+
+          if (chatConfig) {
+            result[chatId] = chatConfig;
+          }
+        } catch (err) {
+          console.error(`DB chat error ${chatId}:`, err);
         }
+      }
 
       socket.emit("chats_info", { code: 1, chats: result });
 
@@ -35,3 +44,4 @@ export function onGetInfoChats(socket: Socket, SECRET_KEY: string): void {
     }
   });
 }
+

@@ -1,3 +1,6 @@
+let selectedPrivacy = 'offline';
+let avatarBase64 = null;
+
 export function showAddChat() {
   $('#addChatModal').addClass('active');
 }
@@ -13,11 +16,54 @@ function createChat(chat) {
   });
 }
 
+function openServerModalChatAdd() {
+  $('#serverModalChatAdd').addClass('active');
+}
+
+export function closeServerModalChatAdd() {
+  $('#serverModalChatAdd').removeClass('active');
+}
+
+export function createServerChat() {
+  const chatName = $('#chatName').val().trim();
+  const chatDescription = $('#chatDescription').val().trim();
+
+  const newChat = {
+    name: chatName,
+    description: chatDescription,
+    privacy: 'server',
+    avatar: avatarBase64,
+    createdAt: new Date().toISOString(),
+    idServer: $('#idServer').val(),
+    codeServer: $('#codeServer').val()
+  };
+
+  window.electronAPI.sendMessage({
+    type: "create_chat_server", 
+    chat: newChat,
+  });
+
+  _reset();
+  closeServerModalChatAdd();
+  closeAddChat();
+}
+
+function _reset() {
+    $('#createChatForm')[0].reset();
+    $('.privacy-option').removeClass('selected');
+    $('[data-privacy="offline"]').addClass('selected');
+    $('#avatarPreview').removeClass('show');
+    $('#avatarLabel').removeClass('has-file').html(`
+        <span>📷</span>
+        <span>Оберіть зображення для аватару</span>
+    `);
+    avatarBase64 = null;
+    selectedPrivacy = 'offline';
+    $('#createBtn').prop('disabled', true);
+}
+
 // moadl window
 $(document).ready(function() {
-    let selectedPrivacy = 'offline';
-    let avatarBase64 = null;
-
     $('.privacy-option').on('click', function() {
         $('.privacy-option').removeClass('selected');
         $(this).addClass('selected');
@@ -69,32 +115,24 @@ $(document).ready(function() {
     });
 
     $('#createBtn').on('click', function() {
-        const chatName = $('#chatName').val().trim();
-        const chatDescription = $('#chatDescription').val().trim();
+        if (selectedPrivacy === 'server') {
+            openServerModalChatAdd();
+        } else {
+            const chatName = $('#chatName').val().trim();
+            const chatDescription = $('#chatDescription').val().trim();
 
-        const newChat = {
-            name: chatName,
-            description: chatDescription,
-            privacy: selectedPrivacy,
-            avatar: avatarBase64,
-            createdAt: new Date().toISOString()
-        };
+            const newChat = {
+                name: chatName,
+                description: chatDescription,
+                privacy: selectedPrivacy,
+                avatar: avatarBase64,
+                createdAt: new Date().toISOString()
+            };
 
-        createChat(newChat);
-
-        $('#createChatForm')[0].reset();
-        $('.privacy-option').removeClass('selected');
-        $('[data-privacy="offline"]').addClass('selected');
-        $('#avatarPreview').removeClass('show');
-        $('#avatarLabel').removeClass('has-file').html(`
-            <span>📷</span>
-            <span>Оберіть зображення для аватару</span>
-        `);
-        avatarBase64 = null;
-        selectedPrivacy = 'offline';
-        $('#createBtn').prop('disabled', true);
-
-        closeAddChat();
+            createChat(newChat);
+            _reset();
+            closeAddChat();
+        }
     });
 
     $('#createChatForm').on('submit', function(e) {
