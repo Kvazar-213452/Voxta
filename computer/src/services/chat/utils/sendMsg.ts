@@ -6,10 +6,10 @@ import { autoCrypto } from '../../../utils/crypto/cryproAuto';
 let msgOffline: Message;
 
 export async function sendMessage(message: MessageNoneId, chatId: string, type: string): Promise<void> {
-  if (type === 'online') {
-    let data = await autoCrypto(message);
+  if (type === 'online' || type === 'server') {
+    let data = await autoCrypto(message, type, {chatId: chatId});
 
-    getSocketGlobal()?.emit('send_message', { message: data.msg, chatId: chatId, pubKey: data.key, crypto: data.crypto });
+    getSocketGlobal()?.emit('send_message', { message: data.msg, chatId: chatId, pubKey: data.key, crypto: data.crypto, type: type });
   } else {
     msgOffline = addMessage(chatId, message);
 

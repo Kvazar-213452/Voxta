@@ -22,6 +22,7 @@ import { onFindFriend } from './socketEvents/onFindFriend';
 import { onAddFriend } from './socketEvents/onAddFriend';
 import { onCreateChatServer } from './socketEvents/onCreateChatServer';
 import { onNewChatCreateServer } from './socketEvents/onNewChatCreateServer';
+import { onGetPubLiteKeySIS } from './socketEvents/onGetPubLiteKeySIS';
 
 dotenv.config();
 
@@ -59,6 +60,7 @@ io.on('connection', (socket: Socket) => {
   console.log(`Клієнт підключився: ${socket.id}`);
 
   onCreateChatServer(socket, SECRET_KEY);
+  onGetPubLiteKeySIS(socket, SECRET_KEY);
   onNewChatCreateServer(socket);
   onAuthenticate(socket, SECRET_KEY);
   onGetInfoChats(socket, SECRET_KEY);

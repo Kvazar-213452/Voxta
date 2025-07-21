@@ -1,6 +1,7 @@
 import nacl from 'tweetnacl';
 import naclUtil from 'tweetnacl-util';
 import axios from 'axios';
+import { getSocketGlobal } from '../../services/chat/chatController';
 
 let key: any;
 
@@ -64,4 +65,10 @@ export function getKeyLite() {
 export async function getPublicKeyServerLite(): Promise<string> {
   const response = await axios.get<any>("http://localhost:3006/public_key_lite");
   return response.data.key;
+}
+
+export function getPublicKeyServerLiteSIS(id: string, callback: (key: string) => void) {
+  getSocketGlobal()?.emit('get_pub_lite_key_SIS', { id }, (response: string) => {
+    callback(response);
+  });
 }

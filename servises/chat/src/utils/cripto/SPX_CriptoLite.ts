@@ -59,8 +59,3 @@ export function initKeyLite(): void {
 export function getKeyLite() {
   return key;
 }
-
-export async function getPublicKeyServerLite(): Promise<string> {
-  const response = await axios.get<string>("http://localhost:3000/public_key_lite");
-  return response.data;
-}
