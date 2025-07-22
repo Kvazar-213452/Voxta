@@ -1,5 +1,6 @@
 import { getStatus } from '../services/status/statusController';
-import { getInfoUser, getInfoUsers, getFriengs } from '../services/chat/utils/getInfo';
+import { getInfoUser, getInfoUsers } from '../services/chat/utils/getInfo';
+import { getFriengs } from '../services/chat/utils/friend';
 
 export function handleGetInfo(msg: any): boolean {
   if (msg.type === 'get_status_user') {

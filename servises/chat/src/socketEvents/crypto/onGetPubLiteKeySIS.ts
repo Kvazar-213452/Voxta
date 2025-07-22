@@ -1,14 +1,14 @@
 import { Socket } from "socket.io";
-import { verifyAuth } from "../utils/verifyAuth";
-import { getServerIdToChat } from "../utils/serverChats";
-import { getIO } from '../main';
+import { verifyAuth } from "../../utils/verifyAuth";
+import { getServerIdToChat } from "../../utils/serverChats";
+import { getIO } from '../../main';
 
 const pendingCallbacks = new Map<string, (data: string) => void>();
 
-export function onGetPubLiteKeySIS(socket: Socket, SECRET_KEY: string): void {
+export function onGetPubLiteKeySIS(socket: Socket): void {
   socket.on("get_pub_lite_key_SIS", async (data: { id: string }, callback) => {
     try {
-      const auth = verifyAuth(socket, SECRET_KEY);
+      const auth = verifyAuth(socket);
       if (!auth) {
         callback({ code: 0, error: "unauthorized" });
         return;

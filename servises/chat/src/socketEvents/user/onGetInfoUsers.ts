@@ -1,10 +1,10 @@
 import { Socket } from 'socket.io';
-import { getMongoClient } from '../models/mongoClient';
-import { verifyAuth } from '../utils/verifyAuth';
+import { getMongoClient } from '../../models/mongoClient';
+import { verifyAuth } from '../../utils/verifyAuth';
 import { Db } from 'mongodb';
-import { getIO } from '../main';
+import { getIO } from '../../main';
 
-export function onGetInfoUsers(socket: Socket, SECRET_KEY: string): void {
+export function onGetInfoUsers(socket: Socket): void {
   socket.on('get_info_users', async (data: { users: string[], type: string, server: any }) => {
     try {
       if (data.type === 'server') {
@@ -36,7 +36,7 @@ export function onGetInfoUsers(socket: Socket, SECRET_KEY: string): void {
           });
         }
       } else {
-        const auth = verifyAuth(socket, SECRET_KEY);
+        const auth = verifyAuth(socket);
         if (!auth) return;
 
         const client = await getMongoClient();

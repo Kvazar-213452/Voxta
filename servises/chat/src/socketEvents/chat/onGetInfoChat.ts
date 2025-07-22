@@ -1,12 +1,12 @@
 import { Socket } from "socket.io";
-import { getMongoClient } from "../models/mongoClient";
-import { verifyAuth } from "../utils/verifyAuth";
+import { getMongoClient } from "../../models/mongoClient";
+import { verifyAuth } from "../../utils/verifyAuth";
 import { Db } from "mongodb";
 
-export function onGetInfoChat(socket: Socket, SECRET_KEY: string): void {
+export function onGetInfoChat(socket: Socket): void {
   socket.on("get_info_chat", async (data: { chatId: string, type: string }) => {
     try {
-      const auth = verifyAuth(socket, SECRET_KEY);
+      const auth = verifyAuth(socket);
       if (!auth) return;
 
       const client = await getMongoClient();

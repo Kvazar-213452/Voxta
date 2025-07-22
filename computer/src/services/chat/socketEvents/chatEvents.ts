@@ -1,20 +1,23 @@
 import { Socket } from 'socket.io-client';
 import { getMainWindow } from '../../../models/mainWindow';
-import { addChatOflineOnDB } from '../utils/createChat';
-import { loadChatContentLocal } from '../utils/loadChatContentLocal';
+import { addChatOflineOnDB, loadChatContentLocal } from '../utils/chat';
 import { safeParseJSON } from '../../../utils/utils';
 import { sendMsgOffline } from '../../trafficJams/trafficJams'
 import { getMsgOffline } from '../utils/sendMsg'
 
 export function registerChatEvents(socket: Socket) {
   socket.on('chats_info', (data) => {
-    if (data.code === 1) {
+    if (data.code) {
       getMainWindow().webContents.send('reply', { type: 'load_chats', chats: data.chats });
+    } else {
+      getMainWindow().webContents.send('reply', { type: 'error_div', content: "chats_info" });
     }
   });
 
   socket.on('chat_info', (data) => {
-    if (data.type == 'profile') {
+    if (!data.code) {
+      getMainWindow().webContents.send('reply', { type: 'error_div', content: "chat_info" });
+    } else if (data.type == 'profile') {
       let chat = data.chat;
       chat = safeParseJSON(chat);
 
@@ -28,6 +31,9 @@ export function registerChatEvents(socket: Socket) {
   });
 
   socket.on('create_new_chat', (data) => {
+    if (!data.code) {
+      getMainWindow().webContents.send('reply', { type: 'error_div', content: "create_new_chat" });
+    }
     let dataChat = data.chat;
     dataChat = safeParseJSON(dataChat);
 
@@ -42,7 +48,9 @@ export function registerChatEvents(socket: Socket) {
   });
 
   socket.on('load_chat_content_return', (data) => {
-    if (data.type === 'offline') {
+    if (!data.code) {
+      getMainWindow().webContents.send('reply', { type: 'error_div', content: "load_chat_content_return" });
+    } else if (data.type === 'offline') {
       loadChatContentLocal(data.chatId, data.participants);
     } else {
       getMainWindow().webContents.send('reply', {

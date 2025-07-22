@@ -1,12 +1,12 @@
 import { Socket } from "socket.io";
-import { getMongoClient } from "../models/mongoClient";
+import { getMongoClient } from "../../models/mongoClient";
 import { Db } from "mongodb";
-import { verifyAuth } from "../utils/verifyAuth";
+import { verifyAuth } from "../../utils/verifyAuth";
 
-export function onDelMemberInChat(socket: Socket, SECRET_KEY: string): void {
+export function onDelMemberInChat(socket: Socket): void {
   socket.on("del_user_in_chat", async (data: { id: string, userId: string }) => {
     try {
-      const auth = verifyAuth(socket, SECRET_KEY);
+      const auth = verifyAuth(socket);
       if (!auth) return;
 
       const client = await getMongoClient();

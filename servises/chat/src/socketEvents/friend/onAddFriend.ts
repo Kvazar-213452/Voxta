@@ -1,11 +1,11 @@
 import { Socket } from "socket.io";
-import { getMongoClient } from "../models/mongoClient";
+import { getMongoClient } from "../../models/mongoClient";
 import { Db } from "mongodb";
-import { verifyAuth } from "../utils/verifyAuth";
+import { verifyAuth } from "../../utils/verifyAuth";
 
-export function onAddFriend(socket: Socket, SECRET_KEY: string): void {
+export function onAddFriend(socket: Socket): void {
   socket.on("add_friends", async (data: { id: string }) => {
-    if (!verifyAuth(socket, SECRET_KEY)) return;
+    if (!verifyAuth(socket)) return;
 
     try {
       const db: Db = (await getMongoClient()).db("users");

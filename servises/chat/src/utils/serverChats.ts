@@ -45,8 +45,13 @@ export function getServerIdToChat(chatId: string): string | null {
     }
   }
 
-  console.error(`Chat with ID "${chatId}" not found in any server.`);
   return null;
+}
+
+export function removeServer(id: string): void {
+  if (ChatsServers[id]) {
+    delete ChatsServers[id];
+  }
 }
 
 

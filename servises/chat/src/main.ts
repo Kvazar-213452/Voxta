@@ -2,33 +2,33 @@ import express, { Request, Response } from 'express';
 import http from 'http';
 import { Server, Socket } from 'socket.io';
 import dotenv from 'dotenv';
-import { initKeyLite, getKeyLite } from './utils/cripto/SPX_CriptoLite';
-import { onGetInfoChats } from './socketEvents/onGetInfoChats';
-import { onLoadChatContent } from './socketEvents/onLoadChatContent';
-import { onSendMessage } from './socketEvents/onSendMessage';
-import { onAuthenticate } from './socketEvents/onAuthenticate';
-import { onDisconnect } from './socketEvents/onDisconnect';
-import { onError } from './socketEvents/onError';
-import { onCreateChat } from './socketEvents/onCreateChat';
-import { onGetInfoUsers } from './socketEvents/onGetInfoUsers';
-import { onGetInfoUser } from './socketEvents/onGetInfoUser';
-import { onGetInfoChat } from './socketEvents/onGetInfoChat';
-import { onGetFriends } from './socketEvents/onGetFriends';
-import { onDelFriend } from './socketEvents/onDelFriend';
-import { onAddUserInChat } from './socketEvents/onAddUserInChat';
-import { onDelMemberInChat } from './socketEvents/onDelMemberInChat';
-import { onSaveSettingsChat } from './socketEvents/onSaveSettingsChat';
-import { onFindFriend } from './socketEvents/onFindFriend';
-import { onAddFriend } from './socketEvents/onAddFriend';
-import { onCreateChatServer } from './socketEvents/onCreateChatServer';
-import { onNewChatCreateServer } from './socketEvents/onNewChatCreateServer';
-import { onGetPubLiteKeySIS } from './socketEvents/onGetPubLiteKeySIS';
+import { initKeyLite, getKeyLite } from './utils/crypto/SPX_CriptoLite';
+import { onGetInfoChats } from './socketEvents/chat/onGetInfoChats';
+import { onLoadChatContent } from './socketEvents/chat/onLoadChatContent';
+import { onSendMessage } from './socketEvents/chat/onSendMessage';
+import { onAuthenticate } from './socketEvents/server/onAuthenticate';
+import { onDisconnect } from './socketEvents/server/onDisconnect';
+import { onError } from './socketEvents/server/onError';
+import { onCreateChat } from './socketEvents/chat/onCreateChat';
+import { onGetInfoUsers } from './socketEvents/user/onGetInfoUsers';
+import { onGetInfoUser } from './socketEvents/user/onGetInfoUser';
+import { onGetInfoChat } from './socketEvents/chat/onGetInfoChat';
+import { onGetFriends } from './socketEvents/friend/onGetFriends';
+import { onDelFriend } from './socketEvents/friend/onDelFriend';
+import { onAddUserInChat } from './socketEvents/chat/onAddUserInChat';
+import { onDelMemberInChat } from './socketEvents/chat/onDelMemberInChat';
+import { onSaveSettingsChat } from './socketEvents/chat/onSaveSettingsChat';
+import { onFindFriend } from './socketEvents/friend/onFindFriend';
+import { onAddFriend } from './socketEvents/friend/onAddFriend';
+import { onCreateChatServer } from './socketEvents/chat/onCreateChatServer';
+import { onNewChatCreateServer } from './socketEvents/chat/onNewChatCreateServer';
+import { onGetPubLiteKeySIS } from './socketEvents/crypto/onGetPubLiteKeySIS';
 
 dotenv.config();
 
 const EXPRESS_PORT = parseInt(process.env.PORT_SERVER || '3000');
 const SOCKET_PORT = parseInt(process.env.PORT || '3001');
-const SECRET_KEY = process.env.SECRET_KEY ?? 'default-secret-key';
+export const SECRET_KEY = process.env.SECRET_KEY ?? 'default-secret-key';
 
 // ------------------------
 // EXPRESS SERVER
@@ -57,26 +57,26 @@ const io = new Server(socketServer, {
 });
 
 io.on('connection', (socket: Socket) => {
-  console.log(`Клієнт підключився: ${socket.id}`);
+  console.log(`conect client: ${socket.id}`);
 
-  onCreateChatServer(socket, SECRET_KEY);
-  onGetPubLiteKeySIS(socket, SECRET_KEY);
+  onCreateChatServer(socket);
+  onGetPubLiteKeySIS(socket);
   onNewChatCreateServer(socket);
-  onAuthenticate(socket, SECRET_KEY);
-  onGetInfoChats(socket, SECRET_KEY);
-  onLoadChatContent(socket, SECRET_KEY);
-  onSendMessage(socket, SECRET_KEY);
-  onCreateChat(socket, SECRET_KEY);
-  onGetInfoUsers(socket, SECRET_KEY);
-  onGetInfoUser(socket, SECRET_KEY);
-  onGetInfoChat(socket, SECRET_KEY);
-  onGetFriends(socket, SECRET_KEY);
-  onDelFriend(socket, SECRET_KEY);
-  onAddUserInChat(socket, SECRET_KEY);
-  onDelMemberInChat(socket, SECRET_KEY);
-  onSaveSettingsChat(socket, SECRET_KEY);
-  onFindFriend(socket, SECRET_KEY);
-  onAddFriend(socket, SECRET_KEY);
+  onAuthenticate(socket);
+  onGetInfoChats(socket);
+  onLoadChatContent(socket);
+  onSendMessage(socket);
+  onCreateChat(socket);
+  onGetInfoUsers(socket);
+  onGetInfoUser(socket);
+  onGetInfoChat(socket);
+  onGetFriends(socket);
+  onDelFriend(socket);
+  onAddUserInChat(socket);
+  onDelMemberInChat(socket);
+  onSaveSettingsChat(socket);
+  onFindFriend(socket);
+  onAddFriend(socket);
   onDisconnect(socket);
   onError(socket);
 });
@@ -86,9 +86,9 @@ export function getIO(): Server {
 }
 
 socketServer.listen(SOCKET_PORT, () => {
-  console.log(`Socket.IO запущено на http://localhost:${SOCKET_PORT}`);
+  console.log(`Socket.IO start на http://localhost:${SOCKET_PORT}`);
 });
 
 io.engine.on('connection_error', (error) => {
-  console.error('Socket.IO помилка з’єднання:', error);
+  console.error('Socket.IO error:', error);
 });

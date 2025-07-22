@@ -1,16 +1,16 @@
 import { Socket } from "socket.io";
 import { Db } from "mongodb";
-import { getMongoClient } from "../models/mongoClient";
-import { verifyAuth } from "../utils/verifyAuth";
-import { generateId } from "../utils/generateId";
-import { autoDecrypt } from "../utils/cripto/autoCrypto";
-import { getIO } from '../main';
-import { getServerIdToChat } from "../utils/serverChats";
+import { getMongoClient } from "../../models/mongoClient";
+import { verifyAuth } from "../../utils/verifyAuth";
+import { generateId } from "../../utils/generateId";
+import { autoDecrypt } from "../../utils/crypto/autoCrypto";
+import { getIO } from '../../main';
+import { getServerIdToChat } from "../../utils/serverChats";
 
-export function onSendMessage(socket: Socket, SECRET_KEY: string): void {
+export function onSendMessage(socket: Socket): void {
   socket.on("send_message", async (data: { message: any, chatId: string, pubKey: string, crypto: string, type: string }) => {
     try {
-      const auth = verifyAuth(socket, SECRET_KEY);
+      const auth = verifyAuth(socket);
       if (!auth) return;
 
       if (data.type === 'server') {

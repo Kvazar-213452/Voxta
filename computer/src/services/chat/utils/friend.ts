@@ -11,3 +11,7 @@ export function findFriend(name: string): void {
 export function adddFriend(id: string): void {
   getSocketGlobal()?.emit("add_friend", { id: id });
 }
+
+export function getFriengs(type: string): void {
+  getSocketGlobal()?.emit("get_friends", {type: type});
+}

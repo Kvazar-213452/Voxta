@@ -1,15 +1,15 @@
 import { Socket } from "socket.io";
 import { Db, Collection } from "mongodb";
-import { verifyAuth } from "../utils/verifyAuth";
-import { generateId } from "../utils/generateId";
-import { sendCreateChat } from "../utils/sendCreateChat";
-import { getMongoClient } from "../models/mongoClient";
-import { uploadAvatar } from "../utils/uploadData";
+import { verifyAuth } from "../../utils/verifyAuth";
+import { generateId } from "../../utils/generateId";
+import { sendCreateChat } from "../../utils/sendCreateChat";
+import { getMongoClient } from "../../models/mongoClient";
+import { uploadAvatar } from "../../utils/uploadData";
 
-export function onCreateChat(socket: Socket, SECRET_KEY: string): void {
+export function onCreateChat(socket: Socket): void {
   socket.on("create_chat", async (data: { chat: Chat }) => {
     try {
-      const auth = verifyAuth(socket, SECRET_KEY);
+      const auth = verifyAuth(socket);
       if (!auth) return;
 
       if (data.chat.avatar) {

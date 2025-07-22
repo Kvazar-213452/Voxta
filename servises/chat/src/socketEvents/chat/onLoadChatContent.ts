@@ -1,14 +1,14 @@
 import { Socket } from "socket.io";
-import { getMongoClient } from "../models/mongoClient";
-import { verifyAuth } from "../utils/verifyAuth";
-import { getServerIdToChat } from "../utils/serverChats";
+import { getMongoClient } from "../../models/mongoClient";
+import { verifyAuth } from "../../utils/verifyAuth";
+import { getServerIdToChat } from "../../utils/serverChats";
 import { Db } from "mongodb";
-import { getIO } from '../main';
+import { getIO } from '../../main';
 
-export function onLoadChatContent(socket: Socket, SECRET_KEY: string): void {
+export function onLoadChatContent(socket: Socket): void {
   socket.on("load_chat_content", async (data: { chatId: string, type: string }) => {
     try {
-      const auth = verifyAuth(socket, SECRET_KEY);
+      const auth = verifyAuth(socket);
       if (!auth) return;
 
       if (data.type === "server") {

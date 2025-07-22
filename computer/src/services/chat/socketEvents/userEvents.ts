@@ -4,7 +4,9 @@ import { getInfoUsers } from '../utils/getInfo';
 
 export function registerUserEvents(socket: Socket) {
   socket.on('get_info_users_return', (data) => {
-    if (data.type === "info_panel") {
+    if (!data.code) {
+      getMainWindow().webContents.send('reply', { type: 'error_div', content: "get_info_users_return" });
+    } else if (data.type === "info_panel") {
       getMainWindow().webContents.send('reply', {
         type: 'info_users',
         users: data.users,
@@ -33,7 +35,9 @@ export function registerUserEvents(socket: Socket) {
   });
 
   socket.on('get_info_user_return', (data) => {
-    if (data.type === 'simple') {
+    if (!data.code) {
+      getMainWindow().webContents.send('reply', { type: 'error_div', content: "get_info_user_return" });
+    } else if (data.type === 'simple') {
       getMainWindow().webContents.send('reply', {
         type: 'info_user',
         user: data.user,
@@ -52,7 +56,9 @@ export function registerUserEvents(socket: Socket) {
   });
 
   socket.on('get_friends', (data) => {
-    if (data.type === "modal_friends") {
+    if (!data.code) {
+      getMainWindow().webContents.send('reply', { type: 'error_div', content: "get_friends" });
+    } else if (data.type === "modal_friends") {
       getMainWindow().webContents.send('reply', {
         type: 'friends_modal',
         friends: data.friends,
@@ -66,14 +72,22 @@ export function registerUserEvents(socket: Socket) {
   });
 
   socket.on('del_friend', (data) => {
-    getMainWindow().webContents.send('reply', {
-      type: 'friends_modal',
-      friends: data.friends,
-    });
+    if (!data.code) {
+      getMainWindow().webContents.send('reply', { type: 'error_div', content: "del_friend" });
+    } else {
+      getMainWindow().webContents.send('reply', {
+        type: 'friends_modal',
+        friends: data.friends,
+      });
+    }
   });
 
   socket.on('find_friend', (data) => {
-    getInfoUsers(data.users, 'finded_friend');
+    if (!data.code) {
+      getMainWindow().webContents.send('reply', { type: 'error_div', content: "find_friend" });
+    } else {
+      getInfoUsers(data.users, 'finded_friend');
+    }
   });
 
   socket.on('add_friends', (data) => {

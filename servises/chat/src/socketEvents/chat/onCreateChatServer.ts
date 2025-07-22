@@ -1,11 +1,11 @@
 import { Socket } from "socket.io";
-import { verifyAuth } from "../utils/verifyAuth";
-import { getIO } from '../main';
+import { verifyAuth } from "../../utils/verifyAuth";
+import { getIO } from '../../main';
 
-export function onCreateChatServer(socket: Socket, SECRET_KEY: string): void {
+export function onCreateChatServer(socket: Socket): void {
   socket.on("create_chat_server", async (data: { chat: any }) => {
     try {
-      const auth = verifyAuth(socket, SECRET_KEY);
+      const auth = verifyAuth(socket);
       if (!auth) return;
 
       getIO().to(data.chat.idServer).emit("create_chat", {

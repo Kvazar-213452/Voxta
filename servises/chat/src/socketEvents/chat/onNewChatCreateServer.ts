@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
-import { sendCreateChat } from "../utils/sendCreateChat";
+import { sendCreateChat } from "../../utils/sendCreateChat";
 import { Db, Collection } from "mongodb";
-import { getMongoClient } from "../models/mongoClient";
+import { getMongoClient } from "../../models/mongoClient";
 
 export function onNewChatCreateServer(socket: Socket): void {
   socket.on("send_new_chat_server", async (data: { chat: any }) => {

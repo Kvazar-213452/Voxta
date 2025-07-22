@@ -1,7 +1,6 @@
 import { loadChatContent, reconnectSocketClient } from '../services/chat/chatController';
 import { sendMessage } from '../services/chat/utils/sendMsg';
-import { createChat, createChatServer } from '../services/chat/utils/createChat';
-import { addUserInChat, delUserInChat, saveChatSettings } from '../services/chat/utils/chat';
+import { addUserInChat, delUserInChat, saveChatSettings, createChat, createChatServer } from '../services/chat/utils/chat';
 
 export async function handleChat(msg: any): Promise<boolean> {
   if (msg.type === 'load_chat') {
