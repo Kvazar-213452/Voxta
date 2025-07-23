@@ -54,6 +54,22 @@ export function removeServer(id: string): void {
   }
 }
 
+export function updateChatServer(idserver: string, newData: any) {
+  if (!ChatsServers[idserver]) {
+    return;
+  }
+
+  if (!ChatsServers[idserver][newData.id]) {
+    return;
+  }
+
+  ChatsServers[idserver][newData.id] = {
+    ...ChatsServers[idserver][newData.id],
+    ...newData
+  };
+}
+
+
 
 // let ChatsServers1 = {
 //   "idserver": {

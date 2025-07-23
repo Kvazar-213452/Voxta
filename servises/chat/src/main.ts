@@ -23,6 +23,7 @@ import { onAddFriend } from './socketEvents/friend/onAddFriend';
 import { onCreateChatServer } from './socketEvents/chat/onCreateChatServer';
 import { onNewChatCreateServer } from './socketEvents/chat/onNewChatCreateServer';
 import { onGetPubLiteKeySIS } from './socketEvents/crypto/onGetPubLiteKeySIS';
+import { onUpdataChatServer } from './socketEvents/server/onUpdataChatServer';
 
 dotenv.config();
 
@@ -59,6 +60,7 @@ const io = new Server(socketServer, {
 io.on('connection', (socket: Socket) => {
   console.log(`conect client: ${socket.id}`);
 
+  onUpdataChatServer(socket);
   onCreateChatServer(socket);
   onGetPubLiteKeySIS(socket);
   onNewChatCreateServer(socket);

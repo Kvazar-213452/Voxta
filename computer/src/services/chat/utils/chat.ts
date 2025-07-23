@@ -3,16 +3,16 @@ import { getMessagesByChatId } from '../../../models/sqliteStorage/chatUtils/cha
 import { getMainWindow } from '../../../models/mainWindow';
 import { createChat as createChatInDB } from '../../../models/sqliteStorage/chatUtils/chats';
 
-export function addUserInChat(id: string, userId: string): void {
-  getSocketGlobal()?.emit("add_user_in_chat", { id: id, userId: userId });
+export function addUserInChat(id: string, userId: string, typeChat: string): void {
+  getSocketGlobal()?.emit("add_user_in_chat", { id: id, userId: userId, typeChat: typeChat });
 }
 
-export function delUserInChat(id: string, userId: string): void {
-  getSocketGlobal()?.emit("del_user_in_chat", { id: id, userId: userId });
+export function delUserInChat(id: string, userId: string, typeChat: string): void {
+  getSocketGlobal()?.emit("del_user_in_chat", { id: id, userId: userId, typeChat: typeChat });
 }
 
-export function saveChatSettings(id: string, dataChat: any): void {
-    getSocketGlobal()?.emit("save_settings_chat", { id: id, dataChat: dataChat });
+export function saveChatSettings(id: string, dataChat: any, typeChat: string): void {
+  getSocketGlobal()?.emit("save_settings_chat", { id: id, dataChat: dataChat, typeChat: typeChat });
 }
 
 // ======= create chat =======

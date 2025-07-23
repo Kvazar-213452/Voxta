@@ -5,6 +5,7 @@ export function showSettingsChat() {
   window.electronAPI.sendMessage({
     type: "load_chat_info_for_settings", 
     id: chat_id_select,
+    typeChat: chat_select['type']
   });
 }
 
@@ -117,7 +118,8 @@ function addFriendInChat(id) {
   window.electronAPI.sendMessage({
     type: 'add_user_in_chat',
     id: chat_id_select,
-    userId: id
+    userId: id,
+    typeChat: chat_select['type']
   });
 
   $('#friendsModalAdd').removeClass('active');
@@ -128,7 +130,8 @@ function delMember(id) {
   window.electronAPI.sendMessage({
     type: 'del_user_in_chat',
     id: chat_id_select,
-    userId: id
+    userId: id,
+    typeChat: chat_select['type']
   });
 
   closeSettingsChat();
@@ -144,7 +147,8 @@ export function saveSettingsChat() {
   window.electronAPI.sendMessage({
     type: 'save_chat_settings',
     id: chat_id_select,
-    dataChat: data
+    dataChat: data,
+    typeChat: chat_select['type']
   });
 
   closeSettingsChat();

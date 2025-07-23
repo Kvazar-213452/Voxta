@@ -16,13 +16,13 @@ export async function handleChat(msg: any): Promise<boolean> {
     createChat(msg.chat);
     return true;
   } else if (msg.type === 'add_user_in_chat') {
-    addUserInChat(msg.id, msg.userId);
+    addUserInChat(msg.id, msg.userId, msg.typeChat);
     return true;
   } else if (msg.type === 'del_user_in_chat') {
-    delUserInChat(msg.id, msg.userId);
+    delUserInChat(msg.id, msg.userId, msg.typeChat);
     return true;
   } else if (msg.type === 'save_chat_settings') {
-    saveChatSettings(msg.id, msg.dataChat);
+    saveChatSettings(msg.id, msg.dataChat, msg.typeChat);
     return true;
   } else if (msg.type === 'create_chat_server') {
     createChatServer(msg.chat);

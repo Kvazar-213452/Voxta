@@ -10,7 +10,7 @@ export function handleInternal(msg: any): boolean {
     saveSettingsFix(msg.settings);
     return true;
   } else if (msg.type === 'load_chat_info_for_settings') {
-    getInfoChat(msg.id, 'settings_chat');
+    getInfoChat(msg.id, 'settings_chat', msg.typeChat);
     return true;
   } else if (msg.type === 'del_friend') {
     delFriend(msg.id);
