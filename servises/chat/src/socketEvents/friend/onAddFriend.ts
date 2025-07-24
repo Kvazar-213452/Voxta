@@ -4,7 +4,7 @@ import { Db } from "mongodb";
 import { verifyAuth } from "../../utils/verifyAuth";
 
 export function onAddFriend(socket: Socket): void {
-  socket.on("add_friends", async (data: { id: string }) => {
+  socket.on("add_friend", async (data: { id: string }) => {
     if (!verifyAuth(socket)) return;
 
     try {

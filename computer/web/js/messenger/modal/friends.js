@@ -51,23 +51,6 @@ export function findFriend(name) {
   });
 }
 
-export function renserUsersInAddFriendsModal(users) {
-  $("#add_modal_friends_auk").html(null);
-
-  for (const id in users) {
-    const user = users[id];
-    let content = `
-      <div onclick="addFriendInChat(${user.id})" class="user_info_div">
-        <img class="logo" src="${user.avatar}">
-        <p class="name">${user.name}</p>
-        <div onclick="addFriend(${user.id})" class='plus_btn_add_friend'></div>
-      </div>
-    `;
-    
-    $("#add_modal_friends_auk").append(content);
-  }
-}
-
 function addFriend(id) {
   window.electronAPI.sendMessage({
     type: 'add_friend',
@@ -76,4 +59,3 @@ function addFriend(id) {
 }
 
 window.delFriend = delFriend;
-window.addFriend = addFriend;
