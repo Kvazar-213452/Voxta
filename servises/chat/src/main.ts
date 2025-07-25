@@ -18,12 +18,13 @@ import { onDelFriend } from './socketEvents/friend/onDelFriend';
 import { onAddUserInChat } from './socketEvents/chat/onAddUserInChat';
 import { onDelMemberInChat } from './socketEvents/chat/onDelMemberInChat';
 import { onSaveSettingsChat } from './socketEvents/chat/onSaveSettingsChat';
-import { onFindFriend } from './socketEvents/friend/onFindFriend';
 import { onAddFriend } from './socketEvents/friend/onAddFriend';
 import { onCreateChatServer } from './socketEvents/chat/onCreateChatServer';
 import { onNewChatCreateServer } from './socketEvents/chat/onNewChatCreateServer';
 import { onGetPubLiteKeySIS } from './socketEvents/crypto/onGetPubLiteKeySIS';
 import { onUpdataChatServer } from './socketEvents/server/onUpdataChatServer';
+
+import { authenticateFriends } from './services/friends';
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ export const SECRET_KEY = process.env.SECRET_KEY ?? 'default-secret-key';
 const app = express();
 
 initKeyLite();
+authenticateFriends();
 
 app.get('/public_key_lite', (req: Request, res: Response) => {
   res.json({ key: getKeyLite().publicKey });
@@ -77,7 +79,6 @@ io.on('connection', (socket: Socket) => {
   onAddUserInChat(socket);
   onDelMemberInChat(socket);
   onSaveSettingsChat(socket);
-  onFindFriend(socket);
   onAddFriend(socket);
   onDisconnect(socket);
   onError(socket);

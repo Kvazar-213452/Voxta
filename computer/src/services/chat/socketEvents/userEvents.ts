@@ -26,11 +26,6 @@ export function registerUserEvents(socket: Socket) {
         type: 'friends_add_chat_modal_render',
         friends: data.users,
       });
-    } else if (data.type === 'finded_friend') {
-      getMainWindow().webContents.send('reply', {
-        type: 'finded_friend_web',
-        users: data.users,
-      });
     }
   });
 
@@ -82,16 +77,8 @@ export function registerUserEvents(socket: Socket) {
     }
   });
 
-  socket.on('find_friend', (data) => {
-    if (!data.code) {
-      getMainWindow().webContents.send('reply', { type: 'error_div', content: "find_friend" });
-    } else {
-      getInfoUsers(data.users, 'finded_friend');
-    }
-  });
-
   socket.on('add_friends', (data) => {
-    console.log(data.code);
+    console.log(data);
   });
 }
 

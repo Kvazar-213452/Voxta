@@ -1,29 +1,37 @@
-import { Socket } from "socket.io";
 import { getMongoClient } from "../../models/mongoClient";
-import { Db } from "mongodb";
+import { Code, Db } from "mongodb";
+import { Socket } from "socket.io";
+import { getUserCode } from "../../services/friends";
 import { verifyAuth } from "../../utils/verifyAuth";
 
 export function onAddFriend(socket: Socket): void {
-  socket.on("add_friend", async (data: { id: string }) => {
+  socket.on("add_friend", async (data: { code: string }) => {
     if (!verifyAuth(socket)) return;
 
     try {
-      const db: Db = (await getMongoClient()).db("users");
-      const collection = db.collection<any>(socket.data.userId);
+      let res = await getUserCode(data.code);
 
-      const config = await collection.findOne({ _id: "config" });
-      if (!config) return socket.emit("add_friends", { code: 0 });
+      if (res.code) {
+        socket.emit("add_friends", { code: 0 });
+      } else {
+        console.log(res.data.idUser)
+        const db: Db = (await getMongoClient()).db("users");
+        const collection = db.collection<any>(socket.data.userId);
 
-      const friends: string[] = config.friends || [];
-      let id: string = String(data.id);
+        const config = await collection.findOne({ _id: "config" });
+        if (!config) return socket.emit("add_friends", { code: 0 });
 
-      if (!friends.includes(id)) {
-        friends.push(id);
-        await collection.updateOne({ _id: "config" }, { $set: { friends } });
+        const friends: string[] = config.friends || [];
+        let id: string = String(res.data.idUser);
+
+        if (!friends.includes(id)) {
+          friends.push(id);
+          await collection.updateOne({ _id: "config" }, { $set: { friends } });
+        }
+
+        socket.emit("add_friends", { code: 1 });
       }
-
-      socket.emit("add_friends", { code: 1 });
-
+      
     } catch (e) {
       socket.emit("add_friends", { code: 0 });
     }

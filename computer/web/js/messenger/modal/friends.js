@@ -44,18 +44,15 @@ export function closeAddFriendMoadl() {
   closeFriendModal();
 }
 
-export function findFriend(name) {
-  window.electronAPI.sendMessage({
-    type: 'find_friend',
-    name: name
-  });
-}
-
-function addFriend(id) {
+export function findFriend(code) {
   window.electronAPI.sendMessage({
     type: 'add_friend',
-    id: id
+    code: code
   });
+
+  closeFriendModal();
+  $('#friendsModalAddAuk').removeClass('active');
+  $('#input_find_friend').val("");
 }
 
 window.delFriend = delFriend;

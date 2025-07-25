@@ -16,7 +16,7 @@ export function handleInternal(msg: any): boolean {
     delFriend(msg.id);
     return true;
   } else if (msg.type === 'add_friend') {
-    adddFriend(msg.id);
+    adddFriend(msg.code);
     return true;
   } 
 

@@ -4,12 +4,8 @@ export function delFriend(id: string): void {
   getSocketGlobal()?.emit("del_friend", { id: id });
 }
 
-export function findFriend(name: string): void {
-  getSocketGlobal()?.emit("find_friend", { name: name });
-}
-
-export function adddFriend(id: string): void {
-  getSocketGlobal()?.emit("add_friend", { id: id });
+export function adddFriend(code: string): void {
+  getSocketGlobal()?.emit("add_friend", { code: code });
 }
 
 export function getFriengs(type: string): void {
