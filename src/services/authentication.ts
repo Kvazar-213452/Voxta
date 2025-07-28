@@ -17,11 +17,15 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
       password: msg.pasw
     });
 
+    console.log(dataToEncrypt)
+
     const encryptionJson: EncryptedData = encryptionMsg(PublicKey_server, dataToEncrypt)
     const response = await axios.post(`${configServises.AUTHENTICATION}/login`, {
-      data: encryptionJson,
-      key: await getPublicKey()
+      data: JSON.stringify(encryptionJson),
+      key: await getPublicKey(),
+      type: "pc"
     });
+
     if (response.data.code == 1) {
       let dataFromServer = await decryptionApp(response.data.data);
       let parsed = safeParseJSON(dataFromServer);
@@ -33,7 +37,7 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
       await MainApp();
     }
   } catch (error: any) {
-    console.log(error);
+
     event.reply('reply', { error: error.response?.data || 'error server' });
   }
 }
@@ -55,7 +59,8 @@ export async function loginToJwt(): Promise<void> {
 
   const response = await axios.post(`${configServises.AUTHENTICATION}/get_info_to_jwt`, {
     data: encryptionJson,
-    key: await getPublicKey()
+    key: await getPublicKey(),
+    type: "pc"
   });
 
   if (response.data.code == 1) {

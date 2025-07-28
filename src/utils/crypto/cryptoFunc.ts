@@ -21,7 +21,7 @@ export async function generateKey(): Promise<void> {
 }
 
 export async function getPublicKeyServer(): Promise<string> {
-  const response = await axios.get<string>("http://localhost:3000/public_key");
+  const response = await axios.get<string>("http://localhost:4001/public_key_pc");
   return response.data;
 }
 
@@ -60,9 +60,7 @@ export function encryptionMsg(publicRsaKey: string, message: string): { key: str
 
 // ======= decryption_app ENDPOINT ===========
 export async function decryptionApp(encryptedData: any): Promise<string> {
-  console.log("Ddddddddddddd");
   const privateKey = await getPrivateKey();
-  console.log(privateKey)
   if (!privateKey) {
     throw new Error('Private key is not available');
   }
