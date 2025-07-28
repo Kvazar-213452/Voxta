@@ -25,35 +25,38 @@ const ACCOUNT_PRIVATE_KEY = 'privateKey';
 export async function saveKeys(publicKey: string, privateKey: string): Promise<void> {
   await keytar.setPassword(configDB.SERVICE_NAME, ACCOUNT_PUBLIC_KEY, publicKey);
 
-  const part1 = privateKey.slice(0, 1000);
-  const part2 = privateKey.slice(1000);
+  const length = privateKey.length;
+  const partSize = Math.ceil(length / 3);
+
+  const part1 = privateKey.slice(0, partSize);
+  const part2 = privateKey.slice(partSize, partSize * 2);
+  const part3 = privateKey.slice(partSize * 2);
 
   await keytar.setPassword(configDB.SERVICE_NAME, `${ACCOUNT_PRIVATE_KEY}_1`, part1);
   await keytar.setPassword(configDB.SERVICE_NAME, `${ACCOUNT_PRIVATE_KEY}_2`, part2);
+  await keytar.setPassword(configDB.SERVICE_NAME, `${ACCOUNT_PRIVATE_KEY}_3`, part3);
 }
 
 export async function getPublicKey(): Promise<string | null> {
   const pem = await keytar.getPassword(configDB.SERVICE_NAME, ACCOUNT_PUBLIC_KEY);
   if (!pem) return null;
 
-  const cleaned = pem
-    .replace('-----BEGIN PUBLIC KEY-----', '')
-    .replace('-----END PUBLIC KEY-----', '')
-    .replace(/\r?\n|\s/g, ''); // видаляє всі пробіли й переноси
-
-  return cleaned;
+  return pem;
 }
 
 export async function getPrivateKey(): Promise<string> {
   const part1 = await keytar.getPassword(configDB.SERVICE_NAME, `${ACCOUNT_PRIVATE_KEY}_1`);
   const part2 = await keytar.getPassword(configDB.SERVICE_NAME, `${ACCOUNT_PRIVATE_KEY}_2`);
-  return (part1 ?? '') + (part2 ?? '');
+  const part3 = await keytar.getPassword(configDB.SERVICE_NAME, `${ACCOUNT_PRIVATE_KEY}_3`);
+  
+  return (part1 ?? '') + (part2 ?? '') + (part3 ?? '');
 }
 
 export async function deleteKeys(): Promise<void> {
   await keytar.deletePassword(configDB.SERVICE_NAME, ACCOUNT_PUBLIC_KEY);
   await keytar.deletePassword(configDB.SERVICE_NAME, `${ACCOUNT_PRIVATE_KEY}_1`);
   await keytar.deletePassword(configDB.SERVICE_NAME, `${ACCOUNT_PRIVATE_KEY}_2`);
+  await keytar.deletePassword(configDB.SERVICE_NAME, `${ACCOUNT_PRIVATE_KEY}_3`);
 }
 
 // ==== KEYS db ====

@@ -2,18 +2,18 @@ import crypto, { CipherGCM, DecipherGCM } from 'crypto';
 import axios from 'axios';
 import { saveKeys, getPublicKey, getPrivateKey, getKeyText } from '../../models/storageApp';
 import { configCrypto } from '../../config';
+import { console } from 'inspector/promises';
 
 export async function generateKey(): Promise<void> {
   const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
     modulusLength: 4096,
     publicKeyEncoding: {
-      type: "spki",      // spki — це сучасний стандарт для публічного ключа (X.509)
+      type: "spki",
       format: "pem"
     },
     privateKeyEncoding: {
-      type: "pkcs8",     // pkcs8 — більш універсальний формат приватного ключа
+      type: "pkcs8",
       format: "pem"
-      // можна додати cipher та passphrase для шифрування ключа
     }
   });
 
@@ -27,22 +27,30 @@ export async function getPublicKeyServer(): Promise<string> {
 
 // ======= encryption_msg ENDPOINT ===========
 export function encryptionMsg(publicRsaKey: string, message: string): { key: string; data: string } {
+  // Генеруємо 256-бітний AES ключ
   const aesKey = crypto.randomBytes(32);
-  const iv = crypto.randomBytes(16);
+  
+  // Генеруємо 96-бітний nonce для AES-GCM
+  const nonce = crypto.randomBytes(12);
 
-  const cipher = crypto.createCipheriv('aes-256-cbc', aesKey, iv);
+  // Використовуємо AES-256-GCM замість CBC для кращої безпеки
+  const cipher = crypto.createCipheriv('aes-256-gcm', aesKey, nonce);
   let encrypted = cipher.update(message, 'utf8', 'base64');
   encrypted += cipher.final('base64');
+  
+  // Отримуємо автентифікаційний тег
+  const authTag = cipher.getAuthTag();
 
-
+  // Використовуємо RSA-OAEP замість стандартного RSA
   const encryptedKeyBuffer = crypto.publicEncrypt({
     key: publicRsaKey,
-    padding: crypto.constants.RSA_PKCS1_PADDING
+    padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+    oaepHash: 'sha256'
   }, aesKey);
-  
   const encryptedKey = encryptedKeyBuffer.toString('base64');
 
-  const data = iv.toString('base64') + '.' + encrypted;
+  // Формат: nonce.authTag.encrypted_data
+  const data = nonce.toString('base64') + '.' + authTag.toString('base64') + '.' + encrypted;
 
   return {
     key: encryptedKey,
@@ -51,35 +59,54 @@ export function encryptionMsg(publicRsaKey: string, message: string): { key: str
 }
 
 // ======= decryption_app ENDPOINT ===========
-export async function decryptionApp(encryptedData: EncryptedData): Promise<string> {
+export async function decryptionApp(encryptedData: any): Promise<string> {
+  console.log("Ddddddddddddd");
   const privateKey = await getPrivateKey();
-
+  console.log(privateKey)
   if (!privateKey) {
     throw new Error('Private key is not available');
   }
 
-  const aesKey = crypto.privateDecrypt(
-    {
-      key: privateKey,
-      padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-      oaepHash: 'sha256',
-    },
-    Buffer.from(encryptedData.key, 'base64')
-  );
+  // Розшифровуємо AES ключ з використанням RSA-OAEP
+  const aesKey = crypto.privateDecrypt({
+    key: privateKey,
+    padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+    oaepHash: 'sha256'
+  }, Buffer.from(encryptedData.key, 'base64'));
 
-  const [ivBase64, encryptedMessage] = encryptedData.data.split('.');
-  if (!ivBase64 || !encryptedMessage) {
+  // Розділяємо дані: nonce.authTag.encrypted_data
+  const parts = encryptedData.data.split('.');
+  if (parts.length !== 3) {
     throw new Error('Invalid encrypted data format');
   }
+  
+  const nonce = Buffer.from(parts[0], 'base64');
+  const authTag = Buffer.from(parts[1], 'base64');
+  const encryptedMessage = parts[2];
 
-  const iv = Buffer.from(ivBase64, 'base64');
-
-  const decipher = crypto.createDecipheriv('aes-256-cbc', aesKey, iv);
+  // Розшифровуємо з перевіркою автентичності
+  const decipher = crypto.createDecipheriv('aes-256-gcm', aesKey, nonce);
+  decipher.setAuthTag(authTag);
+  
   let decrypted = decipher.update(encryptedMessage, 'base64', 'utf8');
   decrypted += decipher.final('utf8');
 
   return decrypted;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ======= msg_bd_sql ENDPOINT ===========
 

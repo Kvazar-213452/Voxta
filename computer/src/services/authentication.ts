@@ -17,17 +17,15 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
       password: msg.pasw
     });
 
-    const encryptionJson = encryptionMsg(PublicKey_server, dataToEncrypt);
-
+    const encryptionJson: EncryptedData = encryptionMsg(PublicKey_server, dataToEncrypt)
     const response = await axios.post(`${configServises.AUTHENTICATION}/login`, {
       data: encryptionJson,
       key: await getPublicKey()
     });
-
     if (response.data.code == 1) {
       let dataFromServer = await decryptionApp(response.data.data);
       let parsed = safeParseJSON(dataFromServer);
-      
+
       await saveToken(parsed.token);
       await saveUser(safeParseJSON(parsed.user));
 
