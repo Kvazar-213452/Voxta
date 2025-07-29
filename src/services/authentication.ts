@@ -17,8 +17,6 @@ export async function login(event: IpcMainEvent, msg: { [key: string]: any }): P
       password: msg.pasw
     });
 
-    console.log(dataToEncrypt)
-
     const encryptionJson: EncryptedData = encryptionMsg(PublicKey_server, dataToEncrypt)
     const response = await axios.post(`${configServises.AUTHENTICATION}/login`, {
       data: JSON.stringify(encryptionJson),

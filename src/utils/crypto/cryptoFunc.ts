@@ -2,7 +2,6 @@ import crypto, { CipherGCM, DecipherGCM } from 'crypto';
 import axios from 'axios';
 import { saveKeys, getPublicKey, getPrivateKey, getKeyText } from '../../models/storageApp';
 import { configCrypto } from '../../config';
-import { console } from 'inspector/promises';
 
 export async function generateKey(): Promise<void> {
   const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
@@ -27,21 +26,16 @@ export async function getPublicKeyServer(): Promise<string> {
 
 // ======= encryption_msg ENDPOINT ===========
 export function encryptionMsg(publicRsaKey: string, message: string): { key: string; data: string } {
-  // Генеруємо 256-бітний AES ключ
   const aesKey = crypto.randomBytes(32);
   
-  // Генеруємо 96-бітний nonce для AES-GCM
   const nonce = crypto.randomBytes(12);
 
-  // Використовуємо AES-256-GCM замість CBC для кращої безпеки
   const cipher = crypto.createCipheriv('aes-256-gcm', aesKey, nonce);
   let encrypted = cipher.update(message, 'utf8', 'base64');
   encrypted += cipher.final('base64');
-  
-  // Отримуємо автентифікаційний тег
+
   const authTag = cipher.getAuthTag();
 
-  // Використовуємо RSA-OAEP замість стандартного RSA
   const encryptedKeyBuffer = crypto.publicEncrypt({
     key: publicRsaKey,
     padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
@@ -49,7 +43,6 @@ export function encryptionMsg(publicRsaKey: string, message: string): { key: str
   }, aesKey);
   const encryptedKey = encryptedKeyBuffer.toString('base64');
 
-  // Формат: nonce.authTag.encrypted_data
   const data = nonce.toString('base64') + '.' + authTag.toString('base64') + '.' + encrypted;
 
   return {
@@ -65,14 +58,12 @@ export async function decryptionApp(encryptedData: any): Promise<string> {
     throw new Error('Private key is not available');
   }
 
-  // Розшифровуємо AES ключ з використанням RSA-OAEP
   const aesKey = crypto.privateDecrypt({
     key: privateKey,
     padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
     oaepHash: 'sha256'
   }, Buffer.from(encryptedData.key, 'base64'));
 
-  // Розділяємо дані: nonce.authTag.encrypted_data
   const parts = encryptedData.data.split('.');
   if (parts.length !== 3) {
     throw new Error('Invalid encrypted data format');
@@ -82,7 +73,6 @@ export async function decryptionApp(encryptedData: any): Promise<string> {
   const authTag = Buffer.from(parts[1], 'base64');
   const encryptedMessage = parts[2];
 
-  // Розшифровуємо з перевіркою автентичності
   const decipher = crypto.createDecipheriv('aes-256-gcm', aesKey, nonce);
   decipher.setAuthTag(authTag);
   
