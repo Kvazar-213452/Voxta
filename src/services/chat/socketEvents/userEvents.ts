@@ -1,6 +1,5 @@
 import { Socket } from 'socket.io-client';
 import { getMainWindow } from '../../../models/mainWindow';
-import { getInfoUsers } from '../utils/getInfo';
 
 export function registerUserEvents(socket: Socket) {
   socket.on('get_info_users_return', (data) => {
@@ -16,15 +15,15 @@ export function registerUserEvents(socket: Socket) {
         type: 'chat_settings',
         users: data.users,
       });
-    } else if (data.type === 'friends_modal_render') {
-      getMainWindow().webContents.send('reply', {
-        type: 'friends_modal_render',
-        friends: data.users,
-      });
     } else if (data.type === 'friends_add_chat_modal_render') {
       getMainWindow().webContents.send('reply', {
         type: 'friends_add_chat_modal_render',
         friends: data.users,
+      });
+    } else if (data.type === 'find_user') {
+      getMainWindow().webContents.send('reply', {
+        type: 'find_user',
+        users: data.users,
       });
     }
   });
@@ -49,36 +48,4 @@ export function registerUserEvents(socket: Socket) {
       });
     }
   });
-
-  socket.on('get_friends', (data) => {
-    if (!data.code) {
-      getMainWindow().webContents.send('reply', { type: 'error_div', content: "get_friends" });
-    } else if (data.type === "modal_friends") {
-      getMainWindow().webContents.send('reply', {
-        type: 'friends_modal',
-        friends: data.friends,
-      });
-    } else if (data.type === "add_friend_in_chat") {
-      getMainWindow().webContents.send('reply', {
-        type: 'add_friend_in_chat_web',
-        friends: data.friends,
-      });
-    }
-  });
-
-  socket.on('del_friend', (data) => {
-    if (!data.code) {
-      getMainWindow().webContents.send('reply', { type: 'error_div', content: "del_friend" });
-    } else {
-      getMainWindow().webContents.send('reply', {
-        type: 'friends_modal',
-        friends: data.friends,
-      });
-    }
-  });
-
-  socket.on('add_friends', (data) => {
-    console.log(data);
-  });
 }
-

@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="dist/css/modal/settings.css">
     <link rel="stylesheet" href="dist/css/modal/addChat.css">
     <link rel="stylesheet" href="dist/css/modal/settingsChat.css">
-    <link rel="stylesheet" href="dist/css/modal/friends.css">
 </head>
 <body>
 
@@ -24,7 +23,6 @@
             <h2 class="title_name">Voxta</h2>
             <div id="showSettingsBtn" class="settings_btn"></div>
             <div id="showAddChatBtn" class="plus_btn"></div>
-            <div id="friendsBtn" class="friend_btn"></div>
             <br><br><br>
             <div class="search-box"><input type="text" id="searchInput" placeholder="Пошук чатів..."></div>
             <div class="chats-list" id="chatsList"></div>
@@ -300,13 +298,13 @@
         </div>
     </div>
     
-    <div class="modal-overlay" id="friendsModalAdd">
+    <div class="modal-overlay" id="usersModalAdd">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Додати друга 🤗</h2>
-                <button class="modal-close" id="closefriendsModalAdd">&times;</button>
+                <input type="text" class="input_find_users" id="input_find_user" placeholder="Ведіть код друга">
+                <button class="modal-close" id="closeUsersModalAdd">&times;</button>
             </div>
-            <div class="chat-form-group" id="modal_friends_add_in_chat"></div>
+            <div class="chat-form-group" id="div_find_user"></div>
         </div>
     </div>
 
@@ -427,35 +425,6 @@
         </div>
     </div>
 
-    <!-- ========= friends ========= -->
-    <!-- ========= friends ========= -->
-    <!-- ========= friends ========= -->
-    <!-- ========= friends ========= -->
-
-    <div class="modal-overlay" id="friendsModal">
-    <div class="modal-content">
-        <div class="modal-header">
-        <h2 class="modal-title">Друзі 🤗</h2>
-        <div class="modal-actions">
-            <button class="modal-add" id="addFriendBtnAuk">+</button>
-            <button class="modal-close" id="closefriends">&times;</button>
-        </div>
-        </div>
-        <div class="chat-form-group" id="user_modal_friends"></div>
-    </div>
-    </div>
-
-    <div class="modal-overlay" id="friendsModalAddAuk">
-    <div class="modal-content">
-        <div class="modal-header">
-        <input class="input_find_friend" id="input_find_friend" placeholder="Ведіть код дружби" type="text">
-        <div class="modal-actions">
-            <button class="modal-close" id="closefriendsAddAuk">&times;</button>
-        </div>
-        </div>
-    </div>
-    </div>
-
     <!-- ========= other ========= -->
     <!-- ========= other ========= -->
     <!-- ========= other ========= -->
@@ -478,6 +447,5 @@
     <script type="module" src="js/messenger/events/SettingsChatEvents.js"></script>
     <script type="module" src="js/messenger/events/addChatEvents.js"></script>
     <script type="module" src="js/messenger/events/miscEvents.js"></script>
-    <script type="module" src="js/messenger/events/friendsEvent.js"></script>
 </body>
 </html>

@@ -2,12 +2,20 @@ import {
   showSettingsChat,
   closeSettingsChat,
   saveSettingsChat,
-  closeSettingsChatAddMember
+  closeSettingsChatAddMember,
+  findUser
 } from '../modal/settingsChat.js';
 
 $(document).ready(function () {
   $('#openModelSettingChatBtn').on('click', showSettingsChat);
   $('#closeModelSettingChatBtn').on('click', closeSettingsChat);
   $('#saveSetingsChatBtn').on('click', saveSettingsChat);
-  $('#closefriendsModalAdd').on('click', closeSettingsChatAddMember);
+  $('#closeUsersModalAdd').on('click', closeSettingsChatAddMember);
+
+  $('#input_find_user').on('keydown', function(event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      findUser($(this).val());
+    }
+  });
 });

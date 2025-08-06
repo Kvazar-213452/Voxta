@@ -1,5 +1,6 @@
 import { selectChat, loadChat, addMessageToChat, load_chats, addChats, highlightChatById } from '../chat/chat.js';
 import { findChatIndex } from '../chat/utils.js';
+import { renderUserAdd } from '../modal/settingsChat.js';
 
 export function handleChat(data) {
   if (data.type === "load_chats") {
@@ -18,5 +19,7 @@ export function handleChat(data) {
     addChats(JSON.parse(data.chat));
   } else if (data.type === "load_chat_content_offline") {
     loadChat(data.content, data.id, data.participants);
+  } else if (data.type === "find_user") {
+    renderUserAdd(data.users);
   }
 }

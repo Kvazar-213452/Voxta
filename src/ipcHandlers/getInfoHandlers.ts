@@ -1,6 +1,5 @@
 import { getStatus } from '../services/status/statusController';
 import { getInfoUser, getInfoUsers } from '../services/chat/utils/getInfo';
-import { getFriengs } from '../services/chat/utils/friend';
 
 export function handleGetInfo(msg: any): boolean {
   if (msg.type === 'get_status_user') {
@@ -14,9 +13,6 @@ export function handleGetInfo(msg: any): boolean {
     return true;
   } else if (msg.type === 'get_info_user') {
     getInfoUser(msg.id, msg._type);
-    return true;
-  } else if (msg.type === 'get_friends') {
-    getFriengs(msg._type);
     return true;
   }
 

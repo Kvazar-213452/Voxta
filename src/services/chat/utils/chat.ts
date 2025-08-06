@@ -39,3 +39,9 @@ export function loadChatContentLocal(chatId: string, participants): void {
     participants: participants
   });
 }
+
+// ! ========= add user =========
+
+export function findUser(name: string, id: string) {
+  getSocketGlobal()?.emit('find_user', { name: name, id: id });
+}
