@@ -57,14 +57,6 @@ export function renderUsersInChatSettings(users) {
     
     $("#users_modal_settings_chat").append(content);
   }
-
-  content = `
-    <div onclick="openModaladdUserInChat()" class='user_info_div add_user_in_chat_div'>
-      <p class='add_user_in_chat'>Додати користувача +</p>
-    </div>
-  `;
-
-  $('#users_modal_settings_chat').prepend(content);
 }
 
 export function renderUserChatSettings(user) {
@@ -79,51 +71,6 @@ export function renderUserChatSettings(user) {
 }
 
 // ! ========= add user in a chat =========
-
-export function openModaladdUserInChat() {
-  $("#div_find_user").html(null);
-  $("#input_find_user").val(null);
-  $('#usersModalAdd').addClass('active');
-}
-
-export function renderUserAdd(users) {
-  $("#div_find_user").html(null);
-
-  for (const id in users) {
-    const user = users[id];
-    let content = `
-      <div onclick="addUserInChat(${user.id})" class="user_info_div add_user_in_chat_div">
-        <img class="logo" src="${user.avatar}">
-        <p class="name">${user.name}</p>
-      </div>
-    `;
-    
-    $("#div_find_user").append(content);
-  }
-}
-
-function addUserInChat(id) {
-  window.electronAPI.sendMessage({
-    type: 'add_user_in_chat',
-    id: chat_id_select,
-    userId: id,
-    typeChat: chat_select['type']
-  });
-
-  $('#usersModalAdd').removeClass('active');
-  closeSettingsChat();
-}
-
-function delMember(id) {
-  window.electronAPI.sendMessage({
-    type: 'del_user_in_chat',
-    id: chat_id_select,
-    userId: id,
-    typeChat: chat_select['type']
-  });
-
-  closeSettingsChat();
-}
 
 export function saveSettingsChat() {
   let data = {
@@ -196,9 +143,8 @@ $(document).ready(function() {
 });
 
 
-// users_modal_settings_chat
+// usersModalAdd
 
 
-window.openModaladdUserInChat = openModaladdUserInChat;
 window.addUserInChat = addUserInChat;
 window.delMember = delMember;

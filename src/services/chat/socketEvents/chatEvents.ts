@@ -4,7 +4,6 @@ import { addChatOflineOnDB, loadChatContentLocal } from '../utils/chat';
 import { safeParseJSON } from '../../../utils/utils';
 import { sendMsgOffline } from '../../trafficJams/trafficJams'
 import { getMsgOffline } from '../utils/sendMsg'
-import { getInfoUsers } from '../utils/getInfo'
 
 export function registerChatEvents(socket: Socket) {
   socket.on('chats_info', (data) => {
@@ -61,17 +60,5 @@ export function registerChatEvents(socket: Socket) {
         participants: data.participants
       });
     }
-  });
-
-  socket.on('add_user_in_chat', (data) => {
-    console.log(data.code);
-  });
-
-  socket.on('del_user_in_chat', (data) => {
-    console.log(data.code);
-  });
-
-  socket.on('find_user', (data) => {
-    getInfoUsers(data.users, "find_user");
   });
 }

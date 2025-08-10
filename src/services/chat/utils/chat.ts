@@ -3,14 +3,6 @@ import { getMessagesByChatId } from '../../../models/sqliteStorage/chatUtils/cha
 import { getMainWindow } from '../../../models/mainWindow';
 import { createChat as createChatInDB } from '../../../models/sqliteStorage/chatUtils/chats';
 
-export function addUserInChat(id: string, userId: string, typeChat: string): void {
-  getSocketGlobal()?.emit("add_user_in_chat", { id: id, userId: userId, typeChat: typeChat });
-}
-
-export function delUserInChat(id: string, userId: string, typeChat: string): void {
-  getSocketGlobal()?.emit("del_user_in_chat", { id: id, userId: userId, typeChat: typeChat });
-}
-
 export function saveChatSettings(id: string, dataChat: any, typeChat: string): void {
   getSocketGlobal()?.emit("save_settings_chat", { id: id, dataChat: dataChat, typeChat: typeChat });
 }
@@ -38,10 +30,4 @@ export function loadChatContentLocal(chatId: string, participants): void {
     id: chatId,
     participants: participants
   });
-}
-
-// ! ========= add user =========
-
-export function findUser(name: string, id: string) {
-  getSocketGlobal()?.emit('find_user', { name: name, id: id });
 }
